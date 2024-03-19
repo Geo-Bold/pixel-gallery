@@ -27,45 +27,87 @@ img {
 .text-body {
   width: 90%;
   align-self: center;
+  margin: 20px 0px 0px 0px;
+}
+.text-margin {
+  margin-top: 0;
+  margin-bottom: 1rem;
 }
 
 .pink-background {
   border-radius: 15px;
   background-color: hsl(330, 100%, 98%);
 }
-.padded-list {
-  margin-left: 20px;
 
-}
 hr {
   width: 90%;
+  border-width: 1px;
+  margin-top: 0;
+  margin-bottom: 0;
 }
 .body-end {
   margin-bottom: 30px;
 }
 p {
   font-size: 16px;
+  font-family: "Outfit";
+  color: hsl(30, 10%, 34%);
+  line-height: 1.4;
 }
 table {
   width: 90%;
 }
 ul li {
   margin-bottom: 5px;
+  padding-left: 15px;
 }
-ol li {
-  margin-bottom: 5px;
+ul {
+  margin-left: 15px;
+  font-family: "Outfit";
+  font-size: 16px;
+  color: hsl(30, 10%, 34%);
 }
+ul li::marker {
+  color: hsl(332, 51%, 32%);
+}
+
 h1{
   font-family: "Young Serif";
   font-weight: 400;
 }
-h2, .outfit-text{
+h2 {
+  color: hsl(14, 45%, 36%);
+  font-family: "Young Serif";
+  font-weight: 400;
+  margin: 0 0 0 0;
+}
+.outfit-text {
+  font-size: 16px;
   color: hsl(14, 45%, 36%);
   font-family: "Outfit";
 }
 h3 {
   color: hsl(332, 51%, 32%);
+  font-family: "Outfit";
+  margin-top: 25px;
+  margin-left: 25px;
 }
 .outfit-text{
   font-weight: 700;
 }
+ol li::marker {
+  font-size: 16px;
+  color: hsl(14, 45%, 36%);
+  font-weight: 600;
+}
+ol li {
+  padding-left: 15px;
+  font-family: "Outfit";
+  font-size: 16px;
+  margin-bottom: 1.5ex;
+  color: hsl(30, 10%, 34%);
+  margin-bottom: 5px;
+}
+
+
+
