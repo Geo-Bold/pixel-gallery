@@ -9,7 +9,8 @@
 }
 #container {
   height: 90%;
-  width: clamp(470px, 1.5, 750px);
+  max-width: 750px;
+  min-width: 250px;
   background-color: white;
   border-radius: 15px;
   display: flex;
@@ -141,10 +142,10 @@ ol li::marker {
 ol li {
   padding-left: 15px;
 }
-/* @media (max-width: 480px) {
+@media (max-width: 480px) {
   .container {
     width: 470px;
   }
-} */
+}
 
 
