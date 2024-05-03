@@ -9,25 +9,28 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+  <link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/bulma@1.0.0/css/bulma.min.css">
   
 </head>
 <body>
   <div id="container">
-    <div class="card">
+    <div id="card">
       <div class="content">
-        <div class="text">
-          <h1>Stay updated!</h1>
-          <p>Join 60,000+ product managers receiving monthly updates on:</p>
-          <ul>
-            <li>Product discovery and building what matters</li>
-            <li>Measuring to ensure updates are a success</li>
-            <li>And much more!</li>
-          </ul>
-        </div>
+        <h1 id="h1">Stay updated!</h1>
+        <p>
+          Join 60,000+ product managers receiving monthly updates on:
+        </p>
+        <ul id="ul">
+          <li>Product discovery and building what matters</li>
+          <li>Measuring to ensure updates are a success</li>
+          <li>And much more!</li>
+        </ul>
         <form>
           <label for="email">Email address</label>
           <input id="field-email" type="text" placeholder="email@company.com">
-          <input id="button-submit" type="submit" value="Subscribe">
+          <input id="button-submit" type="button" value="Subscribe">
         </form>
       </div>
       <div class="image">
@@ -40,11 +43,6 @@
     </div> -->
   </div>
   
-  <div class="success hide">
-    <div>
-      <img src="./newsletter-sign-up-with-success-message-main/assets/images/icon-success.svg" alt="">
-    </div>
-  </div>
   <script type="module" src="./newsletter-sign-up-with-success-message-main/script.js"></script>
 </body>
 </html>

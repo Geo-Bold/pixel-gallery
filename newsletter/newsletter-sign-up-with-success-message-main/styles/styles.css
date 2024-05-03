@@ -1,57 +1,53 @@
-.hide {
-    display: none;
-  }
-  html, body {
+html, body {
     margin: 0;
     padding: 0;
-  }
-  #container {
-    height: 100vh;
+}
+#container {
+    height: 100%;
     background-color: #36384D;
     display: flex;
     justify-content: center;
     align-items: center;
     box-sizing: border-box;
-  }
-  .card {
+}
+#card {
     display: flex;
     align-items: center;
     background-color: #D7D7DB;
     border-radius: 36px;
     justify-content: space-between;
-  }
-  .content {
+}
+.content {
     flex: 1 1 auto;
     font-family: "Roboto";
     color: #242742;
     word-wrap: break-word;
-    line-height: 150%;
     margin-inline: 3rem;
-  }
-  .image {
+}
+.image {
     margin: 1.25rem 1.25rem 1.25rem 0;
     border-radius: calc(36px - 1.25rem);
     flex-shrink: 1;
-  }
-  #mobile-image {
+}
+#mobile-image {
     display: none;
-  }
-  
-  @media screen and (max-width: 900px) {
+}
+
+@media screen and (max-width: 900px) {
     #container {
         height: 100%;
     }
-    .card {
+    #card {
         flex-direction: column;
         width: auto;
         max-width: 100%;
         border-radius: 0px;
     }
     .content {
-       flex-grow: 1;
-       margin-inline: 1.5rem;
-       margin-bottom: 1.5rem;
-       order: 2;
+        flex-grow: 1;
+        margin-inline: 1.5rem;
+        margin-bottom: 1.5rem;
+        order: 2;
     }
     .image {
         width: 100%;
@@ -65,27 +61,35 @@
         width: 100%;
         height: auto;
     }
-  }
-  
-  h1 {
+}
+#h1 {
+    color: #242742;
     font-size: clamp(56px, 1.5rem, 0.5rem);
     font-weight: 700;
     flex-wrap: wrap;
     line-height: normal;
-  }
-  li {
-    list-style-image: url(/);
-  }
-  form {
+}
+li {
+    list-style-image: url(/newsletter/newsletter-sign-up-with-success-message-main/assets/images/icon-list.svg);
+}
+#ul li {
+    padding-left: 0.5em;
+    vertical-align: middle;
+}
+#ul li::marker {
+    height: 25px;
+    width: 25px;
+}
+form {
     display: flex;
     flex-direction: column;
-  }
-  label {
+}
+label {
     font-size: 12px;
     font-weight: 600;
-  }
-  
-  #field-email {
+}
+
+#field-email {
     border-width: 1px;
     border-color: #A7A7AF;
     border-style: ridge;
@@ -93,25 +97,28 @@
     margin-bottom: 24px;
     padding-left: 35px;
     font-size: 16px;
-  }
-  #field-email:focus {
+}
+#field-email:focus {
     outline: none;
-  }
-  #button-submit {
+}
+#button-submit {
     background-color: #242742;
     color: white;
     border: none;
     font-weight: 400;
-  }
-  #field-email, #button-submit {
+}
+#field-email, #button-submit {
     box-sizing: border-box;
     height: 56px;
     border-radius: 8px;
-  }
-  .attribution { 
+}
+.attribution { 
     font-size: 11px; 
     background-color: #36384D;
-  }
-  .attribution a { 
+}
+.attribution a { 
     color: hsl(228, 45%, 44%);
-   }
+}
+.modal-background {
+    background-color: hsla(0, 0%, 47%, 0.86) !important;
+}
