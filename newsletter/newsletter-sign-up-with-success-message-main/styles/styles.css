@@ -4,6 +4,7 @@ html, body {
 }
 #container {
     height: 100%;
+    min-height: 100vh;
     background-color: #36384D;
     display: flex;
     justify-content: center;
@@ -34,9 +35,6 @@ html, body {
 }
 
 @media screen and (max-width: 900px) {
-    #container {
-        height: 100%;
-    }
     #card {
         flex-direction: column;
         width: auto;
@@ -84,11 +82,15 @@ form {
     display: flex;
     flex-direction: column;
 }
-label {
+#email-header {
+    display: flex;
+    justify-content: space-between;
     font-size: 12px;
     font-weight: 600;
 }
-
+#email-header :nth-child(2) {
+    color: #FF6155;
+}
 #field-email {
     border-width: 1px;
     border-color: #A7A7AF;
@@ -120,5 +122,5 @@ label {
     color: hsl(228, 45%, 44%);
 }
 .modal-background {
-    background-color: hsla(0, 0%, 47%, 0.86) !important;
+    background-color: hsla(0, 0%, 47%, 0.86);
 }
