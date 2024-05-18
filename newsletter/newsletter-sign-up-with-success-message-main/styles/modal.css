@@ -1,0 +1,40 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
+@import url("/newsletter-sign-up-with-success-message-main/styles/styles.css");
+
+
+.modal-card {
+    max-width: 30em;
+    min-height: 28em;
+}
+.modal-background {
+    background-color: #242742;
+}
+.modal-card-body {
+    font-family: "Roboto";
+    border-radius: 36px;
+    background-color: #F8F8FF;
+    padding: 2.75em;
+    overflow-y: hidden;
+    
+}
+
+.modal-card-title, .label {
+    color: #242742;
+}
+.modal-card-title {
+    font-size: 2.75em;
+    font-weight: bold;
+    line-height: 1;
+    text-align: center;
+}
+.label {
+    font-size: 1em;
+    line-height: 1.5;
+}
+@media screen and (max-width: 650px){
+    .modal-card-body {
+        background-color: green;
+    }
+}
+
+

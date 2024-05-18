@@ -4,25 +4,30 @@ export class Modal {
 
     modal = `
         <div class="modal is-active" id="${this.#id}">
-            <div class="modal-background"></div>
-            <button class="modal-close is-large" aria-label="close"></button>
-            <div class="modal-card">
-                <header class="modal-card-head">
-                    <p class="modal-card-title"></p>
-                </header>
-                <section class="modal-card-body">
-                    <div class="field" id="modal-card-field">
-                        <label class="label"></label>
-                    </div>
-                </section>
-                <footer class="modal-card-foot is-justify-content-end">
-                    <div class="buttons">
-                        <button class="button is-danger" id="modal-primary-button"></button>
-                        <button class="button is-info" id="modal-secondary-button"></button>
-                    </div>
-                </footer>
+        <div class="modal-background"></div>
+        <div class="modal-card">
+            <div class="modal-card-body">
+                <div class="block">
+                    <figure class="image is-64x64 is-rounded">
+                        <img src="/newsletter-sign-up-with-success-message-main/assets/images/icon-list.svg" class="is-large" alt="">
+                    </figure>
+                </div>
+                <div class="block">
+                    <h1 class="modal-card-title">
+                        Thanks for subscribing!
+                    </h1>
+                </div>
+                <div class="block">
+                    <label class="label">
+                        A confirmation email has been sent to ash@loremcompany.com. Please open it and click the button inside to confirm your subscription.
+                    </label>
+                </div>
+                <div class="block">
+                    <div></div>
+                    <button id="modal-primary-button" class="button is-fullwidth">Dismiss message</button>
+                </div>
             </div>
-        </div> 
+        </div>
     `
 
     input = `<input id="modal-input" class="input">`
@@ -63,7 +68,9 @@ export class Modal {
         modalPrimaryButton.innerText = this.primaryBtnText
 
         const modalSecondaryButton = parsedContent.getElementById('modal-secondary-button')
-        modalSecondaryButton.innerText = this.secondaryBtnText
+        if (modalSecondaryButton) {
+            modalSecondaryButton.innerText = this.secondaryBtnText
+        }
 
         const modalDiv = parsedContent.querySelector('.modal')
         document.body.appendChild(modalDiv)
