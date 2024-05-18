@@ -1,3 +1,10 @@
+@import url("https://cdn.jsdelivr.net/npm/bulma@1.0.0/css/bulma.min.css");
+@import url("/newsletter-sign-up-with-success-message-main/styles/modal.css");
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
+@import url("https://fonts.googleapis.com");
+@import url("https://fonts.gstatic.com");
+@import url("./newsletter-sign-up-with-success-message-main/assets/images/geo-webpage-logo-32px.png");
+
 html, body {
     margin: 0;
     padding: 0;
@@ -14,7 +21,7 @@ html, body {
 #card {
     display: flex;
     align-items: center;
-    background-color: #D7D7DB;
+    background-color: #F8F8FF;
     border-radius: 36px;
     justify-content: space-between;
 }
@@ -67,16 +74,16 @@ html, body {
     flex-wrap: wrap;
     line-height: normal;
 }
-li {
-    list-style-image: url(/newsletter/newsletter-sign-up-with-success-message-main/assets/images/icon-list.svg);
+.parent-ul {
+    text-align: center;
 }
 #ul li {
     padding-left: 0.5em;
-    vertical-align: middle;
+    position: relative;
+    list-style-image: url(/newsletter-sign-up-with-success-message-main/assets/images/icon-list.svg);
 }
-#ul li::marker {
-    height: 25px;
-    width: 25px;
+#ul li::before {
+    vertical-align: middle;
 }
 form {
     display: flex;
@@ -87,15 +94,17 @@ form {
     justify-content: space-between;
     font-size: 12px;
     font-weight: 600;
+    margin-bottom: 0.5em;
 }
 #email-header :nth-child(2) {
-    color: #FF6155;
+    color: #FF6155; /* error code color */
 }
+
 #field-email {
     border-width: 1px;
     border-color: #A7A7AF;
     border-style: ridge;
-    background-color: #D7D7DB;
+    background-color: #F8F8FF;
     margin-bottom: 24px;
     padding-left: 35px;
     font-size: 16px;
@@ -103,13 +112,29 @@ form {
 #field-email:focus {
     outline: none;
 }
-#button-submit {
+.button-parent-div {
+    position: relative;
+}
+.gradient-background {
+    background: linear-gradient(to bottom, #FF6A3A, #FF527B);
+    width: 100%;
+}
+.button-submit {
+    width: 100%;
+    position: absolute;
+    top: 0;
     background-color: #242742;
+    background: #242742;
     color: white;
     border: none;
     font-weight: 400;
+    font-size: 12pt;
+    transition: background-color 400ms;
 }
-#field-email, #button-submit {
+.button-parent-div:hover .button-submit {
+    background-color: transparent;
+}
+#field-email, .button-submit, .gradient-background {
     box-sizing: border-box;
     height: 56px;
     border-radius: 8px;
