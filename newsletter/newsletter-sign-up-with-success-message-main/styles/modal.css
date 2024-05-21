@@ -15,9 +15,7 @@
     background-color: #F8F8FF;
     padding: 2.75em;
     overflow-y: hidden;
-    
 }
-
 .modal-card-title, .label {
     color: #242742;
 }
@@ -25,7 +23,6 @@
     font-size: 2.75em;
     font-weight: bold;
     line-height: 1;
-    text-align: center;
 }
 .label {
     font-size: 1em;
@@ -36,5 +33,3 @@
         background-color: green;
     }
 }
-
-
