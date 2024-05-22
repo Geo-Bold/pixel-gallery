@@ -9,22 +9,18 @@ export class Modal {
             <div class="modal-card-body">
                 <div class="block">
                     <figure class="image is-64x64 is-rounded">
-                        <img src="/newsletter-sign-up-with-success-message-main/assets/images/icon-list.svg" class="is-large" alt="">
+                        <img id="modal-image" class="is-large">
                     </figure>
                 </div>
                 <div class="block">
-                    <h1 class="modal-card-title">
-                        Thanks for subscribing!
-                    </h1>
+                    <h1 class="modal-card-title"></h1>
                 </div>
                 <div class="block">
-                    <label class="label">
-                        A confirmation email has been sent to ash@loremcompany.com. Please open it and click the button inside to confirm your subscription.
-                    </label>
+                    <label class="label"></label>
                 </div>
-                <div class="block">
-                    <div></div>
-                    <button id="modal-primary-button" class="button is-fullwidth">Dismiss message</button>
+                <div class="block button-parent-div">
+                    <div class="gradient-background"></div>
+                    <button id="modal-primary-button" class="button button-submit"></button>
                 </div>
             </div>
         </div>
@@ -32,13 +28,14 @@ export class Modal {
 
     input = `<input id="modal-input" class="input">`
 
-    constructor(message, title, primaryBtnText, secondaryBtnText) {
+    constructor(message, title, primaryBtnText, secondaryBtnText, imgAddress) {
 
         this.title = title ?? 'Attention' 
         this.message = message ?? 'Do you wish to proceed?'
         this.requireUserInput = false
         this.primaryBtnText = primaryBtnText ?? 'OK'
         this.secondaryBtnText = secondaryBtnText ?? 'Cancel'
+        this.image = imgAddress
     }
 
     #createTemplate() {
@@ -65,12 +62,15 @@ export class Modal {
         }
 
         const modalPrimaryButton = parsedContent.getElementById('modal-primary-button')
-        modalPrimaryButton.innerText = this.primaryBtnText
+        modalPrimaryButton.innerText = this.primaryBtnText    
 
         const modalSecondaryButton = parsedContent.getElementById('modal-secondary-button')
         if (modalSecondaryButton) {
             modalSecondaryButton.innerText = this.secondaryBtnText
         }
+
+        const image = parsedContent.getElementById('modal-image')
+        if (this.image) { image.src = this.image }
 
         const modalDiv = parsedContent.querySelector('.modal')
         document.body.appendChild(modalDiv)
@@ -119,15 +119,15 @@ export class Modal {
         const primaryButton = document.getElementById('modal-primary-button')
         const secondaryButton = document.getElementById('modal-secondary-button')
 
-        if (funcToRunOnOkay) {
+        primaryButton.addEventListener('click', () => {
 
-            primaryButton.addEventListener('click', () => {
+            if (funcToRunOnOkay) {
 
                 funcToRunOnOkay(true)
-
-            })
-
-        }
+                
+            } else { this.#close() }
+        
+        })
 
         secondaryButton.addEventListener('click', () => {
 

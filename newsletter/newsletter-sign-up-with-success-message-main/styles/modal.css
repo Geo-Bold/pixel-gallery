@@ -29,7 +29,24 @@
     line-height: 1.5;
 }
 @media screen and (max-width: 650px){
-    .modal-card-body {
-        background-color: green;
+    .modal-background {
+        background-color: #F8F8FF;
+        opacity: 1;
+        pointer-events: none;
     }
+    .modal-card-body {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+    .modal-card {
+        height: 100vh;
+    }
+    .modal-card-title {
+        font-size: 6.25vh;
+    }
+    .label {
+        font-size: 2.25vh;
+    }
+    
 }
