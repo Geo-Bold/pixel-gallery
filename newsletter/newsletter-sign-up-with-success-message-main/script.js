@@ -62,9 +62,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
       removeInvalidEmailReponse()
 
       const title = "Thanks for subscribing!"
-      const email = emailField.value
-      const imgAddress = "/newsletter-sign-up-with-success-message-main/assets/images/icon-list.svg"
-      const message = `A confirmation email has been sent to ${email}. Please open it and click the button inside to confirm your subscription.`
+      const imgAddress = "./assets/images/icon-list.svg"
+      const message = `A confirmation email has been sent to ${emailField.value}. Please open it and click the button inside to confirm your subscription.`
       const btnMessage = "Dismiss message"
 
       const modal = new Modal(message, title, btnMessage, null, imgAddress);
