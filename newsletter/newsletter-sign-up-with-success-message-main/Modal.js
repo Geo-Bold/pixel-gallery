@@ -129,16 +129,20 @@ export class Modal {
         
         })
 
-        secondaryButton ?? secondaryButton.addEventListener('click', () => {
+        if (secondaryButton) {
 
-            if (funcToRunOnCancel) {
+            secondaryButton.addEventListener('click', () => {
 
-                funcToRunOnCancel(userInput.value)
-                this.#close()
-                
-            } else { this.#close() }
+                if (funcToRunOnCancel) {
+    
+                    funcToRunOnCancel(userInput.value)
+                    this.#close()
+                    
+                } else { this.#close() }
+    
+            })
 
-        })
+        } 
 
     }
 
