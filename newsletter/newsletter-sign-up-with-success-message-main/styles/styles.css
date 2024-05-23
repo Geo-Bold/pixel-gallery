@@ -97,11 +97,12 @@ form {
     font-weight: 600;
     margin-bottom: 0.5em;
 }
-#email-header :nth-child(2) {
-    color: #FF6155; /* error code color */
+.invalid-email-prompt {
+    color: #FF6155;
 }
 
-#field-email {
+
+.field-email {
     border-width: 1px;
     border-color: #A7A7AF;
     border-style: ridge;
@@ -110,7 +111,12 @@ form {
     padding-left: 35px;
     font-size: 16px;
 }
-#field-email:focus {
+.invalid-email-field {
+    background-color: #ffe8e6;
+    border-color: #ff857c;
+    color: #ff6155;
+}
+.field-email:focus {
     outline: none;
 }
 .button-parent-div {
@@ -135,7 +141,7 @@ form {
 .button-parent-div:hover .button-submit {
     background-color: transparent;
 }
-#field-email, .button-submit, .gradient-background {
+.field-email, .button-submit, .gradient-background {
     box-sizing: border-box;
     height: 56px;
     border-radius: 8px;

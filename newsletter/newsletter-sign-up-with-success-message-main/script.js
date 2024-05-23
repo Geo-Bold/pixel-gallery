@@ -1,13 +1,13 @@
 import { Modal } from "./Modal.js"
 document.addEventListener('DOMContentLoaded', (event) => {
 
-  
-  
   // Get dom elements for the email field and submission button
 
   const submitButton = document.querySelector('.button-submit') 
 
-  const emailField = document.getElementById('field-email')
+  const emailField = document.querySelector('.field-email')
+
+  const invalidResponseEl = document.querySelector("#email-header > :nth-child(2)")
 
   // When submit button is clicked, check the validity of the email
 
@@ -17,38 +17,66 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
     const emailValue = emailField.value 
 
-    return emailRegex.test(emailValue)
+    const emailIsValid = emailRegex.test(emailValue)
+
+    if (emailIsValid) {
+
+      return true
+
+    } else {
+
+      return false;
+
+    }
 
   }
 
-  function emailValidationResponse(checkEmailValidity) {
+  function addInvalidEmailResponse() {
 
-    if (!checkEmailValidity()) {
+    invalidResponseEl.classList.add("invalid-email-prompt")
 
-      const validationPrompt = document.querySelector('.email-validation-prompt')
+    emailField.classList.add("invalid-email-field")
 
-      validationPrompt.innerText = "Valid email required"
+    invalidResponseEl.innerText = "Valid email required"
 
-      return false
+  }
 
-    } 
-    
-    return true
+  function removeInvalidEmailReponse () {
+
+    invalidResponseEl.classList.remove("invalid-email-prompt")
+
+    emailField.classList.remove("invalid-email-field")
+
+    invalidResponseEl.innerText = ""
+
+    emailField.value = ""
 
   }
 
   submitButton.addEventListener('click', (event) => {
 
-    event.preventDefault()
-    
-    const subscribedModal = new Modal()
+    event.preventDefault() // Required to prevent button from closing modal.
 
-    subscribedModal.confirm()
+    if (checkEmailValidity()) {
 
+      removeInvalidEmailReponse()
+
+      const title = "Thanks for subscribing!"
+      const email = emailField.value
+      const imgAddress = "/newsletter-sign-up-with-success-message-main/assets/images/icon-list.svg"
+      const message = `A confirmation email has been sent to ${email}. Please open it and click the button inside to confirm your subscription.`
+      const btnMessage = "Dismiss message"
+
+      const modal = new Modal(message, title, btnMessage, null, imgAddress);
+
+      modal.confirm()
+
+    } else {
+
+      addInvalidEmailResponse()
+
+    }
 
   })
-  
-
-  
 
 }) 

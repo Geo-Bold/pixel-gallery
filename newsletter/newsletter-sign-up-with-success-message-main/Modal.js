@@ -129,7 +129,7 @@ export class Modal {
         
         })
 
-        secondaryButton.addEventListener('click', () => {
+        secondaryButton ?? secondaryButton.addEventListener('click', () => {
 
             if (funcToRunOnCancel) {
 
