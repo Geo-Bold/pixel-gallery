@@ -1,22 +1,21 @@
 # Frontend Mentor - Newsletter sign-up form with success message solution
 
-This is a solution to the [Newsletter sign-up form with success message challenge on Frontend Mentor](https://www.frontendmentor.io/challenges/newsletter-signup-form-with-success-message-3FC1AZbNrv). Frontend Mentor challenges help you improve your coding skills by building realistic projects. 
+This is a solution to the [Newsletter sign-up form with success message challenge on Frontend Mentor](https://www.frontendmentor.io/challenges/newsletter-signup-form-with-success-message-3FC1AZbNrv).  
 
 ## Table of contents
 
-- [Overview](#overview)
-  - [The challenge](#the-challenge)
-  - [Screenshot](#screenshot)
-  - [Links](#links)
-- [My process](#my-process)
-  - [Built with](#built-with)
-  - [What I learned](#what-i-learned)
-  - [Continued development](#continued-development)
-  - [Useful resources](#useful-resources)
-- [Author](#author)
-- [Acknowledgments](#acknowledgments)
+- [Frontend Mentor - Newsletter sign-up form with success message solution](#frontend-mentor---newsletter-sign-up-form-with-success-message-solution)
+  - [Table of contents](#table-of-contents)
+  - [Overview](#overview)
+    - [The challenge](#the-challenge)
+    - [Screenshot](#screenshot)
+    - [Links](#links)
+  - [My process](#my-process)
+    - [Built with](#built-with)
+    - [What I learned](#what-i-learned)
+    - [Continued development](#continued-development)
+  - [Author](#author)
 
-**Note: Delete this note and update the table of contents based on what sections you keep.**
 
 ## Overview
 
@@ -34,15 +33,8 @@ Users should be able to:
 
 ### Screenshot
 
-![](./screenshot.jpg)
+![](./assets/images/newsletter-screenshot.png)
 
-Add a screenshot of your solution. The easiest way to do this is to use Firefox to view your project, right-click the page and select "Take a Screenshot". You can choose either a full-height screenshot or a cropped one based on how long the page is. If it's very long, it might be best to crop it.
-
-Alternatively, you can use a tool like [FireShot](https://getfireshot.com/) to take the screenshot. FireShot has a free option, so you don't need to purchase it. 
-
-Then crop/optimize/edit your image however you like, add it to your project, and update the file path in the image above.
-
-**Note: Delete this note and the paragraphs above when you add your screenshot. If you prefer not to add a screenshot, feel free to remove this entire section.**
 
 ### Links
 
@@ -56,61 +48,70 @@ Then crop/optimize/edit your image however you like, add it to your project, and
 - Semantic HTML5 markup
 - CSS custom properties
 - Flexbox
-- CSS Grid
+- Bulma library
 - Mobile-first workflow
-- [React](https://reactjs.org/) - JS library
-- [Next.js](https://nextjs.org/) - React framework
-- [Styled Components](https://styled-components.com/) - For styles
+- Custom created modal
 
-**Note: These are just examples. Delete this note and replace the list above with your own choices**
 
 ### What I learned
 
-Use this section to recap over some of your major learnings while working through this project. Writing these out and providing code samples of areas you want to highlight is a great way to reinforce your own knowledge.
-
-To see how you can add code snippets, see below:
+For this project I utylized a mobile-first design with variable fonts, image sizing and media queries. The HTML framework was kept simple with minimal usage of div containers. The styling was created with more use of helper classes and the resuse of simple animations in mind. Later into the implementation stage of development, an issue with CSS was encountered that prevented animating the opacity of a button element with a gradient background. My solution was to render the button positioned absolutely over a div element with the gradient background. Upon hovering, the button's background is transitioned to transparent therefor giving the intended effect.
 
 ```html
-<h1>Some HTML code I'm proud of</h1>
+<div class="button-parent-div">
+  <div class="gradient-background"></div>
+  <button class="button-submit">
+    Subscribe to monthly newsletter
+  </button>
+</div>
 ```
 ```css
-.proud-of-this-css {
-  color: papayawhip;
+.button-parent-div {
+    position: relative;
+}
+.gradient-background {
+    background: linear-gradient(to bottom, #FF6A3A, #FF527B);
+}
+.button-submit {
+    position: absolute;
+    top: 0;
+    background-color: #242742;
+    transition: background-color 400ms;
+}
+.button-parent-div:hover .button-submit {
+    background-color: transparent;
 }
 ```
+Some of my favorite code to write was an entire modal class with custom properties and methods. A message, title, image and button text can be used to create a custom popup using two different methods. The prompt method can be used to prompt the user for input while the confirm method solely serves as a message to the user. Once created, a modal can be passed a function to execute upon a positive event, or another function that execute upon a negative event.
 ```js
-const proudOfThisFunc = () => {
-  console.log('🎉')
+if (checkEmailValidity()) {
+
+  const title = "Thanks for subscribing!"
+  const imgAddress = "./newsletter-sign-up-with-success-message-main/assets/images/icon-success.svg"
+  const email = emailField.value
+  const message = `A confirmation email has been sent to ${email}. Please open it and click the button inside to confirm your subscription.`
+  const btnMessage = "Dismiss message"
+
+  const modal = new Modal(message, title, btnMessage, null, imgAddress);
+
+  modal.confirm()
+
+  removeInvalidEmailReponse()
+
+} else {
+
+  addInvalidEmailResponse()
+
 }
 ```
 
-If you want more help with writing markdown, we'd recommend checking out [The Markdown Guide](https://www.markdownguide.org/) to learn more.
-
-**Note: Delete this note and the content within this section and replace with your own learnings.**
 
 ### Continued development
 
-Use this section to outline areas that you want to continue focusing on in future projects. These could be concepts you're still not completely comfortable with or techniques you found useful that you want to refine and perfect.
+In future projects I would like to get more experience creating mobile friendly designs as well as leveraging existing libraries to solve problems and create seamless applications.
 
-**Note: Delete this note and the content within this section and replace with your own plans for continued development.**
-
-### Useful resources
-
-- [Example resource 1](https://www.example.com) - This helped me for XYZ reason. I really liked this pattern and will use it going forward.
-- [Example resource 2](https://www.example.com) - This is an amazing article which helped me finally understand XYZ. I'd recommend it to anyone still learning this concept.
-
-**Note: Delete this note and replace the list above with resources that helped you during the challenge. These could come in handy for anyone viewing your solution or for yourself when you look back on this project in the future.**
 
 ## Author
 
-- Website - [Add your name here](https://www.your-site.com)
-- Frontend Mentor - [@yourusername](https://www.frontendmentor.io/profile/yourusername)
-- Twitter - [@yourusername](https://www.twitter.com/yourusername)
-
-**Note: Delete this note and add/remove/edit lines above based on what links you'd like to share.**
-
-## Acknowledgments
-
-This is where you can give a hat tip to anyone who helped you out on this project. Perhaps you worked in a team or got some inspiration from someone else's solution. This is the perfect place to give them some credit.
-
-**Note: Delete this note and edit this section's content as necessary. If you completed this challenge by yourself, feel free to delete this section entirely.**
+- Website - [Geo Archbold](https://geo-bold.dev)
+- Frontend Mentor - [@Geo-Bold](https://www.frontendmentor.io/profile/yourusername)
