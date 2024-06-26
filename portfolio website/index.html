@@ -3,21 +3,37 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <link rel="icon" type="image/png" sizes="32x32" href="./images/favicon-32x32.png">
-
-    <title>Frontend Mentor | Minimalist Portfolio</title>
+    <title>Geo Stash</title>
+    <link rel="stylesheet" href="/styles/styles.css">
   </head>
   <body>
     <div class="container">
+      <nav class="navbar" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand">
+          <a href="https://geobold.dev/portfolio%20website/" class="navbar-item">
+            <svg xmlns="http://www.w3.org/2000/svg" width="61" height="32">
+              <path fill="#33323D" fill-rule="evenodd" d="M60.082 5.878L44.408 32 28.735 5.878h31.347zM15.673 0l15.674 26.122H0L15.673 0z"/>
+            </svg>
+          </a>
+          <a class="navbar-burger" role="button" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+          </a>
+        </div>
+        <div class="navbar-menu is-active is-flex is-justify-content-center">
+          <div class="navbar-end">
+            <a href="https://geobold.dev/portfolio%20website/" class="navbar-item">Home</a>
+            <a href="/starter-code/portfolio.html" class="navbar-item">Portfolio</a>
+            <a href="/starter-code/contact.html" class="navbar-item">Contact</a>
+          </div>
+        </div>
+      </nav>
       <section class="introduction">
-        <nav class="menu">
-          <span>Home</span>
-          <span>Portfolio</span>
-          <span>Contact</span>
-        </nav>
-        <div class="hero">
           <div class="intro-title-container">
+            
             <p>
               Hey, I’m Alex Spencer and I love building beautiful websites
             </p>
@@ -25,7 +41,6 @@
               About Me
             </button>
           </div>
-        </div>
       </section>
       
     
