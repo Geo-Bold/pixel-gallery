@@ -1,1 +1,106 @@
 @import url("https://cdn.jsdelivr.net/npm/bulma@1.0.1/css/bulma.min.css");
+@import url('https://fonts.googleapis.com/css2?family=Ibarra+Real+Nova:ital,wght@0,400..700;1,400..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Ibarra+Real+Nova:ital,wght@0,400..700;1,400..700&family=Public+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+
+:root {
+    --bulma-body-color: #33323D;
+    --bulma-body-background-color: hsl#fafafa;
+}
+h1 {
+    font-family: "Ibarra Real Nova", serif;
+    font-weight: bold;
+    font-size: 40px;
+    line-height: 42px;
+}
+p {
+    font-family: "Public Sans", serif;
+    font-size: 16px;
+}
+.custom-button {
+    border-radius: unset;
+}
+#page-container {
+    max-width: 1110px;
+    display: flex;
+    flex-wrap: wrap;
+}
+.navbar {
+    width: 100%;
+}
+.navbar {
+    background-color: var(--bulma-body-background-color);
+    margin-block: 44px 34px;
+}
+.navbar-end a {
+    font-family: "Public Sans", serif;
+    font-size: 12px;
+    letter-spacing: 2px;
+    color: var(--bulma-body-color);
+}
+/* Gives the logo svg enough space to render */
+.navbar-item svg {
+    width: 61px;
+    max-height: 32px;
+}
+.intro-title-container {
+    position: relative;
+    max-height: 600px;
+    margin-bottom: 150px;
+}
+.intro-title {
+    position: absolute;
+    bottom: 0;
+    background-color: #ffffff;
+    height: 278px;
+    width: 514px;
+}
+.intro-title h1 {
+    max-width: 458px;
+    margin-top: 56px;
+}
+.jump-link-btn {
+    display: flex;
+    justify-content: start;
+    background-color: #203A4C;
+    color: #FFFFFF;
+    width: 200px;
+    height: 48px;
+    margin-top: 48px;
+    padding: 0px 0px 0px 0px;
+    border: none;
+    border-radius: 0px;
+}
+#jump-link-btn-icon {
+    width: 48px;
+    height: 48px;
+    background-color: #1D3445;
+    margin-inline: 0px 0px;
+}
+.jump-link-btn :nth-child(2) {
+    width: 100%;
+    font-family: "Public Sans", serif;
+    font-size: 12px;
+    letter-spacing: 2px;
+}
+.inline-page-section {
+    width: 1015px;
+    padding-inline: 0px 0px;
+    display: flex;
+    justify-content: space-between;
+}
+.inline-page-section h1 {
+    margin-block: 50px 28px;
+}
+.inline-page-section p {
+    line-height: 30px;
+}
+.inline-page-section container {
+    max-width: 350px;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+.inline-page-section button {
+    width: 202px;
+    height: 48px;
+    margin-block: 24px 48px;
+}

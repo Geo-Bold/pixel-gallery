@@ -3,18 +3,17 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/png" sizes="32x32" href="./images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/starter-code/images/geo-webpage-logo-32px.png">
     <title>Geo Stash</title>
     <link rel="stylesheet" href="/styles/styles.css">
   </head>
   <body>
-    <div class="container">
-      <nav class="navbar" role="navigation" aria-label="main navigation">
+    <div class="container" id="page-container">
+      <nav class="navbar" id="navbar" role="navigation"
+        aria-label="main navigation">
         <div class="navbar-brand">
           <a href="https://geobold.dev/portfolio%20website/" class="navbar-item">
-            <svg xmlns="http://www.w3.org/2000/svg" width="61" height="32">
-              <path fill="#33323D" fill-rule="evenodd" d="M60.082 5.878L44.408 32 28.735 5.878h31.347zM15.673 0l15.674 26.122H0L15.673 0z"/>
-            </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="61" height="32" viewBox=""><path fill="#33323D" fill-rule="evenodd" d="M60.082 5.878L44.408 32 28.735 5.878h31.347zM15.673 0l15.674 26.122H0L15.673 0z"/></svg>
           </a>
           <a class="navbar-burger" role="button" aria-label="menu" aria-expanded="false">
             <span aria-hidden="true"></span>
@@ -23,50 +22,72 @@
             <span aria-hidden="true"></span>
           </a>
         </div>
-        <div class="navbar-menu is-active is-flex is-justify-content-center">
+        <div class="navbar-menu is-active">
           <div class="navbar-end">
-            <a href="https://geobold.dev/portfolio%20website/" class="navbar-item">Home</a>
-            <a href="/starter-code/portfolio.html" class="navbar-item">Portfolio</a>
-            <a href="/starter-code/contact.html" class="navbar-item">Contact</a>
+            <a href="https://geobold.dev/portfolio%20website/" class="navbar-item">HOME</a>
+            <a href="/starter-code/portfolio.html" class="navbar-item">PORTFOLIO</a>
+            <a href="/starter-code/contact.html" class="navbar-item">CONTACT</a>
           </div>
         </div>
       </nav>
-      <section class="introduction">
-          <div class="intro-title-container">
-            
-            <p>
-              Hey, I’m Alex Spencer and I love building beautiful websites
-            </p>
-            <button class="about-me">
-              About Me
-            </button>
-          </div>
+      <section class="intro-title-container">
+        <img src="starter-code\images\homepage\desktop\image-homepage-hero.jpg" 
+          srcset="starter-code\images\homepage\desktop\image-homepage-hero@2x.jpg 1200w" 
+          alt="A computer monitor displaying a modern website with a logo, navigation links, headline, 'Get Started' button, and data visualizations."
+          width="1110"
+          height="600"
+          >
+        <div class="intro-title">
+          <h1>
+            Hey, I’m Geo Archbold and I love building beautiful websites
+          </h1>
+          <a href="https://www.example.com" 
+            class="button jump-link-btn">
+            <span class="icon" id="jump-link-btn-icon">
+              <img src="/starter-code/images/icons/down-arrows.svg" alt="Icon" class="svg-icon">
+            </span>
+            <span>ABOUT ME</span>
+          </a>
+        </div>
+      </section>
+      <section class="section inline-page-section">
+        <figure>
+          <img 
+            src="/starter-code/images/homepage/desktop/image-homepage-profile.jpg" 
+            srcset="/starter-code/images/homepage/desktop/image-homepage-profile@2x.jpg 2x" 
+            width="540" height="600" 
+            alt="A profile photograph of the author with slicked-back hair and a contemplative expression, dressed in a dark jacket and a white high-neck shirt, against a muted gray background."
+            >
+        </figure>
+        <container>
+          <h1>
+            About Me
+          </h1>
+          <p>
+            I’m a junior front-end developer looking for a new role in an exciting company. 
+            I focus on writing accessible HTML, using modern CSS practices and writing clean 
+            JavaScript. When writing JavaScript code, I mostly use React, but I can adapt to 
+            whatever tools are required. I’m based in London, UK, but I’m happy working remotely 
+            and have experience in remote teams. When I’m not coding, you’ll find me outdoors. 
+            I love being out in nature whether that’s going for a walk, run or cycling. I’d love 
+            you to check out my work.
+          </p>
+          <button class="button is-outlined custom-button">
+            GO TO PORTFOLIO
+          </button>
+        </container>
       </section>
       
+      
+
+        
+
+        Go to Portfolio
+
+        Interested in doing a project together?
+
+        Contact Me
     
-
-    
-
-    
-
-    About Me
-
-    I’m a junior front-end developer looking for a new role in an exciting company. 
-    I focus on writing accessible HTML, using modern CSS practices and writing clean 
-    JavaScript. When writing JavaScript code, I mostly use React, but I can adapt to 
-    whatever tools are required. I’m based in London, UK, but I’m happy working remotely 
-    and have experience in remote teams. When I’m not coding, you’ll find me outdoors. 
-    I love being out in nature whether that’s going for a walk, run or cycling. I’d love 
-    you to check out my work.
-
-    Go to Portfolio
-
-    Interested in doing a project together?
-
-    Contact Me
-
     </div>
-    
-
   </body>
 </html>
