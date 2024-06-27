@@ -18,6 +18,8 @@ p {
 }
 .custom-button {
     border-radius: unset;
+    font-size: 12px;
+    height: 48px;
 }
 #page-container {
     max-width: 1110px;
@@ -84,7 +86,7 @@ p {
 }
 .inline-page-section {
     width: 1015px;
-    padding-inline: 0px 0px;
+    padding: 0px;
     display: flex;
     justify-content: space-between;
 }
@@ -99,8 +101,26 @@ p {
     border-top: 1px solid rgba(0, 0, 0, 0.1);
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
-.inline-page-section button {
+.inline-page-section a {
     width: 202px;
-    height: 48px;
     margin-block: 24px 48px;
+}
+footer {
+    height: 84px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-block: 125px;
+}
+footer h1 {
+    width: 350px;
+}
+footer a {
+    width: 162px;
+}
+.line-segment {
+    width: 100%;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    max-width: 534px;
 }
