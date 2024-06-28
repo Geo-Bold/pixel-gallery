@@ -1,11 +1,9 @@
 @import url("https://cdn.jsdelivr.net/npm/bulma@1.0.1/css/bulma.min.css");
 @import url('https://fonts.googleapis.com/css2?family=Ibarra+Real+Nova:ital,wght@0,400..700;1,400..700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Ibarra+Real+Nova:ital,wght@0,400..700;1,400..700&family=Public+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+@import url("footer.css");
+@import url("root.css");
 
-:root {
-    --bulma-body-color: #33323D;
-    --bulma-body-background-color: hsl#fafafa;
-}
 h1 {
     font-family: "Ibarra Real Nova", serif;
     font-weight: bold;
@@ -21,13 +19,16 @@ p {
     font-size: 12px;
     height: 48px;
 }
-#page-container {
-    max-width: 1110px;
+/* These values are id's to override bulma's library container. */
+#container-1440 {
+    max-width: 1440px;
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
 }
-.navbar {
-    width: 100%;
+#container-1110 {
+    max-width: 1110px;
+    margin-inline: 2.5rem;
 }
 .navbar {
     background-color: var(--bulma-body-background-color);
@@ -85,7 +86,7 @@ p {
     letter-spacing: 2px;
 }
 .inline-page-section {
-    width: 1015px;
+    max-width: 1015px;
     padding: 0px;
     display: flex;
     justify-content: space-between;
@@ -104,23 +105,4 @@ p {
 .inline-page-section a {
     width: 202px;
     margin-block: 24px 48px;
-}
-footer {
-    height: 84px;
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-block: 125px;
-}
-footer h1 {
-    width: 350px;
-}
-footer a {
-    width: 162px;
-}
-.line-segment {
-    width: 100%;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-    max-width: 534px;
 }
