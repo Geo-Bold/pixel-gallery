@@ -32,11 +32,10 @@ p {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    padding-inline: 2rem;
 }
 #container-1110 {
-    max-width: 69.375rem;
-    margin-inline: 2.5rem;
+    max-width: 73.375rem;
+    padding-inline: 2.5rem;
 }
 .navbar {
     background-color: var(--bulma-body-background-color);
