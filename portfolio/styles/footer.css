@@ -10,10 +10,12 @@ footer {
     margin-block: 7.8125rem;
 }
 .footer-top h1 {
-    width: 21.875;
+    min-width: 21.875rem;
+    margin-right: 2rem;
 }
 .footer-top a {
     width: 10.125rem;
+    margin-left: 2rem;
 }
 .line-segment {
     width: 100%;

@@ -15,6 +15,7 @@ h1 {
     font-weight: bold;
     font-size: 2.5rem;
     line-height: 2.625rem;
+    letter-spacing: -0.36px;
 }
 p {
     font-family: "Public Sans", serif;
@@ -27,13 +28,14 @@ p {
 }
 /* These values are id's to override bulma's library container. */
 #container-1440 {
-    max-width: 1440px;
+    max-width: 90rem;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+    padding-inline: 2rem;
 }
 #container-1110 {
-    max-width: 1110px;
+    max-width: 69.375rem;
     margin-inline: 2.5rem;
 }
 .navbar {
@@ -48,16 +50,33 @@ p {
 }
 /* Gives the logo svg enough space to render */
 .navbar-item svg {
-    width: 61px;
-    max-height: 32px;
+    width: 3.8125rem;
+    max-height: 2rem;
 }
 .intro-title-container {
     position: relative;
     max-height: 37.5rem;
     margin-bottom: 9.375rem;
 }
+.intro-title-container figure {
+    height: 37.5rem;
+    max-width: 1110px;
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+}
+.intro-title-container figure img {
+    height: 37.5rem;
+    width: 69.375rem;
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    left: 0;
+    object-fit: cover;
+}
 .intro-title {
     position: absolute;
+    left: 0;
     bottom: 0;
     background-color: #ffffff;
     height: 17.375rem;
@@ -97,18 +116,59 @@ p {
     display: flex;
     justify-content: space-between;
 }
+.inline-page-section figure {
+    height: 37.5rem;
+    max-width: 33.75rem;
+    min-width: 17.562rem;
+    width: 100%;
+}
+.inline-page-section img {
+    height: 100%;
+    object-fit: cover;
+}
 .inline-page-section h1 {
     margin-block: 3.125rem 1.75rem;
 }
 .inline-page-section p {
     line-height: 1.875rem;
+    height: 22.5rem;
+    min-width: 21.1875rem;
 }
 .inline-page-section container {
     max-width: 21.875rem;
+    height: 37.5rem;
     border-top: 1px solid rgba(0, 0, 0, 0.1);
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    margin-left: 4.3125rem;
 }
 .inline-page-section a {
     width: 202px;
-    margin-block: 1.5rem 3rem;
+    margin-top: 1.5rem;
+}
+@media (max-width: 950px) {
+    .inline-page-section img {
+        content: url("../starter-code/images/homepage/tablet/image-homepage-profile.jpg");
+        height: 37.5rem;
+        width: 17.526rem;
+    }
+    .inline-page-section figure {
+        height: 37.5rem;
+        width: 100%;
+    }
+    
+}
+@media (max-width: 900px) {
+    .intro-title-container figure {
+        height: 37.5rem;
+        max-width: 43rem;
+        width: 100%;
+        overflow: hidden;
+    }
+    .intro-title-container figure img {
+        content: url(../starter-code/images/homepage/tablet/image-homepage-hero.jpg);
+        height: 100%;
+        max-width: 43rem;
+        overflow: hidden;
+        position: relative;
+    }
 }
