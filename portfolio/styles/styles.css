@@ -41,6 +41,9 @@ p {
     background-color: var(--bulma-body-background-color);
     margin-block: 2.75rem 2.125rem;
 }
+.navbar-portfolio-margin {
+    margin-bottom: 5.875rem;
+}
 .navbar-end a {
     font-family: "Public Sans", serif;
     font-size: 0.75rem;
@@ -85,6 +88,21 @@ p {
     max-width: 28.625rem;
     margin-top: 3.5rem;
 }
+@media (max-width: 900px) {
+    .intro-title-container figure {
+        height: 37.5rem;
+        max-width: 43rem;
+        width: 100%;
+        overflow: hidden;
+    }
+    .intro-title-container figure img {
+        content: url(../starter-code/images/homepage/tablet/image-homepage-hero.jpg);
+        height: 100%;
+        max-width: 43rem;
+        overflow: hidden;
+        position: relative;
+    }
+}
 .jump-link-btn {
     display: flex;
     justify-content: start;
@@ -109,65 +127,126 @@ p {
     font-size: 0.75rem;
     letter-spacing: 0.125rem;
 }
-.inline-page-section {
+.homepage-section {
     max-width: 63.437rem;
-    padding: 0px;
     display: flex;
     justify-content: space-between;
+    max-height: 37.5rem;
 }
-.inline-page-section figure {
-    height: 37.5rem;
+.homepage-section figure {
     max-width: 33.75rem;
     min-width: 17.562rem;
     width: 100%;
 }
-.inline-page-section img {
-    height: 100%;
+.homepage-section img {
+    height: 37.5rem;
     object-fit: cover;
 }
-.inline-page-section h1 {
+.homepage-section h1 {
     margin-block: 3.125rem 1.75rem;
 }
-.inline-page-section p {
+.homepage-section p {
     line-height: 1.875rem;
-    height: 22.5rem;
     min-width: 21.1875rem;
 }
-.inline-page-section container {
+.homepage-section container {
+    display: flex;
+    flex-wrap: wrap;
     max-width: 21.875rem;
-    height: 37.5rem;
+    min-height: 100%;
     border-top: 1px solid rgba(0, 0, 0, 0.1);
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     margin-left: 4.3125rem;
+    padding-bottom: 50px;
 }
-.inline-page-section a {
+.homepage-section a {
     width: 202px;
     margin-top: 1.5rem;
 }
 @media (max-width: 950px) {
-    .inline-page-section img {
+    .homepage-section img {
         content: url("../starter-code/images/homepage/tablet/image-homepage-profile.jpg");
         height: 37.5rem;
         width: 17.526rem;
     }
-    .inline-page-section figure {
+    .homepage-section figure {
         height: 37.5rem;
         width: 100%;
-    }
+    } 
+}
+.portfolio-section {
+    display: flex;
+    justify-content: space-between;
+    min-height: 26.125rem;
+    max-height: 31.25rem;
+    min-width: 43.06rem;
+    max-width: 63.437rem;
+    margin-bottom: 5rem;
+}
+.margin-left-auto {
+    margin-left: auto;
+}
+.portfolio-section figure {
+    max-width: 33.75rem;
+    width: 100%;
+}
+.portfolio-section img {
+    height: 100%;
+    object-fit: cover;
+    min-height: 314px;
+    min-width: 339px;
+}
+.portfolio-section h1 {
+    margin-bottom: 1.75rem;
+}
+.portfolio-section p {
+    line-height: 1.875rem;
+}
+.portfolio-section container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-width: 17.56rem;
+    max-width: 21.875rem;
+    width: 100%;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     
 }
-@media (max-width: 900px) {
-    .intro-title-container figure {
-        height: 37.5rem;
-        max-width: 43rem;
-        width: 100%;
-        overflow: hidden;
+.container-left-margin {
+    margin-left: 4.3125rem;
+}
+.container-right-margin {
+    margin-right: 4.3125rem;
+}
+.portfolio-section a {
+    width: 175px;
+    height: 48px;
+    margin-top: 1.5rem;
+}
+@media (max-width: 950px) {
+    .portfolio-section figure {
+        display: flex;
+        align-items: center;
     }
-    .intro-title-container figure img {
-        content: url(../starter-code/images/homepage/tablet/image-homepage-hero.jpg);
-        height: 100%;
-        max-width: 43rem;
-        overflow: hidden;
-        position: relative;
+    .portfolio-manage {
+        content: url("../starter-code/images/portfolio/tablet/image-portfolio-manage@2x.jpg");
+        width: 339px;
+        height: 314px;
     }
+    .portfolio-bookmark {
+        content: url("../starter-code/images/portfolio/tablet/image-portfolio-bookmark@2x.jpg");
+        width: 339px;
+        height: 314px;
+    } 
+    .portfolio-insure {
+        content: url("../starter-code/images/portfolio/tablet/image-portfolio-insure@2x.jpg");
+        width: 339px;
+        height: 314px;
+    } 
+    .portfolio-fylo {
+        content: url("../starter-code/images/portfolio/tablet/image-portfolio-fylo@2x.jpg");
+        width: 339px;
+        height: 314px;
+    }  
 }
