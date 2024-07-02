@@ -39,10 +39,10 @@ p {
 }
 .navbar {
     background-color: var(--bulma-body-background-color);
-    margin-block: 2.75rem 2.125rem;
+    margin-block: 2.75rem 5.875rem;
 }
-.navbar-portfolio-margin {
-    margin-bottom: 5.875rem;
+.navbar-homepage-margin {
+    margin-bottom: 2.125rem;
 }
 .navbar-end a {
     font-family: "Public Sans", serif;
@@ -188,13 +188,13 @@ p {
 }
 .portfolio-section figure {
     max-width: 33.75rem;
+    min-width: 21.1875rem;
     width: 100%;
 }
 .portfolio-section img {
     height: 100%;
-    object-fit: cover;
-    min-height: 314px;
-    min-width: 339px;
+    /* min-height: 314px;
+    min-width: 339px; */
 }
 .portfolio-section h1 {
     margin-bottom: 1.75rem;
@@ -229,24 +229,20 @@ p {
         display: flex;
         align-items: center;
     }
+    .tablet-minmax {
+        max-height: 19.625rem;
+        max-width: 21.1875rem;
+    }
     .portfolio-manage {
         content: url("../starter-code/images/portfolio/tablet/image-portfolio-manage@2x.jpg");
-        width: 339px;
-        height: 314px;
     }
     .portfolio-bookmark {
         content: url("../starter-code/images/portfolio/tablet/image-portfolio-bookmark@2x.jpg");
-        width: 339px;
-        height: 314px;
     } 
     .portfolio-insure {
         content: url("../starter-code/images/portfolio/tablet/image-portfolio-insure@2x.jpg");
-        width: 339px;
-        height: 314px;
     } 
     .portfolio-fylo {
         content: url("../starter-code/images/portfolio/tablet/image-portfolio-fylo@2x.jpg");
-        width: 339px;
-        height: 314px;
     }  
 }
