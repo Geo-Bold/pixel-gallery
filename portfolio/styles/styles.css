@@ -223,11 +223,15 @@ p {
     width: 175px;
     height: 48px;
     margin-top: 1.5rem;
+    letter-spacing: 0.125rem;
 }
 @media (max-width: 950px) {
     .portfolio-section figure {
         display: flex;
         align-items: center;
+    }
+    .portfolio-section p {
+        font-size: 0.9375rem;
     }
     .tablet-minmax {
         max-height: 19.625rem;
