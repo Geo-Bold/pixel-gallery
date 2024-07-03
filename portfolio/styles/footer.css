@@ -14,7 +14,7 @@ footer {
     margin-right: 2rem;
 }
 .footer-top a {
-    width: 10.125rem;
+    min-width: 10.125rem;
     margin-left: 2rem;
 }
 .line-segment {
