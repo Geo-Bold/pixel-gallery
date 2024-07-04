@@ -17,6 +17,12 @@ h1 {
     line-height: 2.625rem;
     letter-spacing: -0.36px;
 }
+h2 {
+    font-family: "Ibarra Real Nova", serif;
+    font-size: 2rem;
+    letter-spacing: -0.29px;
+    line-height: 2.625rem;
+}
 p {
     font-family: "Public Sans", serif;
     font-size: 1rem;
@@ -34,7 +40,7 @@ p {
     justify-content: center;
 }
 #container-1110 {
-    max-width: 73.375rem;
+    max-width: 74.375rem;
     padding-inline: 2.5rem;
 }
 .navbar {
@@ -174,6 +180,7 @@ p {
         width: 100%;
     } 
 }
+/* Portfolio page styling */
 .portfolio-section {
     display: flex;
     justify-content: space-between;
@@ -219,8 +226,11 @@ p {
 .container-right-margin {
     margin-right: 4.3125rem;
 }
-.portfolio-section a {
-    width: 175px;
+.button-outlined {
+    border-radius: unset;
+    font-size: 0.75rem;
+    height: 3rem;
+    width: 176px;
     height: 48px;
     margin-top: 1.5rem;
     letter-spacing: 0.125rem;
@@ -249,4 +259,145 @@ p {
     .portfolio-fylo {
         content: url("../starter-code/images/portfolio/tablet/image-portfolio-fylo@2x.jpg");
     }  
+}
+/* Individual portfolio page styling */
+.project-hero {
+    margin-bottom: 10.36%;
+}
+.project-body {
+    display: flex;
+    justify-content: space-between;
+}
+.project-body p {
+    font-size: 0.9375rem;
+    line-height: 1.875rem;
+    margin-top: 1.8125rem;
+}
+.project-body-intro {
+    min-width: 13.75rem;
+    width: 21.875rem;
+    max-height: 31.125rem;
+    height: auto;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+.project-body-intro h1 {
+    margin-top: 3rem;
+}
+.green-text {
+    color: #5FB4A2;
+    font-weight: bold;
+    line-height: 2.6rem;
+}
+.project-body-intro .green-text {
+    margin-block: 1.4375rem 0rem;
+}
+.project-body-background {
+    max-width: 39.69rem;
+    width: auto;
+    margin-left: 4rem;
+}
+.project-body-background h2:nth-of-type(2) {
+    margin-top: 2.5rem;
+}
+.project-body-background img {
+    margin-top: 1.75rem;
+}
+.project-body-background img:last-of-type {
+    margin-top: 2rem;
+}
+.project-footer {
+    margin-top: 4rem;
+    height: 8.25rem;
+    display: flex;
+    justify-content: space-between;
+}
+.footer-container-left {
+    width: 50%;
+    display: flex;
+    align-items: center;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+.footer-container-right {
+    width: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    border-left: 1px solid rgba(0, 0, 0, 0.1);
+    text-align: end;
+}
+.project-footer a {
+    display: flex;
+    align-items: center;
+    color: var(--bulma-body-color);
+}
+.footer-container-left svg {
+    margin-right: 2rem;
+    height: 16px;
+    width: 10px;
+}
+.footer-container-right svg {
+    margin-left: 2rem;
+    height: 16px;
+    width: 10px;
+}
+.project-footer p {
+    color: #96969c;
+}
+@media (max-width: 900px) {
+    .project-hero {
+        margin-bottom: 2.5rem;
+    }
+    .project-body {
+        flex-wrap: wrap;
+    }
+    .project-body-intro {
+        padding-block: 2rem;
+        width: auto;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: repeat(3, 1fr);
+        row-gap: 1rem;
+    }
+    .project-body-intro h1,
+    .project-body-intro .green-text,
+    .project-body-intro a {
+        margin-block: 0px 0px;
+        align-self: center;
+    }
+    .project-body-intro .normal-text {
+        margin-top: 0px;
+        max-height: none;
+        height: auto;
+        grid-column: 2;
+        grid-row: 1 / 4;
+        display: flex;
+        align-items: start;
+    }
+    .green-text {
+        max-width: 270px;
+    }
+    .project-body-background {
+        margin: 2.5rem 0rem 0rem 0rem;
+        max-width: 689px;
+        width: auto;
+    }
+    .project-hero img {
+        content: url(../starter-code/images/detail/tablet/image-manage-hero@2x.jpg);
+        min-height: 310px;
+        object-fit: cover;
+    }
+    .project-body-background img:nth-of-type(1) {
+        margin-top: 2.5rem;
+        content: url(../starter-code/images/detail/tablet/image-manage-preview-1@2x.jpg);
+    }
+    .project-body-background img:nth-of-type(2) {
+        content: url(../starter-code/images/detail/tablet/image-manage-preview-2@2x.jpg);
+    }
+    .footer-project-block-margin {
+        margin-top: 5rem;
+    }
 }
