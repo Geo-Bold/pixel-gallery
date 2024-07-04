@@ -47,17 +47,17 @@ footer {
 .footer-bottom a:nth-child(2),
 .footer-bottom a:nth-child(3),
 .footer-bottom a:nth-child(4) {
-        margin-left: 1.875rem;
-    }
-.footer-bottom a:nth-child(5) {
+    margin-left: 1.875rem;
+}
+.github-icon {
     height: 1.5rem;
     margin-left: auto;
 }
-.footer-bottom a:nth-child(6) {
+.twitter-icon {
     height: 1.25rem;
     margin-left: 1rem;
 }
-.footer-bottom a:nth-child(7) {
+.linkedin-icon {
     height: 1.5rem;
     margin-left: 1rem;
 }

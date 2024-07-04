@@ -8,24 +8,27 @@
     --bulma-body-color: #33323D;
     --bulma-body-background-color: hsl#fafafa;
     --footer-body-text-color: #FFFFFF;
+    --primary-font: "Ibarra Real Nova";
+    --secondary-font: "Public Sans";
 }
 
 h1 {
-    font-family: "Ibarra Real Nova", serif;
+    font-family: var(--primary-font), serif;
     font-weight: bold;
     font-size: 2.5rem;
     line-height: 2.625rem;
     letter-spacing: -0.36px;
 }
 h2 {
-    font-family: "Ibarra Real Nova", serif;
+    font-family: var(--primary-font), serif;
     font-size: 2rem;
     letter-spacing: -0.29px;
     line-height: 2.625rem;
 }
 p {
-    font-family: "Public Sans", serif;
+    font-family: var(--secondary-font), serif;
     font-size: 1rem;
+    line-height: 1.875rem;
 }
 .custom-button {
     border-radius: unset;
@@ -51,7 +54,7 @@ p {
     margin-bottom: 2.125rem;
 }
 .navbar-end a {
-    font-family: "Public Sans", serif;
+    font-family: var(--secondary-font), serif;
     font-size: 0.75rem;
     letter-spacing: 0.125rem;
     color: var(--bulma-body-color);
@@ -110,28 +113,24 @@ p {
     }
 }
 .jump-link-btn {
-    display: flex;
-    justify-content: start;
     background-color: #203A4C;
     color: #FFFFFF;
     width: 12.5rem;
     height: 3rem;
     margin-top: 3rem;
-    padding: 0px 0px 0px 0px;
     border: none;
     border-radius: 0px;
+    font-family: var(--secondary-font), serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.125rem;
 }
 #jump-link-btn-icon {
     width: 3rem;
     height: 3rem;
     background-color: #1D3445;
-    margin-inline: 0px 0px;
 }
 .jump-link-btn :nth-child(2) {
     width: 100%;
-    font-family: "Public Sans", serif;
-    font-size: 0.75rem;
-    letter-spacing: 0.125rem;
 }
 .homepage-section {
     max-width: 63.437rem;
@@ -152,7 +151,6 @@ p {
     margin-block: 3.125rem 1.75rem;
 }
 .homepage-section p {
-    line-height: 1.875rem;
     min-width: 21.1875rem;
 }
 .homepage-section container {
@@ -200,14 +198,9 @@ p {
 }
 .portfolio-section img {
     height: 100%;
-    /* min-height: 314px;
-    min-width: 339px; */
 }
 .portfolio-section h1 {
     margin-bottom: 1.75rem;
-}
-.portfolio-section p {
-    line-height: 1.875rem;
 }
 .portfolio-section container {
     display: flex;
@@ -218,7 +211,6 @@ p {
     width: 100%;
     border-top: 1px solid rgba(0, 0, 0, 0.1);
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-    
 }
 .container-left-margin {
     margin-left: 4.3125rem;
@@ -270,7 +262,6 @@ p {
 }
 .project-body p {
     font-size: 0.9375rem;
-    line-height: 1.875rem;
     margin-top: 1.8125rem;
 }
 .project-body-intro {
@@ -430,5 +421,58 @@ p {
     }
     .project-insure-img2 {
         content: url(../starter-code/images/detail/tablet/image-insure-preview-2@2x.jpg);
+    }
+}
+.get-in-touch,
+.contact-me {
+    max-width: 1110px;
+    width: auto;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    padding-top: 3rem;
+}
+.get-in-touch h1,
+.contact-me h1 {
+    min-width: 20rem;
+}
+.get-in-touch p {
+    max-width: 39.7rem;
+}
+.contact-me label {
+    font-family: var(--secondary-font), serif;
+    font-weight: bold;
+    font-size: 0.8125rem;
+}
+.contact-me-form {
+    max-width: 39.7rem;
+    width: 100%;
+}
+.contact-me-form .jump-link-btn {
+    margin-top: 1.5rem;
+}
+.contact-me-form input,
+.contact-me-form textarea {
+    background-color: #e6e6e7;
+    font-family: var(--secondary-font), serif;
+    font-size: 0.8125rem;
+}
+.contact-me-form-textarea {
+    height: 12.2rem;
+}
+.contact-me-svg {
+    height: 1.5rem;
+    margin-block: 1.5rem 3rem;
+}
+@media (max-width: 845px) {
+    .get-in-touch,
+    .contact-me {
+        flex-wrap: wrap;
+        padding-block: 2rem;
+    }
+    .get-in-touch h1,
+    .contact-me h1 {
+        margin-bottom: 2rem;
+    }
+    .contact-me-svg {
+        margin-bottom: 0px;
     }
 }
