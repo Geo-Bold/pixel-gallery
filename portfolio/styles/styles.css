@@ -386,18 +386,49 @@ p {
         width: auto;
     }
     .project-hero img {
-        content: url(../starter-code/images/detail/tablet/image-manage-hero@2x.jpg);
         min-height: 310px;
         object-fit: cover;
     }
     .project-body-background img:nth-of-type(1) {
         margin-top: 2.5rem;
-        content: url(../starter-code/images/detail/tablet/image-manage-preview-1@2x.jpg);
-    }
-    .project-body-background img:nth-of-type(2) {
-        content: url(../starter-code/images/detail/tablet/image-manage-preview-2@2x.jpg);
     }
     .footer-project-block-margin {
         margin-top: 5rem;
+    }
+    .project-manage-hero img {
+        content: url(../starter-code/images/detail/tablet/image-manage-hero@2x.jpg);
+    }
+    .project-manage-img1 {
+        content: url(../starter-code/images/detail/tablet/image-manage-preview-1@2x.jpg);
+    }
+    .project-manage-img2 {
+        content: url(../starter-code/images/detail/tablet/image-manage-preview-2@2x.jpg);
+    }
+    .project-bookmark-hero img {
+        content: url(../starter-code/images/detail/tablet/image-bookmark-hero@2x.jpg);
+    }
+    .project-bookmark-img1 {
+        content: url(../starter-code/images/detail/tablet/image-bookmark-preview-1@2x.jpg);
+    }
+    .project-bookmark-img2 {
+        content: url(../starter-code/images/detail/tablet/image-bookmark-preview-2@2x.jpg);
+    }
+    .project-fylo-hero img {
+        content: url(../starter-code/images/detail/tablet/image-fylo-hero@2x.jpg);
+    }
+    .project-fylo-img1 {
+        content: url(../starter-code/images/detail/tablet/image-fylo-preview-1@2x.jpg);
+    }
+    .project-fylo-img2 {
+        content: url(../starter-code/images/detail/tablet/image-fylo-preview-2@2x.jpg);
+    }
+    .project-insure-hero img {
+        content: url(../starter-code/images/detail/tablet/image-insure-hero@2x.jpg);
+    }
+    .project-insure-img1 {
+        content: url(../starter-code/images/detail/tablet/image-insure-preview-1@2x.jpg);
+    }
+    .project-insure-img2 {
+        content: url(../starter-code/images/detail/tablet/image-insure-preview-2@2x.jpg);
     }
 }
