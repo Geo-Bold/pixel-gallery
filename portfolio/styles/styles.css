@@ -181,20 +181,11 @@ p {
     justify-content: space-between;
     min-height: 26.125rem;
     max-height: 31.25rem;
-    min-width: 43.06rem;
     max-width: 63.437rem;
     margin-bottom: 5rem;
 }
 .margin-left-auto {
     margin-left: auto;
-}
-.portfolio-section figure {
-    max-width: 33.75rem;
-    min-width: 21.1875rem;
-    width: 100%;
-}
-.portfolio-section img {
-    height: 100%;
 }
 .portfolio-section h1 {
     margin-bottom: 1.75rem;
@@ -224,17 +215,13 @@ p {
     margin-top: 1.5rem;
     letter-spacing: 0.125rem;
 }
-@media (max-width: 950px) {
+@media (min-width: 750px) and (max-width: 950px) {
     .portfolio-section figure {
         display: flex;
         align-items: center;
     }
     .portfolio-section p {
         font-size: 0.9375rem;
-    }
-    .tablet-minmax {
-        max-height: 19.625rem;
-        max-width: 21.1875rem;
     }
     .portfolio-manage {
         content: url("../starter-code/images/portfolio/tablet/image-portfolio-manage@2x.jpg");
@@ -248,6 +235,38 @@ p {
     .portfolio-fylo {
         content: url("../starter-code/images/portfolio/tablet/image-portfolio-fylo@2x.jpg");
     }  
+}
+@media (max-width: 750px) {
+    .portfolio-section {
+        flex-wrap: wrap;
+        max-height: none;
+        max-width: none;
+        margin-bottom: 4.5rem;
+    }
+    .portfolio-section .container-right-margin {
+        order: 1;
+    }
+    .container-left-margin,
+    .container-right-margin {
+        margin-inline: 0px 0px;
+        margin-top: 2rem;
+        padding-block: 1.5rem;
+    }
+    .portfolio-section container {
+        max-width: none;
+    }
+    .portfolio-manage {
+        content: url("../starter-code/images/portfolio/mobile/image-portfolio-manage@2x.jpg");
+    }
+    .portfolio-bookmark {
+        content: url("../starter-code/images/portfolio/mobile/image-portfolio-bookmark@2x.jpg");
+    } 
+    .portfolio-insure {
+        content: url("../starter-code/images/portfolio/mobile/image-portfolio-insure@2x.jpg");
+    } 
+    .portfolio-fylo {
+        content: url("../starter-code/images/portfolio/mobile/image-portfolio-fylo@2x.jpg");
+    } 
 }
 /* Individual portfolio page styling */
 .project-hero {
