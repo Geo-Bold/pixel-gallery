@@ -97,7 +97,7 @@ p {
     max-width: 28.625rem;
     margin-top: 3.5rem;
 }
-@media (max-width: 900px) {
+@media (min-width: 750px) and (max-width: 900px) {
     .intro-title-container figure {
         height: 37.5rem;
         max-width: 43rem;
@@ -111,6 +111,9 @@ p {
         overflow: hidden;
         position: relative;
     }
+}
+@media (max-width: 750px) {
+    
 }
 .jump-link-btn {
     background-color: #203A4C;
