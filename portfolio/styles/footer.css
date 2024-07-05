@@ -11,15 +11,14 @@ footer {
 }
 .footer-top h1 {
     min-width: 21.875rem;
-    margin-right: 2rem;
 }
 .footer-top a {
     min-width: 10.125rem;
-    margin-left: 2rem;
 }
 .line-segment {
     width: 100%;
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    margin-inline: 2rem;
     max-width: 33.375rem;
 }
 .footer-bottom-container {
@@ -44,14 +43,11 @@ footer {
     height: 2rem;
     margin-right: 0.375rem;
 }
-.footer-bottom a:nth-child(2),
-.footer-bottom a:nth-child(3),
-.footer-bottom a:nth-child(4) {
-    margin-left: 1.875rem;
+.svg-container {
+    margin-left: auto;
 }
 .github-icon {
     height: 1.5rem;
-    margin-left: auto;
 }
 .twitter-icon {
     height: 1.25rem;
@@ -63,4 +59,36 @@ footer {
 }
 .footer-project-block-margin {
     margin-top: 10.4%;
+}
+@media (max-width: 650px) {
+    .footer-top {
+        flex-wrap: wrap;
+        justify-content: center;
+        height: auto;
+    }
+    .footer-top h1 {
+        text-align: center;
+        margin-bottom: 2.5rem;
+    }
+    .line-segment {
+        display: none;
+    }
+    .footer-bottom-container {
+        height: auto;
+    }
+    .footer-logo {
+        margin-bottom: 2.5rem;
+    }
+    .svg-container {
+        margin-left: 0px;
+        margin-top: 1.5rem;
+    }
+    .footer-bottom .navbar-item {
+        margin-bottom: 1rem;
+    }
+    .footer-bottom {
+        flex-direction: column;
+        flex-wrap: wrap;
+        padding-block: 3.5rem;
+    }
 }

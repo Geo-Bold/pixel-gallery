@@ -66,24 +66,7 @@ p {
 }
 .intro-title-container {
     position: relative;
-    max-height: 37.5rem;
     margin-bottom: 9.375rem;
-}
-.intro-title-container figure {
-    height: 37.5rem;
-    max-width: 1110px;
-    width: 100%;
-    overflow: hidden;
-    position: relative;
-}
-.intro-title-container figure img {
-    height: 37.5rem;
-    width: 69.375rem;
-    overflow: hidden;
-    position: absolute;
-    top: 0;
-    left: 0;
-    object-fit: cover;
 }
 .intro-title {
     position: absolute;
@@ -98,22 +81,26 @@ p {
     margin-top: 3.5rem;
 }
 @media (min-width: 750px) and (max-width: 900px) {
-    .intro-title-container figure {
-        height: 37.5rem;
-        max-width: 43rem;
-        width: 100%;
-        overflow: hidden;
+    .intro-title-container {
+        margin-bottom: 6rem;
     }
-    .intro-title-container figure img {
-        content: url(../starter-code/images/homepage/tablet/image-homepage-hero.jpg);
+    .intro-title-container-img {
+        content: url("../starter-code/images/homepage/tablet/image-homepage-hero@2x.jpg");
         height: 100%;
-        max-width: 43rem;
-        overflow: hidden;
-        position: relative;
     }
 }
 @media (max-width: 750px) {
-    
+    .intro-title-container {
+        display: flex;
+        flex-wrap: wrap;
+        margin-bottom: 6rem;
+    }
+    .intro-title {
+        position: static;
+    }
+    .intro-title-container-img {
+        content: url("../starter-code/images/homepage/mobile/image-homepage-hero@2x.jpg");
+    }
 }
 .jump-link-btn {
     background-color: #203A4C;
@@ -141,11 +128,6 @@ p {
     justify-content: space-between;
     max-height: 37.5rem;
 }
-.homepage-section figure {
-    max-width: 33.75rem;
-    min-width: 17.562rem;
-    width: 100%;
-}
 .homepage-section img {
     height: 37.5rem;
     object-fit: cover;
@@ -153,14 +135,10 @@ p {
 .homepage-section h1 {
     margin-block: 3.125rem 1.75rem;
 }
-.homepage-section p {
-    min-width: 21.1875rem;
-}
 .homepage-section container {
     display: flex;
     flex-wrap: wrap;
     max-width: 21.875rem;
-    min-height: 100%;
     border-top: 1px solid rgba(0, 0, 0, 0.1);
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     margin-left: 4.3125rem;
@@ -170,16 +148,32 @@ p {
     width: 202px;
     margin-top: 1.5rem;
 }
-@media (max-width: 950px) {
+@media (min-width: 750px) and (max-width: 950px) {
     .homepage-section img {
-        content: url("../starter-code/images/homepage/tablet/image-homepage-profile.jpg");
+        content: url("../starter-code/images/homepage/tablet/image-homepage-profile@2x.jpg");
         height: 37.5rem;
         width: 17.526rem;
+    } 
+}
+@media (max-width: 750px) {
+    .homepage-section {
+        flex-wrap: wrap;
+        max-height: none;
     }
     .homepage-section figure {
-        height: 37.5rem;
+        max-width: none;
         width: 100%;
-    } 
+        height: auto;
+    }
+    .homepage-section img {
+        content: url("../starter-code/images/homepage/mobile/image-homepage-profile@2x.jpg");
+        height: auto;
+        margin-bottom: 2rem;
+    }
+    .homepage-section container {
+        max-width: none;
+        margin-left: 0px;
+    }
 }
 /* Portfolio page styling */
 .portfolio-section {
