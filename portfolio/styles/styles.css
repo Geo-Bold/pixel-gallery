@@ -1,8 +1,7 @@
 @import url("https://cdn.jsdelivr.net/npm/bulma@1.0.1/css/bulma.min.css");
 @import url('https://fonts.googleapis.com/css2?family=Ibarra+Real+Nova:ital,wght@0,400..700;1,400..700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Ibarra+Real+Nova:ital,wght@0,400..700;1,400..700&family=Public+Sans:ital,wght@0,100..900;1,100..900&display=swap');
-@import url("footer.css");
-@import url("root.css");
+@import url("./animation.css");
 
 :root {
     --bulma-body-color: #33323D;
@@ -10,8 +9,8 @@
     --footer-body-text-color: #FFFFFF;
     --primary-font: "Ibarra Real Nova";
     --secondary-font: "Public Sans";
+    --selected-font-color: #5FB4A2;
 }
-
 h1 {
     font-family: var(--primary-font), serif;
     font-weight: bold;
@@ -53,13 +52,18 @@ p {
 .navbar-homepage-margin {
     margin-bottom: 2.125rem;
 }
+.selected-color {
+    color: var(--selected-font-color) !important;
+}
+.normal-color {
+    color: var(--bulma-body-color);
+}
 .navbar-end a {
     font-family: var(--secondary-font), serif;
     font-size: 0.75rem;
     letter-spacing: 0.125rem;
-    color: var(--bulma-body-color);
+    /* animation: navbar-menu-pop 1s; */
 }
-/* Gives the logo svg enough space to render */
 .navbar-item svg {
     width: 3.8125rem;
     max-height: 2rem;
@@ -315,7 +319,6 @@ p {
 }
 .project-footer {
     margin-top: 4rem;
-    height: 8.25rem;
     display: flex;
     justify-content: space-between;
 }
@@ -325,6 +328,7 @@ p {
     align-items: center;
     border-top: 1px solid rgba(0, 0, 0, 0.1);
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    padding-block: 2rem;
 }
 .footer-container-right {
     width: 50%;
@@ -342,9 +346,9 @@ p {
     color: var(--bulma-body-color);
 }
 .footer-container-left svg {
-    margin-right: 2rem;
     height: 16px;
     width: 10px;
+    margin-right: 2rem;
 }
 .footer-container-right svg {
     margin-left: 2rem;
@@ -447,6 +451,22 @@ p {
         grid-column: 1 / 2;
         grid-row: 2 / 3;
     }
+    .project-footer a {
+        flex-direction: column;
+    }
+    .footer-container-left,
+    .footer-container-right {
+        padding-block: 1.5rem;
+    }
+    .footer-container-left svg {
+        align-self: start;
+        margin-bottom: 1rem;
+    }
+    .footer-container-right svg {
+        order: -1;
+        margin-left: auto;
+        margin-bottom: 1rem;
+    }
     .project-manage-hero img {
         content: url(../starter-code/images/detail/mobile/image-manage-hero@2x.jpg);
     }
@@ -541,5 +561,99 @@ p {
     }
     .navbar {
         margin-bottom: 2.5rem;
+    }
+}
+footer {
+    width: 100%;
+}
+.footer-top {
+    height: 5.25rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-block: 13.9%;
+}
+.footer-top h1 {
+    min-width: 21.875rem;
+}
+.footer-top a {
+    min-width: 10.125rem;
+}
+.line-segment {
+    width: 100%;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    margin-inline: 2rem;
+    max-width: 33.375rem;
+}
+.footer-bottom-container {
+    height: 5rem;
+    width: 100%;
+    background-color: var(--bulma-body-color);
+    color: var(--footer-body-text-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.footer-bottom {
+    width: 100%;
+    margin-inline: 2.5rem;
+    max-width: 1110px;
+    display: flex;
+    align-items: center;
+    font-size: 0.75rem;
+    letter-spacing: 0.125rem;
+}
+.footer-logo {
+    height: 2rem;
+    margin-right: 0.375rem;
+}
+.svg-container {
+    margin-left: auto;
+}
+.github-icon {
+    height: 1.5rem;
+}
+.twitter-icon {
+    height: 1.25rem;
+    margin-left: 1rem;
+}
+.linkedin-icon {
+    height: 1.5rem;
+    margin-left: 1rem;
+}
+.footer-project-block-margin {
+    margin-top: 10.4%;
+}
+@media (max-width: 650px) {
+    .footer-top {
+        flex-wrap: wrap;
+        justify-content: center;
+        height: auto;
+        margin-block: 5rem 5rem;
+    }
+    .footer-top h1 {
+        text-align: center;
+        margin-bottom: 2.5rem;
+    }
+    .line-segment {
+        display: none;
+    }
+    .footer-bottom-container {
+        height: auto;
+    }
+    .footer-logo {
+        margin-bottom: 2.5rem;
+    }
+    .svg-container {
+        margin-left: 0px;
+        margin-top: 1.5rem;
+    }
+    .footer-bottom .navbar-item {
+        margin-bottom: 1rem;
+    }
+    .footer-bottom {
+        flex-direction: column;
+        flex-wrap: wrap;
+        padding-block: 3.5rem;
     }
 }
