@@ -539,4 +539,7 @@ p {
     .contact-me-svg {
         margin-bottom: 0px;
     }
+    .navbar {
+        margin-bottom: 2.5rem;
+    }
 }
