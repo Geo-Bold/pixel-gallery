@@ -366,13 +366,14 @@ p {
         width: auto;
         display: grid;
         grid-template-columns: 1fr 1fr;
-        grid-template-rows: repeat(3, 1fr);
-        row-gap: 1rem;
+        grid-template-rows: 50px 90px 60px;
     }
     .project-body-intro h1,
     .project-body-intro .green-text,
     .project-body-intro a {
         margin-block: 0px 0px;
+    }
+    .project-body-intro a {
         align-self: center;
     }
     .project-body-intro .normal-text {
@@ -391,10 +392,6 @@ p {
         margin: 2.5rem 0rem 0rem 0rem;
         max-width: 689px;
         width: auto;
-    }
-    .project-hero img {
-        min-height: 310px;
-        object-fit: cover;
     }
     .project-body-background img:nth-of-type(1) {
         margin-top: 2.5rem;
@@ -439,6 +436,54 @@ p {
         content: url(../starter-code/images/detail/tablet/image-insure-preview-2@2x.jpg);
     }
 }
+@media (max-width: 650px) {
+    .project-body-intro {
+        grid-template-columns: 1fr;
+        grid-template-rows: 50px 1fr 85px 50px;
+        padding-block: 1.5rem;
+        row-gap: 0.5rem;
+    }
+    .project-body-intro .normal-text {
+        grid-column: 1 / 2;
+        grid-row: 2 / 3;
+    }
+    .project-manage-hero img {
+        content: url(../starter-code/images/detail/mobile/image-manage-hero@2x.jpg);
+    }
+    .project-manage-img1 {
+        content: url(../starter-code/images/detail/mobile/image-manage-preview-1@2x.jpg);
+    }
+    .project-manage-img2 {
+        content: url(../starter-code/images/detail/mobile/image-manage-preview-2@2x.jpg);
+    }
+    .project-bookmark-hero img {
+        content: url(../starter-code/images/detail/mobile/image-bookmark-hero@2x.jpg);
+    }
+    .project-bookmark-img1 {
+        content: url(../starter-code/images/detail/mobile/image-bookmark-preview-1@2x.jpg);
+    }
+    .project-bookmark-img2 {
+        content: url(../starter-code/images/detail/mobile/image-bookmark-preview-2@2x.jpg);
+    }
+    .project-fylo-hero img {
+        content: url(../starter-code/images/detail/mobile/image-fylo-hero@2x.jpg);
+    }
+    .project-fylo-img1 {
+        content: url(../starter-code/images/detail/mobile/image-fylo-preview-1@2x.jpg);
+    }
+    .project-fylo-img2 {
+        content: url(../starter-code/images/detail/mobile/image-fylo-preview-2@2x.jpg);
+    }
+    .project-insure-hero img {
+        content: url(../starter-code/images/detail/mobile/image-insure-hero@2x.jpg);
+    }
+    .project-insure-img1 {
+        content: url(../starter-code/images/detail/mobile/image-insure-preview-1@2x.jpg);
+    }
+    .project-insure-img2 {
+        content: url(../starter-code/images/detail/mobile/image-insure-preview-2@2x.jpg);
+    }
+}
 .get-in-touch,
 .contact-me {
     max-width: 1110px;
@@ -479,10 +524,13 @@ p {
     margin-block: 1.5rem 3rem;
 }
 @media (max-width: 845px) {
-    .get-in-touch,
-    .contact-me {
+    .get-in-touch {
         flex-wrap: wrap;
         padding-block: 2rem;
+    }
+    .contact-me {
+        flex-wrap: wrap;
+        padding-top: 2rem;
     }
     .get-in-touch h1,
     .contact-me h1 {
