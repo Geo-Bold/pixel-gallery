@@ -40,6 +40,9 @@ a {
     border-radius: unset;
     font-size: 0.75rem;
     padding: 1rem 2rem 1rem 2rem;
+    width: fit-content;
+    border: 1px solid var(--bulma-body-color);
+    box-sizing: border-box;
 }
 /* These values are id's to override bulma's library container. */
 #container-1440 {
@@ -212,13 +215,9 @@ a {
 .container-right-margin {
     margin-right: 4.3125rem;
 }
-.button-outlined {
-    border-radius: unset;
-    font-size: 0.75rem;
-    max-width: 11rem;
-    padding: 1rem 2rem 1rem 2rem;
-    margin-top: 1.5rem;
-    letter-spacing: 0.125rem;
+.container-left-margin .custom-button,
+.container-right-margin .custom-button {
+    margin: 1.5rem 0rem 0rem 0rem;
 }
 @media (min-width: 750px) and (max-width: 950px) {
     .portfolio-section figure {
@@ -286,10 +285,8 @@ a {
     margin-top: 1.8125rem;
 }
 .project-body-intro {
-    min-width: 13.75rem;
+    min-width: 14rem;
     width: 21.875rem;
-    max-height: 31.125rem;
-    height: auto;
     border-top: 1px solid rgba(0, 0, 0, 0.1);
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
@@ -302,7 +299,7 @@ a {
     line-height: 2.6rem;
 }
 .project-body-intro .green-text {
-    margin-block: 1.4375rem 0rem;
+    margin-block: 1.4rem 2rem;
 }
 .project-body-background {
     max-width: 39.69rem;
@@ -572,6 +569,9 @@ footer {
     align-items: center;
     margin-block: 13.9%;
 }
+.footer-top .custom-button {
+    min-width: 10.2rem;
+}
 .footer-top h1 {
     width: fit-content;
 }
@@ -583,6 +583,7 @@ footer {
 }
 .footer-bottom-container {
     width: 100%;
+    min-height: 5rem;
     background-color: var(--bulma-body-color);
     color: var(--footer-body-text-color);
     display: flex;
