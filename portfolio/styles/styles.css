@@ -376,7 +376,7 @@ a {
     }
     .project-body-intro {
         padding-block: 2rem;
-        /* width: auto; */
+        width: auto;
         display: grid;
         grid-template-columns: 1fr 1fr;
         grid-template-rows: 50px 90px 60px;
