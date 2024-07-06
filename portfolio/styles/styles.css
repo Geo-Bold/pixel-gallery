@@ -7,8 +7,8 @@
     --bulma-body-color: #33323D;
     --bulma-body-background-color: hsl#fafafa;
     --footer-body-text-color: #FFFFFF;
-    --primary-font: "Ibarra Real Nova";
-    --secondary-font: "Public Sans";
+    --primary-font: "Ibarra Real Nova", serif;
+    --secondary-font: "Public Sans", serif;
     --selected-font-color: #5FB4A2;
 }
 h1 {
@@ -30,7 +30,7 @@ p {
     line-height: 1.875rem;
 }
 a {
-    font-family: var(--secondary-font);
+    font-family: var(--secondary-font), serif;
     font-size: 0.75rem;
     letter-spacing: 2px;
 }
@@ -526,6 +526,7 @@ a {
 }
 .contact-me-form .jump-link-btn {
     margin-top: 1.5rem;
+    padding: 1rem 2.5rem 1rem 2.5rem;
 }
 .contact-me-form input,
 .contact-me-form textarea {
