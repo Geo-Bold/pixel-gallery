@@ -30,11 +30,13 @@ p {
     line-height: 1.875rem;
 }
 a {
-    font-family: var(--secondary-font), serif;
+    font-family: var(--secondary-font);
+    color: var(--bulma-body-color);
     font-size: 0.75rem;
     letter-spacing: 2px;
 }
 .custom-button {
+    font-family: var(--secondary-font);
     border-radius: unset;
     font-size: 0.75rem;
     padding: 1rem 2rem 1rem 2rem;
