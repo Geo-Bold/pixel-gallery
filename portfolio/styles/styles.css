@@ -105,8 +105,15 @@ a {
         flex-wrap: wrap;
         margin-bottom: 6rem;
     }
+    .intro-title h1 {
+        width: fit-content;
+    }
     .intro-title {
         position: static;
+    }
+    .jump-link-btn {
+        max-width: 280px;
+        box-sizing: border-box;
     }
     .intro-title-container-img {
         content: url("../starter-code/images/homepage/mobile/image-homepage-hero@2x.jpg");
@@ -257,7 +264,7 @@ a {
         padding-block: 1.5rem;
     }
     .portfolio-section container {
-        max-width: none;
+        min-width: 0rem;
     }
     .portfolio-manage {
         content: url("../starter-code/images/portfolio/mobile/image-portfolio-manage@2x.jpg");
@@ -338,6 +345,10 @@ a {
     border-left: 1px solid rgba(0, 0, 0, 0.1);
     text-align: end;
 }
+.footer-container-left p,
+.footer-container-right p {
+    letter-spacing: normal;
+}
 .project-footer a {
     display: flex;
     align-items: center;
@@ -365,7 +376,7 @@ a {
     }
     .project-body-intro {
         padding-block: 2rem;
-        width: auto;
+        /* width: auto; */
         display: grid;
         grid-template-columns: 1fr 1fr;
         grid-template-rows: 50px 90px 60px;
@@ -440,8 +451,9 @@ a {
 }
 @media (max-width: 650px) {
     .project-body-intro {
-        grid-template-columns: 1fr;
-        grid-template-rows: 50px 1fr 85px 50px;
+        grid-template-columns: 100%;
+        min-width: 0rem;
+        grid-template-rows: auto auto auto auto;
         padding-block: 1.5rem;
         row-gap: 0.5rem;
     }
@@ -452,9 +464,16 @@ a {
     .project-footer a {
         flex-direction: column;
     }
+    .green-text {
+        max-width: none;
+    }
     .footer-container-left,
     .footer-container-right {
         padding-block: 1.5rem;
+    }
+    .footer-container-left h2,
+    .footer-container-right h2 {
+        font-size: clamp(1.4rem, 3vw, 3rem);
     }
     .footer-container-left svg {
         align-self: start;
