@@ -389,6 +389,9 @@ a {
     .project-body-intro a {
         align-self: center;
     }
+    .portfolio-section container {
+        max-width: none;
+    }
     .project-body-intro .normal-text {
         margin-top: 0px;
         max-height: none;
@@ -465,7 +468,7 @@ a {
         flex-direction: column;
     }
     .green-text {
-        max-width: none;
+        max-width: 16rem;
     }
     .footer-container-left,
     .footer-container-right {
