@@ -1,15 +1,16 @@
 @import url("https://cdn.jsdelivr.net/npm/bulma@1.0.1/css/bulma.min.css");
 @import url('https://fonts.googleapis.com/css2?family=Ibarra+Real+Nova:ital,wght@0,400..700;1,400..700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Ibarra+Real+Nova:ital,wght@0,400..700;1,400..700&family=Public+Sans:ital,wght@0,100..900;1,100..900&display=swap');
-@import url("./animation.css");
 
 :root {
     --bulma-body-color: #33323D;
+    --navbar-secondary-color: #b8b5ca;
     --bulma-body-background-color: hsl#fafafa;
     --footer-body-text-color: #FFFFFF;
     --primary-font: "Ibarra Real Nova", serif;
     --secondary-font: "Public Sans", serif;
     --selected-font-color: #5FB4A2;
+    --invalid-font-color: #F43030;
 }
 h1 {
     font-family: var(--primary-font), serif;
@@ -43,6 +44,17 @@ a {
     width: fit-content;
     border: 1px solid var(--bulma-body-color);
     box-sizing: border-box;
+    transition: background-color 400ms, color 400ms;
+}
+.custom-button-disabled {
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    color: rgba(0, 0, 0, 0.26);
+    cursor: none;
+    pointer-events: none;
+}
+.custom-button:hover {
+    background-color: var(--bulma-body-color);
+    color: white;
 }
 /* These values are id's to override bulma's library container. */
 #container-1440 {
@@ -59,6 +71,11 @@ a {
     background-color: var(--bulma-body-background-color);
     margin-block: 2.75rem 5.875rem;
 }
+.navbar-menu {
+    background-color: var(--bulma-body-background-color);
+    box-shadow: none;
+    justify-content: end;
+}
 .navbar-homepage-margin {
     margin-bottom: 2.125rem;
 }
@@ -66,12 +83,21 @@ a {
     color: var(--selected-font-color) !important;
 }
 .normal-color {
-    color: var(--bulma-body-color);
+    color: var(--navbar-secondary-color);
+}
+.navbar-end {
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
 }
 .navbar-end a {
     font-size: 0.75rem;
     letter-spacing: 0.125rem;
-    /* animation: navbar-menu-pop 1s; */
+    transition: color 400ms;
+}
+.navbar-end a:hover {
+    background-color: white;
+    color: var(--bulma-body-color);
 }
 .navbar-item svg {
     max-height: 2rem;
@@ -90,7 +116,54 @@ a {
     max-width: 28.625rem;
     margin-top: 3.5rem;
 }
-@media (min-width: 750px) and (max-width: 900px) {
+.ham {
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    transition: transform 400ms;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+.line {
+    fill:none;
+    transition: stroke-dasharray 400ms, stroke-dashoffset 400ms;
+    stroke:#000;
+    stroke-width:5.5;
+    stroke-linecap:round;
+}
+.ham6 .top {
+    stroke-dasharray: 40 172;
+}
+.ham6 .middle {
+    stroke-dasharray: 40 111;
+}
+.ham6 .bottom {
+    stroke-dasharray: 40 172;
+}
+.ham6.active .top {
+    stroke-dashoffset: -132px;
+}
+.ham6.active .middle {
+    stroke-dashoffset: -71px;
+}
+.ham6.active .bottom {
+    stroke-dashoffset: -132px;
+}
+@media (min-width: 769px) {
+    .navbar-burger {
+        display: none;
+    }
+    .navbar, .navbar-end, .navbar-menu, .navbar-start {
+        align-items: stretch;
+        display: flex;
+    }
+    .navbar-menu {
+        flex-grow: 1;
+        flex-shrink: 0;
+    }
+}
+@media (min-width: 768px) and (max-width: 900px) {
     .intro-title-container {
         margin-bottom: 6rem;
     }
@@ -99,7 +172,39 @@ a {
         height: 100%;
     }
 }
-@media (max-width: 750px) {
+@media (max-width: 768px) {
+    .navbar {
+        position: relative;
+    }
+    .navbar-menu {
+        background-color: var(--bulma-body-color);
+        box-shadow: none;
+        justify-content: end;
+        position: absolute;
+        max-width: 14rem;
+        width: 100%;
+        top: 52;
+        right: 0;
+        padding-block: 1.5rem;
+    }
+    .navbar-item {
+        color: #FFFFFF;
+        padding-block: 1rem;
+    }
+    .navbar-end {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .navbar-end a {
+        font-size: 0.75rem;
+        letter-spacing: 0.125rem;
+        transition: none;
+    }
+    .navbar-end a:hover {
+        background-color: var(--bulma-body-color);
+        color: #FFFFFF;
+    }
     .intro-title-container {
         display: flex;
         flex-wrap: wrap;
@@ -127,11 +232,21 @@ a {
     border: none;
     border-radius: 0px;
     font-size: 0.75rem;
+    transition: background-color 400ms;
+}
+.jump-link-btn:hover {
+    background-color: var(--selected-font-color);
 }
 #jump-link-btn-icon {
     width: 3rem;
     height: 3rem;
     background-color: #1D3445;
+    color: var(--selected-font-color);
+    transition: background-color 400ms, color 400ms;
+}
+.jump-link-btn:hover #jump-link-btn-icon {
+    background-color: #56a292;
+    color: white;
 }
 .jump-link-btn :nth-child(2) {
     width: 100%;
@@ -164,14 +279,14 @@ a {
     padding-inline: 2rem;
     letter-spacing: 2px;
 }
-@media (min-width: 750px) and (max-width: 950px) {
+@media (min-width: 768px) and (max-width: 950px) {
     .homepage-section img {
         content: url("../starter-code/images/homepage/tablet/image-homepage-profile@2x.jpg");
         height: 37.5rem;
         width: 17.526rem;
     } 
 }
-@media (max-width: 750px) {
+@media (max-width: 768px) {
     .homepage-section {
         flex-wrap: wrap;
         max-height: none;
@@ -226,7 +341,7 @@ a {
 .container-right-margin .custom-button {
     margin: 1.5rem 0rem 0rem 0rem;
 }
-@media (min-width: 750px) and (max-width: 950px) {
+@media (min-width: 768px) and (max-width: 950px) {
     .portfolio-section figure {
         display: flex;
         align-items: center;
@@ -247,7 +362,7 @@ a {
         content: url("../starter-code/images/portfolio/tablet/image-portfolio-fylo@2x.jpg");
     }  
 }
-@media (max-width: 750px) {
+@media (max-width: 768px) {
     .portfolio-section {
         flex-wrap: wrap;
         max-height: none;
@@ -554,6 +669,20 @@ a {
     background-color: #e6e6e7;
     font-family: var(--secondary-font), serif;
     font-size: 0.8125rem;
+    border-radius: 0px;
+}
+.contact-me-form input:focus,
+.contact-me-form textarea:focus {
+    border: 2px solid var(--selected-font-color);
+    box-shadow: none;
+}
+.contact-me-form .help {
+    font-weight: bold;
+    font-size: 0.625em;
+    font-style: italic;
+    height: fit-content;
+    margin: 0;
+    color: var(--invalid-font-color);
 }
 .contact-me-form-textarea {
     height: 12.2rem;
