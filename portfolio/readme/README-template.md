@@ -1,22 +1,24 @@
-# Frontend Mentor - Minimalist portfolio website solution
+# Minimalist portfolio website
 
-This is a solution to the [Minimalist portfolio website challenge on Frontend Mentor](https://www.frontendmentor.io/challenges/minimalist-portfolio-website-LMy-ZRyiE). Frontend Mentor challenges help you improve your coding skills by building realistic projects. 
+This is a solution to the [Minimalist portfolio website challenge on Frontend Mentor](https://www.frontendmentor.io/challenges/minimalist-portfolio-website-LMy-ZRyiE). 
 
 ## Table of contents
 
-- [Overview](#overview)
-  - [The challenge](#the-challenge)
-  - [Screenshot](#screenshot)
-  - [Links](#links)
-- [My process](#my-process)
-  - [Built with](#built-with)
-  - [What I learned](#what-i-learned)
-  - [Continued development](#continued-development)
-  - [Useful resources](#useful-resources)
-- [Author](#author)
-- [Acknowledgments](#acknowledgments)
-
-**Note: Delete this note and update the table of contents based on what sections you keep.**
+- [Minimalist portfolio website](#minimalist-portfolio-website)
+  - [Table of contents](#table-of-contents)
+  - [Overview](#overview)
+    - [The challenge](#the-challenge)
+    - [Screenshot](#screenshot)
+    - [Links](#links)
+  - [My process](#my-process)
+    - [Built with](#built-with)
+    - [What I learned](#what-i-learned)
+      - [Allow the browser to do the work](#allow-the-browser-to-do-the-work)
+      - [Libraries are the shoulders of giants, stand on them](#libraries-are-the-shoulders-of-giants-stand-on-them)
+    - [Continued development](#continued-development)
+    - [Useful resources](#useful-resources)
+  - [Author](#author)
+  - [Acknowledgments](#acknowledgments)
 
 ## Overview
 
@@ -33,20 +35,15 @@ Users should be able to:
 
 ### Screenshot
 
-![](./screenshot.jpg)
-
-Add a screenshot of your solution. The easiest way to do this is to use Firefox to view your project, right-click the page and select "Take a Screenshot". You can choose either a full-height screenshot or a cropped one based on how long the page is. If it's very long, it might be best to crop it.
-
-Alternatively, you can use a tool like [FireShot](https://getfireshot.com/) to take the screenshot. FireShot has a free option, so you don't need to purchase it. 
-
-Then crop/optimize/edit your image however you like, add it to your project, and update the file path in the image above.
-
-**Note: Delete this note and the paragraphs above when you add your screenshot. If you prefer not to add a screenshot, feel free to remove this entire section.**
+![](../starter-code/images/screenshots/portfolio-screenshot.png)
+![](../starter-code/images/screenshots/portfolio-screenshot-mobile.png)
+![](../starter-code/images/screenshots/portfolio-screenshot-portfolio-mobile.png)
+![](../starter-code/images/screenshots/portfolio-screenshot-contact-mobile.png)
 
 ### Links
 
-- Solution URL: [Add solution URL here](https://your-solution-url.com)
-- Live Site URL: [Add live site URL here](https://your-live-site-url.com)
+-  [Solution URL:](https://www.frontendmentor.io/profile/Geo-Bold)
+-  [Live Site URL:](https://geobold.dev/portfolio)
 
 ## My process
 
@@ -54,62 +51,40 @@ Then crop/optimize/edit your image however you like, add it to your project, and
 
 - Semantic HTML5 markup
 - CSS custom properties
-- Flexbox
-- CSS Grid
-- Mobile-first workflow
-- [React](https://reactjs.org/) - JS library
-- [Next.js](https://nextjs.org/) - React framework
-- [Styled Components](https://styled-components.com/) - For styles
-
-**Note: These are just examples. Delete this note and replace the list above with your own choices**
+- Flexbox and Grid
+- Desktop-first design
+- Mobile-responsive workflow
+- Framework: [Bulma](https://styled-components.com/) provides ready-to-use frontend components
 
 ### What I learned
 
-Use this section to recap over some of your major learnings while working through this project. Writing these out and providing code samples of areas you want to highlight is a great way to reinforce your own knowledge.
+Just after the completion of the [newsletter project](https://geobold.dev/newsletter/index.html), I began purusing the challenges in search of my next giant to slay. It was not long after laying eyes on this challenge that I was hooked. The minimalistic elegance and grace of the design was eye-catching and the fact that it was a complete website sealed my fate. Little did I know what was in store for me for dragging my skills, kicking and screaming, this far into the unknown. I crafted a plan for a week, trying to determine the best way of completing this heist. Once I had a shaky understanding of what I wanted to do, I immediately faced the biggest challenge of this entire project. Starting. Once I summoned the courage to begin, the site rapidly began assuming shape and before I knew it I found myself finished, writing this well-crafted if not extremely verbose and unneccessary summary of my work. However, after slaying this dragon in a fassion that I can proudly call mine, I see it fit to enjoy the fruits of my labor. Below is a succint summary of two of the lessons learned along the way.
 
-To see how you can add code snippets, see below:
+#### Allow the browser to do the work
 
-```html
-<h1>Some HTML code I'm proud of</h1>
-```
-```css
-.proud-of-this-css {
-  color: papayawhip;
-}
-```
-```js
-const proudOfThisFunc = () => {
-  console.log('🎉')
-}
-```
+I started this project with a pixel-perfect mindset. The solution was going to match every inch of the designer's vision which mean that every height, width, margin and font-size was going to be coded. I understood some vague concept of responsiveness, but failed to realize my mindset was antithetical to its very spirit. Once the desktop and tablet designs were complete, I realized with my work on the mobile layout that I had made some drastic mistakes. At this point I learned one of my most valuable lessons from front end legend, Kevin Powell: when first created, all websites are responsive; if at some point they lose this capability it is always because of code you wrote. Needless to say, I went back through my stylesheet and culled every mention of a specific height and width and utilyzed min and max values instead.
 
-If you want more help with writing markdown, we'd recommend checking out [The Markdown Guide](https://www.markdownguide.org/) to learn more.
+#### Libraries are the shoulders of giants, stand on them
 
-**Note: Delete this note and the content within this section and replace with your own learnings.**
+The more I learn, the more I realize how little I know. While it is important to build a strong foundation in the basics and develop a keen understanding of how certain mechanisms work, I do not think there is utility in creating everything from scratch. There are libraries that have been created by other pioneers forging courageous paths so that we can run where they trudged; all we need do is receive the gift they have bestowed and credit their efforts. In my project I use [Bulma](https://styled-components.com/) to create styled and ready to deploy elements which can allow my focus to be placed elsewhere. Additionaly, in this project I utylize an amazing css only svg animation called [flippin' burgers](https://codepen.io/ainalem/pen/LJYRxz) by Mikael Ainalem for the nav burger menu. These tools save time and for them I am grateful.
 
 ### Continued development
 
-Use this section to outline areas that you want to continue focusing on in future projects. These could be concepts you're still not completely comfortable with or techniques you found useful that you want to refine and perfect.
-
-**Note: Delete this note and the content within this section and replace with your own plans for continued development.**
+Working on this project allowed me to use grid for the first time. After learning enough to attempt a semi-competent application in a responsive layout I can agree that more experience with grid can allow the development of interesting product cards. Additionaly, I used absolute positioning for the first time. This tool can allow for unorthodox placement of elements in the DOM and I will be using it in the future.
 
 ### Useful resources
 
-- [Example resource 1](https://www.example.com) - This helped me for XYZ reason. I really liked this pattern and will use it going forward.
-- [Example resource 2](https://www.example.com) - This is an amazing article which helped me finally understand XYZ. I'd recommend it to anyone still learning this concept.
+- [Kevin Powell](https://www.kevinpowell.co/) - His videos explaining responsive design were quite useful.
+- [Web Dev Simplified](https://www.youtube.com/@WebDevSimplified/featured) - Clean, clear and descriptive videos detailing new HTML and CSS features or showcasing existing features help stimulate my creativity and problem solving.
+- [MDN](https://developer.mozilla.org/en-US/) = A classic tool to discover more about every aspect of front end development.
 
-**Note: Delete this note and replace the list above with resources that helped you during the challenge. These could come in handy for anyone viewing your solution or for yourself when you look back on this project in the future.**
 
 ## Author
 
-- Website - [Add your name here](https://www.your-site.com)
-- Frontend Mentor - [@yourusername](https://www.frontendmentor.io/profile/yourusername)
-- Twitter - [@yourusername](https://www.twitter.com/yourusername)
-
-**Note: Delete this note and add/remove/edit lines above based on what links you'd like to share.**
+- Website - [Geo Archbold](https://geobold.dev)
+- Frontend Mentor - [@Geo-Bold](https://www.frontendmentor.io/profile/Geo-Bold)
+- Twitter - [@a_edgeorge](https://x.com/a_edgeorge)
 
 ## Acknowledgments
 
-This is where you can give a hat tip to anyone who helped you out on this project. Perhaps you worked in a team or got some inspiration from someone else's solution. This is the perfect place to give them some credit.
-
-**Note: Delete this note and edit this section's content as necessary. If you completed this challenge by yourself, feel free to delete this section entirely.**
+A special thank you to Peter W. and Jenna D. for their help with product testing and discovering bugs.
