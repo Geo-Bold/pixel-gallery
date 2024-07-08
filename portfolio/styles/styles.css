@@ -102,6 +102,9 @@ a {
 .navbar-item svg {
     max-height: 2rem;
 }
+.navbar a:hover {
+    background-color: var(--bulma-body-background-color);
+}
 .intro-title-container {
     position: relative;
     margin-bottom: 9.375rem;
