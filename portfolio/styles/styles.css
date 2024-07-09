@@ -124,9 +124,15 @@ a {
     left: 0;
     bottom: 0;
     background-color: #ffffff;
+    width: 100%;
+    max-width: 27.8125rem;
 }
 .intro-title h1 {
-    max-width: 28.625rem;
+    font-size: 3.125rem;
+    font-weight: bold;
+    line-height: 3.125rem;
+    letter-spacing: -0.45px;
+    max-width: 24.375rem;
     margin-top: 3.5rem;
 }
 .ham {
@@ -241,7 +247,7 @@ a {
     background-color: #203A4C;
     color: #FFFFFF;
     margin-top: 3rem;
-    padding: 0rem 2rem 0rem 0rem;
+    padding: 0rem;
     border: none;
     border-radius: 0px;
     font-size: 0.75rem;
@@ -263,7 +269,8 @@ a {
 }
 .jump-link-btn :nth-child(2) {
     width: 100%;
-    padding: 0rem 2rem 0rem 2rem;
+    max-width: 9.5rem;
+    padding: 0rem 2.5rem 0rem 2.5rem;
 }
 .homepage-section {
     max-width: 63.437rem;
