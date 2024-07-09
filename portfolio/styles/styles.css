@@ -246,7 +246,7 @@ a {
 .jump-link-btn {
     background-color: #203A4C;
     color: #FFFFFF;
-    margin-top: 3rem;
+    margin-top: 3.3125rem;
     padding: 0rem;
     border: none;
     border-radius: 0px;
@@ -738,7 +738,7 @@ footer {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-block: 13.9%;
+    margin-block: 13.4%;
 }
 .footer-top .custom-button {
     min-width: 10.2rem;
