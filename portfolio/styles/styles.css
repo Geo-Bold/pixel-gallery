@@ -77,6 +77,11 @@ a {
     background-color: var(--bulma-body-background-color);
     box-shadow: none;
     justify-content: end;
+    padding-block: 0rem;
+}
+.navbar-menu .navbar-item {
+    padding-inline: 0rem;
+    margin-left: 2.625rem;
 }
 .navbar-homepage-margin {
     margin-bottom: 3.375rem;
@@ -118,6 +123,10 @@ a {
 .intro-title-container {
     position: relative;
     margin-bottom: 9.375rem;
+}
+.intro-title-container-img {
+    width: 100%;
+    height: auto;
 }
 .intro-title {
     position: absolute;
@@ -180,6 +189,7 @@ a {
     .navbar-menu {
         flex-grow: 1;
         flex-shrink: 0;
+        margin-inline-end: 0rem !important;
     }
 }
 @media (min-width: 768px) and (max-width: 900px) {
@@ -727,9 +737,6 @@ a {
     .contact-me-svg {
         margin-bottom: 0px;
     }
-    .navbar {
-        margin-bottom: 2.5rem;
-    }
 }
 footer {
     width: 100%;
@@ -769,8 +776,12 @@ footer {
     align-items: center;
     font-size: 0.75rem;
 }
+.footer-bottom .navbar-item {
+    padding: 0rem;
+    margin-inline-end: 2.625rem;
+}
 .footer-logo {
-    margin-right: 0.375rem;
+    margin-right: 3rem;
 }
 .svg-container {
     margin-left: auto;
@@ -802,10 +813,10 @@ footer {
     }
     .svg-container {
         margin-left: 0px;
-        margin-top: 1.5rem;
+        margin-top: 0.5rem;
     }
     .footer-bottom .navbar-item {
-        margin-bottom: 1rem;
+        margin: 0rem 0rem 2rem 0rem;
     }
     .footer-bottom {
         flex-direction: column;
