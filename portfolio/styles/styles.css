@@ -123,6 +123,10 @@ a {
 .intro-title-container {
     position: relative;
     margin-bottom: 9.375rem;
+    max-height: 37.5rem;
+}
+.intro-title-image-container {
+    max-height: 37.5rem;
 }
 .intro-title-container-img {
     width: 100%;
