@@ -8,6 +8,10 @@ html, body {
     margin: 0;
     padding: 0;
 }
+
+:root {
+    font-size: 16px;
+}
 #container {
     height: 100%;
     min-height: 100vh;
@@ -28,18 +32,25 @@ html, body {
     flex: 1 1 auto;
     font-family: "Roboto";
     color: #242742;
-    word-wrap: break-word;
-    margin-inline: 3rem;
+    max-width: 23.5em;
+    margin-inline: 4rem;
+    margin-top: 1.5rem;
 }
 .image {
-    margin: 1.25rem 1.25rem 1.25rem 0;
+    margin: 1.5rem 1.5rem 1.5rem 0;
     border-radius: calc(36px - 1.25rem);
     flex-shrink: 1;
 }
 #mobile-image {
     display: none;
 }
-
+.content h1 {
+    color: #242742;
+    font-size: 3.5rem;
+    font-weight: bold;
+    flex-wrap: wrap;
+    margin-block-end: 1.5rem;
+}
 @media screen and (max-width: 900px) {
     #card {
         flex-direction: column;
@@ -49,9 +60,14 @@ html, body {
     }
     .content {
         flex-grow: 1;
-        margin-inline: 1.5rem;
-        margin-bottom: 1.5rem;
+        margin: 2.5rem 1.5rem 2.5rem 1.5rem;
         order: 2;
+    }
+    .content h1 {
+        font-size: 2.5rem;
+        font-weight: bold;
+        line-height: 4rem;
+        letter-spacing: 0px;
     }
     .image {
         width: 100%;
@@ -66,23 +82,32 @@ html, body {
         height: auto;
     }
 }
-#h1 {
-    color: #242742;
-    font-size: clamp(56px, 1.5rem, 0.5rem);
-    font-weight: 700;
-    flex-wrap: wrap;
-    line-height: normal;
+.content p:first-of-type {
+    margin-bottom: 1.5rem;
 }
 .parent-ul {
+    list-style-position: outside;
     text-align: center;
 }
-#ul li {
-    padding-left: 0.5em;
-    position: relative;
-    list-style-image: url(../assets/images/icon-list.svg);
+#ul {
+    list-style: none;
+    padding: 0;
+    margin: 0em 0em 2.5em 0em;
 }
-#ul li::before {
-    vertical-align: middle;
+li {
+    display: flex;
+    align-items: center;
+    margin: 10px 0; 
+}
+li::before {
+    content: "";
+    display: inline-block;
+    width: 21px; 
+    height: 21px; 
+    background-image: url(../assets/images/icon-list.svg);
+    background-size: contain;
+    background-repeat: no-repeat;
+    margin-right: 1em; 
 }
 form {
     display: flex;
@@ -98,8 +123,6 @@ form {
 .invalid-email-prompt {
     color: #FF6155;
 }
-
-
 .field-email {
     border-width: 1px;
     border-color: #A7A7AF;
@@ -151,4 +174,3 @@ form {
 .attribution a { 
     color: hsl(228, 45%, 44%);
 }
-
