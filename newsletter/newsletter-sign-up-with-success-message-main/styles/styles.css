@@ -11,6 +11,7 @@ html, body {
 
 :root {
     font-size: 16px;
+    --bulma-block-spacing: 0rem;
 }
 #container {
     height: 100%;
@@ -33,8 +34,7 @@ html, body {
     font-family: "Roboto";
     color: #242742;
     max-width: 23.5em;
-    margin-inline: 4rem;
-    margin-top: 1.5rem;
+    margin: 0 4rem 0 4rem;
 }
 .image {
     margin: 1.5rem 1.5rem 1.5rem 0;
