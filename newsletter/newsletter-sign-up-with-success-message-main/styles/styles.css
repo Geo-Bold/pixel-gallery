@@ -130,9 +130,9 @@ form {
     border-color: #A7A7AF;
     border-style: ridge;
     background-color: #F8F8FF;
-    margin-bottom: 24px;
-    padding-left: 35px;
-    font-size: 16px;
+    margin-bottom: 2rem;
+    padding-left: 1.5rem;
+    font-size: 1rem;
 }
 .invalid-email-field {
     background-color: #ffe8e6;
