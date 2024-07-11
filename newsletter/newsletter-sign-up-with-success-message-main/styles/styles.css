@@ -118,7 +118,8 @@ form {
     justify-content: space-between;
     font-size: 12px;
     font-weight: 600;
-    margin-bottom: 0.5em;
+    margin-bottom: 0.5rem;
+    max-height: 18px;
 }
 .invalid-email-prompt {
     color: #FF6155;
