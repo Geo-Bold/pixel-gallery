@@ -50,7 +50,7 @@ html, body {
     font-weight: bold;
     flex-wrap: wrap;
     margin-block-end: 1.5rem;
-    max-height: 56px;
+    max-height: 61px;
 }
 @media screen and (max-width: 900px) {
     #card {
