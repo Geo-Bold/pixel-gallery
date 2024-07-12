@@ -1,6 +1,10 @@
-# Frontend Mentor - Newsletter sign-up form with success message solution
+# Newsletter sign-up form with success and error states
 
+<<<<<<< Updated upstream
 This is a solution to the [Newsletter sign-up form with success message challenge on Frontend Mentor](https://www.frontendmentor.io/challenges/newsletter-signup-form-with-success-message-3FC1AZbNrv).  
+=======
+This is my attempt at a common IoT programming pattern that requests input from a user and can display an error state for prompting the user for revised data or a success state indicating a succesful interaction.
+>>>>>>> Stashed changes
 
 ## Table of contents
 
@@ -24,10 +28,10 @@ This is a solution to the [Newsletter sign-up form with success message challeng
 Users should be able to:
 
 - Add their email and submit the form
-- See a success message with their email after successfully submitting the form
+- View a success state after after successfully submitting the form with a valid email
 - See form validation messages if:
   - The field is left empty
-  - The email address is not formatted correctly
+  - The email address is incorrectly formatted
 - View the optimal layout for the interface depending on their device's screen size
 - See hover and focus states for all interactive elements on the page
 

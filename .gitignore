@@ -1,0 +1,9 @@
+# IntelliJ IDEA
+*.iml
+.idea/
+*.iws
+
+# Exclude build output directories
+/out/
+/build/
+
