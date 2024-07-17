@@ -1,6 +1,22 @@
 @import "https://cdn.jsdelivr.net/npm/bulma@1.0.1/css/bulma.min.css";
 @import url('https://fonts.googleapis.com/css2?family=League+Spartan:wght@100..900&display=swap');
 
+/*
+
+Index
+    |-- Template project element styles
+        |-- Responsiveness
+    |-- Page navigation label
+        |-- Responsiveness
+    |-- Navigation bar
+        |-- Animations
+        |-- Hover states
+        |-- Hamburger animation
+    |-- Home page hero
+        |
+
+*/
+
 :root {
     --color-dark-blue: #1b1d23;
     --color-dark-grey: #60636d;
@@ -11,6 +27,7 @@
     --color-error-red: #df5656;
     font-size: 8px;
     --bulma-body-background-color: white;
+    --hero-img-width: 190px;
 }
 /*Template project element styles*/
 body {
@@ -20,6 +37,7 @@ body {
     line-height: 3rem;
     letter-spacing: 0px;
     color: var(--color-dark-grey);
+    overflow-x: hidden;
 }
 :is(h1, h2, h3, h4) {
     font-weight: bold;
@@ -49,6 +67,12 @@ h4 {
     letter-spacing: 0px;
 }
 :is(.standard-button, .small-button) {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--color-white);
+    font-weight: bold;
+    line-height: 25px;
     background: var(--color-dark-blue);
 }
 .standard-button {
@@ -58,19 +82,23 @@ h4 {
     height: 10rem;
 }
 .outer-container {
-    max-width: 1440px;
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 1440px !important;
     width: 100%;
 }
 .inner-container {
-    postion: relative;
-    max-width: 1304px;
-    padding-inline: 12.125rem;
+    position: relative;
+    max-width: 1174px !important;
+    width: 100%;
+    padding-inline: 4rem;
 }
 /*Page navigation label*/
 .anchor {
     anchor-name: --anchor;
 }
 .page-navigation-label {
+    display: flex;
     position-anchor: --anchor;
     position: absolute;
     left: anchor(left);
@@ -100,6 +128,12 @@ h4 {
         margin-left: 64px;
     }
 }
+@media (max-width: 650px) {
+    .page-navigation-label {
+        display: none;
+        margin-left: unset;
+    }
+}
 /*Navigation bar*/
 .navbar {
     color: var(--color-med-grey);
@@ -108,12 +142,12 @@ h4 {
     height: 100%;
     margin: 7rem 0 7rem 0;
 }
-.navbar-brand a:first-child {
+:is(.navbar-brand a:first-child, .navbar-burger) {
     height: 5rem;
     width: 12.02rem;
     padding: 0;
 }
-.navbar-brand svg {
+.navbar :is(svg) {
     max-height: unset;
     width: 100%;
     height: 100%;
@@ -122,11 +156,14 @@ h4 {
     margin-inline-start: 94.84px;
     max-width: 313px;
     width: 100%;
+    display: flex;
 }
 .navbar-start .navbar-item {
     padding: 0;
     font-weight: bold;
     line-height: 3.125rem;
+    display: flex;
+    align-items: center;
 }
 .navbar-menu {
     box-shadow: unset;
@@ -135,15 +172,13 @@ h4 {
     padding: 0;
 }
 /*Navigation bar responsiveness*/
-@media (min-width: 769px) and (max-width: 1024px) {
-    .navbar-start {
-        margin-inline-start: 78.84px;
-    }
-}
 @media (min-width: 769px) {
     .navbar, .navbar-end, .navbar-menu, .navbar-start {
         align-items: stretch;
         display: flex;
+    }
+    .navbar-start {
+        justify-content: space-between;
     }
     .navbar-menu {
         display: flex !important;
@@ -153,14 +188,33 @@ h4 {
     }
 }
 @media (max-width: 768px) {
-    .navbar-menu {
-        display: none;
+    .navbar {
+        position: relative;
     }
-    .navbar-burger {
-        display: block;
+    .navbar-menu {
+        position: absolute;
+        right: 0;
+        background-color: var(--color-xlight-grey);
+        max-width: 42.5rem;
+    }
+    .navbar-start {
+        width: fit-content;
+        flex-direction: column;
+        margin: 5.25rem 0 5.25rem 6rem;
+    }
+    .navbar-start .navbar-item {
+        font-size: 4rem;
+        font-weight: bold;
+        color: var(--color-dark-blue);
+        line-height: 5rem;
+        letter-spacing: 0px;
+        margin-block-end: 2.125rem;
+    }
+    .navbar-start a:last-child {
+        margin-block-end: unset;
     }
 }
-/*Navigation bar hover and active states*/
+/*Navigation bar states*/
 .navbar a {
     transition: color 400ms;
 }
@@ -168,7 +222,7 @@ h4 {
     background-color: unset;
     color: var(--color-dark-blue);
 }
-/*Navigation bar hamburger svg animation*/
+/*Navigation bar hamburger animation*/
 .ham {
     cursor: pointer;
     -webkit-tap-highlight-color: transparent;
@@ -203,3 +257,43 @@ h4 {
 .ham6.active .bottom {
     stroke-dashoffset: -132px;
 }
+/*Home page hero*/
+.hero-img {
+    height: 720px;
+    width: 100%;
+    object-fit: cover;
+    object-position: center;
+    position: relative;
+}
+.hero-img:after {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.35);
+}
+.hero-text {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    max-height: 355px;
+    height: 100%;
+    margin-block: 186px 179px ;
+    padding-left: var(--hero-img-width);
+}
+.hero-text :is(h2, p) {
+    max-width: 445px;
+    color: white;
+}
+.hero-text h2 {
+    margin-bottom: 10px;
+}
+.hero-text a {
+    margin-top: auto;
+    max-width: 252px;
+    padding: 25px 32px 22px 37px;
+}
+

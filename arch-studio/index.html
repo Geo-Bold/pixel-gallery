@@ -7,13 +7,13 @@
     <link rel="stylesheet" href="./src/styles/main.css">
     <title>Arch Studio</title>
   </head>
-  <body class="is-flex is-flex-wrap-wrapped is-justify-content-center">
-    <div class="outer-container is-flex is-flex-wrap-wrapped is-justify-content-center">
-      <div class="page-navigation-label is-flex">
+  <body>
+    <div class="outer-container container">
+      <div class="page-navigation-label">
         <span></span>
         <p>HOME</p>
       </div>
-      <div class="inner-container anchor">
+      <div class="inner-container anchor container">
         <nav class="navbar">
           <div class="navbar-brand">
             <a href="" class="navbar-item">
@@ -31,25 +31,49 @@
             </a>
           </div>
           <div class="navbar-menu">
-            <div class="navbar-start is-flex is-justify-content-space-between">
-              <a class="navbar-item is-flex is-align-items-center">Portfolio</a>
-              <a class="navbar-item is-flex is-align-items-center">About Us</a>
-              <a class="navbar-item is-flex is-align-items-center">Contact</a>
+            <div class="navbar-start">
+              <a class="navbar-item">Portfolio</a>
+              <a class="navbar-item">About Us</a>
+              <a class="navbar-item">Contact</a>
             </div>
           </div>
         </nav>
-        <section class="hero"></section>
+        <section class="hero">
+          <div class="hero-img">
+            <img class="hero-img" src="./src/assets/home/desktop/image-hero-paramour.jpg"></img>
+          </div>
+          <div class="hero-text">
+            <h2>Project Paramour</h2>
+            <p>
+              Project made for an art museum near Southwest London. Project Paramour is
+              a statement of bold, modern architecture.
+            </p>
+            <a href="" class="standard-button">
+              <span>See Our Portfolio</span>
+              <svg xmlns="http://www.w3.org/2000/svg" width="26" height="20"><g fill="none" fill-rule="evenodd" stroke="#FFFFFF" stroke-width="2"><path d="M15 1l9 9-9 9M0 10h24"/></g></svg>
+            </a>
+          </div>
+          <nav class="pagination" role="navigation" aria-label="pagination">
+            <ul class="pagination-list">
+              <li>
+                <a class="pagination-link is-current"
+                   aria-label="Page 1"
+                   aria-current="page">1</a>
+              </li>
+              <li>
+                <a href="#" class="pagination-link" aria-label="Goto page 2">2</a>
+              </li>
+              <li>
+                <a href="#" class="pagination-link" aria-label="Goto page 3">3</a>
+              </li>
+            </ul>
+          </nav>
+        </section>
 
 
 
 
 
-        Project Paramour
-
-        Project made for an art museum near Southwest London. Project Paramour is
-        a statement of bold, modern architecture.
-
-        See Our Portfolio
 
         Seraph Station
 
@@ -122,6 +146,6 @@
       </div>
 
     </div>
-
+  <script src="./dist/main.js"></script>
   </body>
 </html>
