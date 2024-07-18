@@ -1,74 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <link 
-    rel="icon" 
-    href="./newsletter-sign-up-with-success-message-main/assets/images/geo-webpage-logo-32px.png">
   <meta charset="UTF-8">
-  <meta 
-    name="viewport" 
-    content="width=device-width, initial-scale=1.0"
-  >
-  <title>
-    Newsletter Sign Up Form
-  </title>
-  <link 
-    rel="stylesheet" 
-    href="./newsletter-sign-up-with-success-message-main/styles.css"
-  >
-  <link 
-    rel="preconnect" 
-    href="https://fonts.googleapis.com"
-  >
-  <link 
-    rel="preconnect" 
-    href="https://fonts.gstatic.com" 
-    crossorigin
-  >
-  <link 
-    href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" 
-    rel="stylesheet"
-  >
+  <link rel="icon" href="./newsletter-sign-up-with-success-message-main/assets/images/geo-webpage-logo-32px.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" >
+  <title> Newsletter Sign Up Form </title>
+  <link rel="stylesheet" href="./newsletter-sign-up-with-success-message-main/styles/styles.css">
 </head>
 <body>
   <div id="container">
-    <div class="card-form">
+    <div id="card">
       <div class="content">
-        <div class="text">
-          <h1>
-            Stay updated!
-          </h1>
-          <p>
-            Join 60,000+ product managers receiving monthly updates on:
-          </p>
-          <ul>
-            <li>
-              Product discovery and building what matters
-            </li>
-            <li>
-              Measuring to ensure updates are a success
-            </li>
-            <li>
-              And much more!
-            </li>
-          </ul>
-        </div>
+        <h1>Stay updated!</h1>
+        <p>
+          Join 60,000+ product managers receiving monthly updates on:
+        </p>
+        <ul id="ul">
+          <li>
+            Product discovery and building what matters
+          </li>
+          <li>
+            Measuring to ensure updates are a success
+          </li>
+          <li>
+            And much more!
+          </li>
+        </ul>
         <form>
-          <label 
-            for="email">
-            Email address
-          </label>
-          <input 
-            id="field-email" 
-            type="text" 
+          <div id="email-header">
+            <label for="field-email">Email address</label>
+            <p></p>
+          </div>
+          <input
+            class="field-email" 
+            type="email" 
             placeholder="email@company.com"
           >
-          <p id="emailErrorMessage">Temp warning message</p>
-          <input 
-            id="button-submit" 
-            type="submit" 
-            value="Subscribe to monthly newsletter"
-          >
+          <div class="button-parent-div">
+            <div class="gradient-background"></div>
+            <button class="button-submit">
+              Subscribe to monthly newsletter
+            </button>
+          </div>
         </form>
       </div>
       <div class="image">
@@ -76,35 +49,8 @@
         <img id="mobile-image" src="./newsletter-sign-up-with-success-message-main/assets/images/illustration-sign-up-mobile.svg" alt="">
       </div>
     </div>
-<<<<<<< Updated upstream
-    <!-- <div class="attribution"> 
-=======
-    <div class="card-success hide">
-      <div class="card-success-container">
-        <div id="check-mark">
-          <img src="./newsletter-sign-up-with-success-message-main/assets/images/icon-success.svg" alt="">
-        </div>
-        <h1>
-          Thanks for subscribing!
-        </h1>
-        <p>
-          A confirmation email has been sent to ash@loremcompany. Please open it and click the button  inside to confirm your subscription.
-        </p>
-        <button>
-          Dismiss message
-        </button>
-      </div>
-    </div>
-    <div class="attribution"> 
->>>>>>> Stashed changes
-      Coded by <a href="#">geo-bold</a>.
-    </div> -->
   </div>
-<<<<<<< Updated upstream
   
   <script type="module" src="./newsletter-sign-up-with-success-message-main/script.js"></script>
-=======
-  <script src="./newsletter-sign-up-with-success-message-main/script.js"></script>
->>>>>>> Stashed changes
 </body>
 </html>
