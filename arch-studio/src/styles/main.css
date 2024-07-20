@@ -4,16 +4,21 @@
 /*
 
 Index
-    |-- Template project element styles
-        |-- Responsiveness
+    |-- Project default element styles
+    |   |-- Responsiveness
+    |   |-- Animations
     |-- Page navigation label
-        |-- Responsiveness
+    |   |-- Responsiveness
     |-- Navigation bar
-        |-- Animations
-        |-- Hover states
-        |-- Hamburger animation
+    |   |-- Animations
+    |   |-- Hover states
+    |   |-- Hamburger animation
     |-- Home page hero
-        |
+    |   |-- Responsiveness
+    |-- Home page intro
+    |   |-- Responsiveness
+    |-- Home page about us
+    |   |--
 
 */
 
@@ -29,13 +34,13 @@ Index
     --bulma-body-background-color: white;
     --hero-img-width: 190px;
 }
-/*Template project element styles*/
+/*Project default element styles*/
 body {
     font-family: 'League Spartan', sans-serif;
     font-size: 2.25rem;
     font-weight: 500;
     line-height: 3rem;
-    letter-spacing: 0px;
+    letter-spacing: 0;
     color: var(--color-dark-grey);
     overflow-x: hidden;
 }
@@ -46,7 +51,7 @@ body {
     color: var(--color-dark-blue);
 }
 h1 {
-    font-size: 15.625rem;
+    font-size: 31.25rem;
     line-height: 25rem;
     letter-spacing: -5px;
     color: var(--color-xlight-grey);
@@ -64,11 +69,10 @@ h3 {
 h4 {
     font-size: 4rem;
     line-height: 5rem;
-    letter-spacing: 0px;
+    letter-spacing: 0;
 }
 :is(.standard-button, .small-button) {
     display: flex;
-    justify-content: space-between;
     align-items: center;
     color: var(--color-white);
     font-weight: bold;
@@ -77,32 +81,52 @@ h4 {
 }
 .standard-button {
     height: 9rem;
+    transition: background-color 400ms;
+    justify-content: space-between;
+    padding: 25px 32px 22px 35px;
+    max-width: fit-content;
+}
+.standard-button :is(span) {
+    margin-right: 3rem;
+    width: max-content;
 }
 .small-button {
     height: 10rem;
+    width: 10rem;
+    transition: background-color 400ms;
 }
-.outer-container {
+#outer-container {
     display: flex;
     flex-wrap: wrap;
-    max-width: 1440px !important;
+    justify-content: center;
+    max-width: 1440px;
     width: 100%;
+    overflow-y: hidden;
 }
-.inner-container {
+#inner-container {
     position: relative;
-    max-width: 1174px !important;
+    max-width: 1110px;
     width: 100%;
-    padding-inline: 4rem;
+    margin-inline: clamp(97px, 12vw, 165px) clamp(98px, 12vw, 165px);
+}
+/*Project default element responsiveness*/
+@media (max-width: 767px) {
+    #inner-container {
+        margin-inline: 0;
+    }
+}
+/*Project default element animations*/
+:is(.standard-button:hover, .small-button:hover) {
+    background-color: var(--color-dark-grey);
+}
+:is(.standard-button:active, .small-button:active) {
+    background-color: var(--color-light-grey);
 }
 /*Page navigation label*/
-.anchor {
-    anchor-name: --anchor;
-}
 .page-navigation-label {
     display: flex;
-    position-anchor: --anchor;
     position: absolute;
-    left: anchor(left);
-    margin-left: 24px;
+    left: calc(clamp(35px, 4.5vw, 78px) * -1); /*Requires negative position relative to inner container.*/
     max-height: 3rem;
     max-width: fit-content;
     transform: rotate(90deg);
@@ -123,12 +147,7 @@ h4 {
     margin: 0 0 0 6rem;
 }
 /*Page navigation label responsiveness*/
-@media (max-width: 1350px) {
-    .page-navigation-label {
-        margin-left: 64px;
-    }
-}
-@media (max-width: 650px) {
+@media (max-width: 767px) {
     .page-navigation-label {
         display: none;
         margin-left: unset;
@@ -172,7 +191,10 @@ h4 {
     padding: 0;
 }
 /*Navigation bar responsiveness*/
-@media (min-width: 769px) {
+@media (min-width: 768px) {
+    .navbar-brand {
+        margin-inline-start: unset !important; /*Override bulma*/
+    }
     .navbar, .navbar-end, .navbar-menu, .navbar-start {
         align-items: stretch;
         display: flex;
@@ -187,15 +209,16 @@ h4 {
         display: none;
     }
 }
-@media (max-width: 768px) {
+@media (max-width: 767px) {
     .navbar {
         position: relative;
+        padding-inline: 4rem;
     }
     .navbar-menu {
         position: absolute;
         right: 0;
         background-color: var(--color-xlight-grey);
-        max-width: 42.5rem;
+        max-width: 343px;
     }
     .navbar-start {
         width: fit-content;
@@ -207,7 +230,7 @@ h4 {
         font-weight: bold;
         color: var(--color-dark-blue);
         line-height: 5rem;
-        letter-spacing: 0px;
+        letter-spacing: 0;
         margin-block-end: 2.125rem;
     }
     .navbar-start a:last-child {
@@ -258,14 +281,18 @@ h4 {
     stroke-dashoffset: -132px;
 }
 /*Home page hero*/
-.hero-img {
-    height: 720px;
-    width: 100%;
-    object-fit: cover;
-    object-position: center;
+.hero {
+    margin: 0 0 195px 0;
     position: relative;
 }
-.hero-img:after {
+.hero-img {
+    height: 720px;
+    object-fit: cover;
+}
+.image-filter {
+    position: relative;
+}
+.image-filter:after {
     content: "";
     display: block;
     position: absolute;
@@ -282,18 +309,217 @@ h4 {
     max-height: 355px;
     height: 100%;
     margin-block: 186px 179px ;
-    padding-left: var(--hero-img-width);
+    margin-left: var(--hero-img-width);
 }
-.hero-text :is(h2, p) {
+.hero-text h2 {
+    max-width: 500px;
+    color: var(--color-white);
+}
+.hero-text p {
     max-width: 445px;
-    color: white;
+    color: var(--color-white);
 }
 .hero-text h2 {
     margin-bottom: 10px;
 }
 .hero-text a {
     margin-top: auto;
-    max-width: 252px;
-    padding: 25px 32px 22px 37px;
 }
-
+.hero :is(.pagination) {
+    position: absolute;
+    left: -80px;
+    background-color: var(--color-dark-blue);
+    width: fit-content;
+    margin: 640px 0 0 0;
+}
+.pagination-link {
+    width: 10rem;
+    height: 10rem;
+    margin: unset;
+    padding: unset;
+    border: unset;
+    box-shadow: unset;
+    border-radius: unset;
+    background-color: var(--color-white);
+    font-size: 2.25rem;
+    font-weight: bold;
+    color: var(--color-med-grey);
+    line-height: 25px;
+}
+.is-current {
+    background-color: var(--color-dark-blue);
+    color: var(--color-white);
+}
+/*Home page hero responsiveness*/
+@media (max-width: 1235px) {
+    .hero {
+        margin-bottom: 248px;
+    }
+}
+@media (max-width: 767px) {
+    .hero-text {
+        padding-left: clamp(4rem, 6.25vw, 7.25rem);
+        max-height: 343px;
+        max-width: 343px;
+    }
+    .hero-text h2 {
+        font-size: 6rem;
+        letter-spacing: -1.2px;
+        line-height: 6rem;
+    }
+}
+@media (max-width: 1024px) {
+    .hero :is(.pagination) {
+        display: none;
+    }
+}
+/*Home page hero animations*/
+:is(.pagination-link:hover):not(.is-current) {
+    background-color: var(--color-light-grey);
+}
+:is(.pagination-link:active):not(.is-current) {
+    background-color: var(--color-dark-blue);
+    color: var(--color-white);
+}
+/*Home page intro*/
+.intro {
+    position: relative;
+    height: 568px;
+    display: flex;
+    width: 100%;
+    margin: 0 0 200px 0;
+}
+.welcome-text {
+    z-index: 2;
+    height: 483px;
+    max-width: 446px;
+    margin: auto clamp(94px, 9vw, 125px) 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.welcome-title {
+    position: absolute;
+    top: -73px;
+    font-size: clamp(25rem, 20vw, 250px);
+    line-height: 25rem;
+    letter-spacing: -5px;
+    margin: 0 0 0 auto;
+}
+.welcome-img {
+    min-width: 350px;
+    height: 568px;
+}
+/*Home page intro responsiveness*/
+@media (min-width: 768px) and (max-width: 1235px) {
+    .intro {
+        flex-direction: column;
+        height: unset;
+    }
+    .welcome-title {
+        font-family: "Spartan", sans-serif;
+        top: -165px;
+        font-size: 17.215rem;
+        letter-spacing: -3px;
+        margin: unset;
+    }
+    .welcome-text {
+        margin: unset;
+        max-width: unset;
+        height: unset;
+        justify-content: unset;
+    }
+    .welcome-text :is(h3) {
+        max-width: 446px;
+        margin-bottom: 43px;
+    }
+    .welcome-img {
+        display: none;
+    }
+}
+/*Home page about us*/
+.about-us {
+    position: relative;
+    margin: 0 0 200px 0;
+}
+.about-us :is(.image-filter) {
+    height: 560px;
+}
+#about-us-img {
+    object-fit: cover;
+    height: 560px;
+}
+.about-us :is(.hero-text) {
+    top: 0;
+    max-height: 225px;
+    max-width: 370px;
+    margin-top: 167px;
+}
+.white-h3 {
+    color: var(--color-white);
+}
+/*Home page featured*/
+.featured-header {
+    margin-bottom: 64px;
+}
+.featured {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 30px;
+    margin: 0 0 200px 0;
+}
+.featured-container {
+    position: relative;
+    overflow: hidden;
+    flex: 1;
+}
+.featured :is(.image-filter) {
+    max-height: 560px;
+    overflow: hidden;
+}
+.featured .image-filter:after {
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));
+}
+.featured :is(.hero-text) {
+    margin: 0 0 39px 40px;
+    bottom: 0;
+    height: unset; 
+}
+.featured :is(.image-filter) img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+.featured .hero-text h4{
+    color: var(--color-white);
+}
+.featured .hero-text p {
+    opacity: 75%;
+}
+.featured-number {
+    position: absolute;
+    text-align: right;
+    top: 45px;
+    right: -11px;
+    opacity: 0.5;
+}
+/*Home page featured responsiveness*/
+@media (min-width: 768px) and (max-width: 1024px) {
+    .featured {
+        grid-template-columns: unset;
+        row-gap: 3rem;
+    }
+    .featured-number {
+        top: 29px;
+        right: 23px;
+    }
+    #featured-img-1 {
+        content: url(../assets/portfolio/tablet/image-del-sol.jpg);
+    }
+    #featured-img-2 {
+        content: url(../assets/portfolio/tablet/image-228b.jpg);
+    }
+    #featured-img-3 {
+        content: url(../assets/portfolio/tablet/image-prototype.jpg);
+    }
+}
