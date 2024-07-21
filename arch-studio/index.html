@@ -40,10 +40,10 @@
         </nav>
         <section class="hero">
           <div class="hero-img image-filter">
-            <img class="hero-img image-filter" id="hero-img" 
-                 src="./src/assets/home/desktop/image-hero-paramour.jpg" 
-                 alt="A creative corner shot from below a bright blue structure with a three-dimensional pattern adorning the walls. A concrete supporting pillar can be seen."
-                 srcset="">
+            <img id="hero-img" 
+              class="hero-img image-filter" 
+              src="./src/assets/home/desktop/image-hero-paramour.jpg" 
+              alt="A creative corner shot from below a bright blue structure with a three-dimensional pattern adorning the walls. A concrete supporting pillar can be seen."
             </img>
           </div>
           <div class="hero-text">
@@ -114,7 +114,10 @@
               id="about-us-img"
               src="./src/assets/home/desktop/image-small-team.jpg"
               alt="The image depicts modern, minimalist white buildings partially submerged in water, with a clear, blue sky in the background. The architecture has clean lines and flat surfaces, and the water reflects the buildings, creating a serene, mirror-like effect."
-              srcset="">
+              srcset="
+                ./src/assets/home/desktop/image-small-team.jpg 1110w,
+                ./src/assets/home/tablet/image-small-team.jpg 573w,
+                ./src/assets/home/mobile/image-small-team.jpg 375w">
             </img>
           </div>
           <div class="hero-text">
@@ -125,80 +128,83 @@
             </a>
           </div>
         </section>
-        <container class="featured-header is-flex is-justify-content-space-between is-align-content-center">
-          <h3>Featured</h3>
-          <a href="" class="standard-button">
-            <span>See All</span>
+        <section class="featured">
+          <div class="featured-header is-flex is-justify-content-space-between is-align-content-center">
+            <h3>Featured</h3>
+            <a href="./src/pages/portfolio.html"  id="featured-button" class="standard-button">
+              <div class="is-flex is-justify-content-center is-flex-grow-1">
+                <span>See All</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="26" height="20"><g fill="none" fill-rule="evenodd" stroke="#FFFFFF" stroke-width="2"><path d="M15 1l9 9-9 9M0 10h24"/></g></svg>
+              </div>
+            </a>
+          </div>
+          <section class="featured-grid">
+            <a href="./src/pages/portfolio.html" class="featured-container">
+              <div class="image-filter">
+                <img
+                  id="featured-img-1"
+                  src="./src/assets/portfolio/desktop/image-del-sol.jpg"
+                  alt="A creative corner shot from below a bright blue structure with a three-dimensional pattern adorning the walls. A concrete supporting pillar can be seen."
+                >
+                </img>
+              </div>
+              <div class="hero-text">
+                <h4>Project Del Sol</h4>
+                <p>View All Projects</p>
+              </div>
+              <h1 class="featured-number">1</h1>
+            </a>
+            <a href="./src/pages/portfolio.html" class="featured-container">
+              <div class="image-filter">
+                <img
+                  id="featured-img-2"
+                  src="./src/assets/portfolio/desktop/image-228b.jpg"
+                  alt="A creative corner shot from below a bright blue structure with a three-dimensional pattern adorning the walls. A concrete supporting pillar can be seen."
+                >
+                </img>
+              </div>
+              <div class="hero-text">
+                <h4>228B Tower</h4>
+                <p>View All Projects</p>
+              </div>
+              <h1 class="featured-number">2</h1>
+            </a>
+            <a href="./src/pages/portfolio.html" class="featured-container">
+              <div class="image-filter">
+                <img
+                  id="featured-img-3"
+                  src="./src/assets/portfolio/desktop/image-prototype.jpg"
+                  alt="A creative corner shot from below a bright blue structure with a three-dimensional pattern adorning the walls. A concrete supporting pillar can be seen."
+                >
+                </img>
+              </div>
+              <div class="hero-text">
+                <h4>Le Prototype</h4>
+                <p>View All Projects</p>
+              </div>
+              <h1 class="featured-number">3</h1>
+            </a>
+          </section>
+        </section>
+      </div>
+      <footer>
+        <div class="footer-logo">
+          <a href="./index.html" class="navbar-item">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 97 40" width="97" height="40"><path fill="#FFFFFF" d="M10.822 39.27l2.26-6.256h13.836l2.26 6.255H40L24.658 1.6h-9.316L0 39.268h10.822zM23.493 24.2h-6.986L20 15.252l3.493 8.95zm21.804 15.07V27.807c0-.776.22-1.499.662-2.169a5.14 5.14 0 011.746-1.632A4.51 4.51 0 0150 23.379c.64 0 1.343.13 2.112.388.769.259 1.434.601 1.998 1.028l3.972-7.991c-.654-.487-1.484-.883-2.488-1.188-1.005-.304-1.956-.456-2.854-.456-1.385 0-2.729.354-4.03 1.061-1.301.708-2.44 1.694-3.413 2.957V15.89h-9.498v23.38h9.498zm18.995.73c1.507 0 2.942-.21 4.304-.628 1.362-.418 2.439-.91 3.23-1.472l-3.105-6.393c-.289.198-.688.377-1.198.536-.51.16-1.07.24-1.678.24-.99 0-1.85-.217-2.58-.65a4.449 4.449 0 01-1.678-1.724 4.806 4.806 0 01-.582-2.33c0-.669.163-1.369.49-2.1.328-.73.845-1.347 1.553-1.849s1.625-.753 2.751-.753c1.187 0 2.161.258 2.922.776l3.105-6.393c-.76-.578-1.841-1.073-3.242-1.484a15.324 15.324 0 00-4.337-.616c-1.903 0-3.665.346-5.286 1.039-1.62.692-3.029 1.628-4.224 2.808a13.053 13.053 0 00-2.785 3.995 11.177 11.177 0 00-.993 4.6c0 1.69.354 3.285 1.062 4.784.707 1.5 1.678 2.82 2.91 3.961a13.79 13.79 0 004.258 2.683c1.606.647 3.307.97 5.103.97zm14.703-.73V26.392c0-.792.16-1.477.48-2.055a3.374 3.374 0 011.347-1.347c.578-.32 1.248-.48 2.01-.48 1.156 0 2.084.354 2.784 1.062.7.708 1.05 1.648 1.05 2.82v12.876h9.498V24.338c0-1.75-.41-3.314-1.232-4.692a9.088 9.088 0 00-3.345-3.276c-1.408-.807-3.003-1.21-4.783-1.21-1.4 0-2.782.255-4.144.765a12.064 12.064 0 00-3.665 2.157V0h-9.497v39.27h9.497z"/></svg>
+          </a>
+        </div>
+        <div class="footer-body">
+          <div class="footer-menu">
+            <a class="navbar-item" href="./src/pages/portfolio.html">Portfolio</a>
+            <a class="navbar-item" href="./src/pages/about.html">About Us</a>
+            <a class="navbar-item" href="./src/pages/contact.html">Contact</a>
+          </div>
+          <a href="./src/pages/portfolio.html" class="footer-end standard-button">
+            <span>See Our Portfolio</span>
             <svg xmlns="http://www.w3.org/2000/svg" width="26" height="20"><g fill="none" fill-rule="evenodd" stroke="#FFFFFF" stroke-width="2"><path d="M15 1l9 9-9 9M0 10h24"/></g></svg>
           </a>
-        </container>
-        <section class="featured">
-          <a class="featured-container">
-            <div class="image-filter">
-              <img 
-                class=""
-                id="featured-img-1"
-                src="./src/assets/portfolio/desktop/image-del-sol.jpg"
-                alt="A creative corner shot from below a bright blue structure with a three-dimensional pattern adorning the walls. A concrete supporting pillar can be seen."
-                srcset="
-                  ./src/assets/portfolio/desktop/image-del-sol.jpg 2000w,
-                  ./src/assets/portfolio/tablet/image-del-sol.jpg 1235w,
-                  ./src/assets/portfolio/mobile/image-del-sol.jpg 768w">
-              </img>
-            </div>
-            <div class="hero-text">
-              <h4>Project Del Sol</h4>
-              <p>View All Projects</p>
-            </div>
-            <h1 class="featured-number">1</h1>
-          </a>
-          <a class="featured-container">
-            <div class="image-filter">
-              <img 
-                class=""
-                id="featured-img-2"
-                src="./src/assets/portfolio/desktop/image-228b.jpg" 
-                alt="A creative corner shot from below a bright blue structure with a three-dimensional pattern adorning the walls. A concrete supporting pillar can be seen."
-                srcset="
-                  ./src/assets/portfolio/desktop/image-228b.jpg 2000w,
-                  ./src/assets/portfolio/tablet/image-228b.jpg 1235w,
-                  ./src/assets/portfolio/mobile/image-228b.jpg 768w">
-              </img>
-            </div>
-            <div class="hero-text">
-              <h4>228B Tower</h4>
-              <p>View All Projects</p>
-            </div>
-            <h1 class="featured-number">2</h1>
-          </a>
-          <a class="featured-container">
-            <div class="image-filter">
-              <img 
-                id="featured-img-3"
-                src="./src/assets/portfolio/desktop/image-prototype.jpg"
-                alt="A creative corner shot from below a bright blue structure with a three-dimensional pattern adorning the walls. A concrete supporting pillar can be seen."
-                srcset="
-                  ./src/assets/portfolio/desktop/image-prototype.jpg 2000w,
-                  ./src/assets/portfolio/tablet/image-prototype.jpg 1235w,
-                  ./src/assets/portfolio/mobile/image-prototype.jpg 768w">
-              </img>
-            </div>
-            <div class="hero-text">
-              <h4>Le Prototype</h4>
-              <p>View All Projects</p>
-            </div>
-            <h1 class="featured-number">3</h1>
-          </a>
-        </section>
-        
-
-        Portfolio
-        About Us
-        Contact
-
-        See Our Portfolio
-      </div>
-
+        </div>
+      </footer>
     </div>
   <script src="./dist/main.js"></script>
   </body>

@@ -5,20 +5,13 @@
 
 Index
     |-- Project default element styles
-    |   |-- Responsiveness
-    |   |-- Animations
     |-- Page navigation label
-    |   |-- Responsiveness
     |-- Navigation bar
-    |   |-- Animations
-    |   |-- Hover states
-    |   |-- Hamburger animation
     |-- Home page hero
-    |   |-- Responsiveness
-    |-- Home page intro
-    |   |-- Responsiveness
-    |-- Home page about us
-    |   |--
+    |   |-- Intro
+    |   |-- About Us
+    |   |-- Featured
+    |-- Footer
 
 */
 
@@ -42,7 +35,6 @@ body {
     line-height: 3rem;
     letter-spacing: 0;
     color: var(--color-dark-grey);
-    overflow-x: hidden;
 }
 :is(h1, h2, h3, h4) {
     font-weight: bold;
@@ -101,18 +93,19 @@ h4 {
     justify-content: center;
     max-width: 1440px;
     width: 100%;
-    overflow-y: hidden;
+    overflow: hidden;
 }
 #inner-container {
     position: relative;
-    max-width: 1110px;
+    max-width: 1440px;
     width: 100%;
-    margin-inline: clamp(97px, 12vw, 165px) clamp(98px, 12vw, 165px);
+    padding-inline: clamp(97px, 12vw, 165px) clamp(98px, 12vw, 165px);
+    overflow-x: hidden;
 }
 /*Project default element responsiveness*/
 @media (max-width: 767px) {
     #inner-container {
-        margin-inline: 0;
+        padding-inline: 0;
     }
 }
 /*Project default element animations*/
@@ -126,7 +119,7 @@ h4 {
 .page-navigation-label {
     display: flex;
     position: absolute;
-    left: calc(clamp(35px, 4.5vw, 78px) * -1); /*Requires negative position relative to inner container.*/
+    left: clamp(44px, 7.5vw, 87px);
     max-height: 3rem;
     max-width: fit-content;
     transform: rotate(90deg);
@@ -351,13 +344,17 @@ h4 {
     color: var(--color-white);
 }
 /*Home page hero responsiveness*/
-@media (max-width: 1235px) {
+@media (max-width: 1150px) {
     .hero {
         margin-bottom: 248px;
     }
 }
 @media (max-width: 767px) {
+    .hero {
+        margin-bottom: 72px;
+    }
     .hero-text {
+        margin-inline: unset;
         padding-left: clamp(4rem, 6.25vw, 7.25rem);
         max-height: 343px;
         max-width: 343px;
@@ -392,15 +389,18 @@ h4 {
 .welcome-text {
     z-index: 2;
     height: 483px;
-    max-width: 446px;
-    margin: auto clamp(94px, 9vw, 125px) 0 auto;
+    width: 446px;
+    margin: auto clamp(32px, 5vw, 125px) 0 auto;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
 }
+.welcome-text p {
+    width: 446px;
+}
 .welcome-title {
     position: absolute;
-    top: -73px;
+    top: -74px;
     font-size: clamp(25rem, 20vw, 250px);
     line-height: 25rem;
     letter-spacing: -5px;
@@ -411,9 +411,10 @@ h4 {
     height: 568px;
 }
 /*Home page intro responsiveness*/
-@media (min-width: 768px) and (max-width: 1235px) {
+@media (min-width: 768px) and (max-width: 1150px) {
     .intro {
         flex-direction: column;
+        margin-bottom: 223px;
         height: unset;
     }
     .welcome-title {
@@ -425,13 +426,48 @@ h4 {
     }
     .welcome-text {
         margin: unset;
-        max-width: unset;
+        width: 446px;
         height: unset;
         justify-content: unset;
     }
     .welcome-text :is(h3) {
         max-width: 446px;
         margin-bottom: 43px;
+    }
+    .welcome-img {
+        display: none;
+    }
+}
+@media (max-width: 767px) {
+    .intro {
+        margin: 0 4rem 113px 4rem;
+        min-height: 627px;
+        width: unset;
+        position: relative;
+    }
+    .intro:after {
+        content: "";
+        height: 1px;
+        width: 65px;
+        position: absolute;
+        top: 0;
+        background-color: var(--color-light-grey);
+    }
+    .welcome-title {
+        display: none;
+    }
+    .welcome-text {
+        max-width: 311px;
+        margin: 68px 0 0 0;
+    }
+    .welcome-text :is(h3) {
+        font-size: 6rem;
+        line-height: 52px;
+        letter-spacing: -1.7px;
+        margin-bottom: 22px;
+    }
+    .welcome-text :is(p) {
+        width: unset;
     }
     .welcome-img {
         display: none;
@@ -458,11 +494,27 @@ h4 {
 .white-h3 {
     color: var(--color-white);
 }
+/*Home page about us responsiveness*/
+@media (max-width: 767px) {
+    .about-us {
+        margin-bottom: 73px;
+    }
+    .about-us .image-filter {
+        width: fit-content;
+    }
+    .about-us .hero-text :is(h3) {
+        font-size: 6rem;
+        line-height: 52px;
+    }
+    .about-us .hero-text :is(a) {
+        margin-top: 23px;
+    }
+}
 /*Home page featured*/
 .featured-header {
     margin-bottom: 64px;
 }
-.featured {
+.featured-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 30px;
@@ -473,27 +525,27 @@ h4 {
     overflow: hidden;
     flex: 1;
 }
-.featured :is(.image-filter) {
+.featured-grid :is(.image-filter) {
     max-height: 560px;
     overflow: hidden;
 }
-.featured .image-filter:after {
+.featured-grid .image-filter:after {
     background: linear-gradient(to top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));
 }
-.featured :is(.hero-text) {
-    margin: 0 0 39px 40px;
+.featured-grid :is(.hero-text) {
+    margin: 0 10px 39px 40px;
     bottom: 0;
     height: unset; 
 }
-.featured :is(.image-filter) img {
+.featured-grid :is(.image-filter) img {
     width: 100%;
     height: auto;
     display: block;
 }
-.featured .hero-text h4{
+.featured-grid .hero-text h4{
     color: var(--color-white);
 }
-.featured .hero-text p {
+.featured-grid :is(.hero-text) p {
     opacity: 75%;
 }
 .featured-number {
@@ -504,8 +556,11 @@ h4 {
     opacity: 0.5;
 }
 /*Home page featured responsiveness*/
-@media (min-width: 768px) and (max-width: 1024px) {
-    .featured {
+@media (max-width: 1024px) {
+    .featured-header {
+        margin-bottom: 85px;
+    }
+    .featured-grid {
         grid-template-columns: unset;
         row-gap: 3rem;
     }
@@ -521,5 +576,127 @@ h4 {
     }
     #featured-img-3 {
         content: url(../assets/portfolio/tablet/image-prototype.jpg);
+    }
+}
+@media (max-width: 767px) {
+    .featured {
+        position: relative;
+        padding-inline: 32px;
+        margin-bottom: 228px;
+    }
+    .featured-header {
+        margin-bottom: 43px;
+    }
+    .featured-header :is(h3) {
+        font-size: 6rem;
+        line-height: 52px;
+        letter-spacing: -1.71px;
+    }
+    #featured-button {
+        position: absolute;
+        bottom: -96px;
+        left: 32px;
+        width: calc(100vw - 64px);
+        max-width: unset;
+    }
+    .featured-number {
+        display: none;
+    }
+    #featured-img-1 {
+        content: url(../assets/portfolio/mobile/image-del-sol.jpg);
+    }
+    #featured-img-2 {
+        content: url(../assets/portfolio/mobile/image-228b.jpg);
+    }
+    #featured-img-3 {
+        content: url(../assets/portfolio/mobile/image-prototype.jpg);
+    }
+}
+/*Footer*/
+footer {
+    width: 100%;
+    margin-inline: clamp(97px, 12vw, 165px) clamp(98px, 12vw, 165px);
+    display: flex;
+}
+.footer-logo {
+    background-color: var(--color-dark-blue);
+    padding: 10rem 6.5rem 10rem 6.5rem;
+    display: flex;
+    max-width: 200px;
+}
+.footer-logo :is(a) {
+    padding: unset;
+}
+.footer-body {
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 0 0 0 clamp(40px, 3.5vw, 85px);
+    margin-right: 126px;
+    width: 100%;
+    background-color: var(--color-xlight-grey);
+}
+.footer-menu {
+    display: flex;
+}
+.footer-menu :is(a) {
+    margin: unset;
+    font-weight: bold;
+}
+.footer-body :is(.navbar-item) {
+    padding: unset;
+}
+.footer-menu a:nth-child(2) {
+    margin: 0 51px 0 61px;
+}
+.footer-end {
+    position: absolute;
+    right: -126px;
+}
+/*Footer responsiveness*/
+@media (max-width: 1120px) {
+    footer {
+        margin-inline: unset;
+    }
+    .footer-logo {
+        padding: 49px 32px 47px 32px;
+        max-width: 120px;
+        max-width: 120px;
+    }
+    .footer-logo :is(svg) {
+        width: 58px;
+        height: 24.13px;
+    }
+    .footer-body {
+        padding: 0 0 0 clamp(40px, 3.5vw, 85px);
+    }
+}
+@media (max-width: 767px) {
+    :is(footer, .footer-body, .footer-menu) {
+        flex-direction: column;
+    }
+    footer {
+        position: relative;
+    }
+    .footer-logo {
+        z-index: 2;
+        position: absolute;
+        top: -60px;
+        left: calc(50% - 60px);
+    }
+    .footer-body {
+        padding: 93px 0 0 0;
+    }
+    .footer-menu {
+        width: 9rem;
+        align-items: center;
+        gap: 4rem;
+    }
+    .footer-menu a:nth-child(2) {
+        margin: unset;
+    }
+    .footer-end {
+        position: static;
+        margin-block: 31px 6rem;
     }
 }
