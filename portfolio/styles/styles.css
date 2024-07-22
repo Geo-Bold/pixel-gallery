@@ -89,6 +89,8 @@ a {
 .navbar-brand {
     max-height: 2rem;
     margin-inline-start: 0rem !important;
+    flex-wrap: wrap;
+    align-content: center;
 }
 .navbar-brand a {
     padding: 0px 0px 0px 0px;
