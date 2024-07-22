@@ -6,6 +6,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
         document.querySelector(".navbar-menu").classList.toggle('is-active');
 
+        document.querySelector(".anchor").classList.toggle("active")
+
+    })
+
+    // Closes the burger menu when the user scrolls
+
+    document.querySelector("#inner-container").addEventListener("scroll", () => {
+
+        document.querySelector(".navbar-menu").classList.remove('is-active');
+
+        document.querySelector(".anchor").classList.remove("active")
+
     })
 
     // Calculates the main page hero's left padding according to its width between 58px and 190px.

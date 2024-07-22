@@ -4,14 +4,18 @@
 /*
 
 Index
-    |-- Project default element styles
-    |-- Page navigation label
+
+    |-- Default Element Styles
+    |-- Page Navigation Flag
     |-- Navigation bar
-    |-- Home page hero
-    |   |-- Intro
-    |   |-- About Us
-    |   |-- Featured
+    |-- Home Page 
+    |   |-- hero
+    |   |-- intro
+    |   |-- about Us
+    |   |-- featured
     |-- Footer
+    |-- Portfolio Page
+    |-- About Us Page
 
 */
 
@@ -97,25 +101,25 @@ h4 {
 }
 #inner-container {
     position: relative;
-    max-width: 1440px;
+    max-width: 1423px;
     width: 100%;
     padding-inline: clamp(97px, 12vw, 156.5px) clamp(98px, 12vw, 156.5px);
     overflow-x: hidden;
 }
-/*Project default element responsiveness*/
+/*Default element responsiveness*/
 @media (max-width: 768px) {
     #inner-container {
         padding-inline: 0;
     }
 }
-/*Project default element animations*/
+/*Default element animations*/
 :is(.standard-button:hover, .small-button:hover) {
     background-color: var(--color-dark-grey);
 }
 :is(.standard-button:active, .small-button:active) {
     background-color: var(--color-light-grey);
 }
-/*Page navigation label*/
+/*Page navigation flag*/
 .page-navigation-label {
     display: flex;
     position: absolute;
@@ -139,7 +143,7 @@ h4 {
     font-weight: 500;
     margin: 0 0 0 6rem;
 }
-/*Page navigation label responsiveness*/
+/*Page navigation flag responsiveness*/
 @media (max-width: 768px) {
     .page-navigation-label {
         display: none;
@@ -154,7 +158,7 @@ h4 {
     height: 100%;
     margin: 7rem 0 7rem 0;
 }
-:is(.navbar-brand a:first-child, .navbar-burger) {
+:is(.navbar-brand a:first-child) {
     height: 5rem;
     width: 12.02rem;
     padding: 0;
@@ -208,9 +212,11 @@ h4 {
     .navbar {
         position: relative;
         padding-inline: 4rem;
+        margin-block: 4rem;
     }
     .navbar-menu {
         position: absolute;
+        top: 72px;
         right: 0;
         background-color: var(--color-xlight-grey);
         max-width: 343px;
@@ -230,6 +236,23 @@ h4 {
     }
     .navbar-start a:last-child {
         margin-block-end: unset;
+    }
+    .navbar-burger {
+        height: 5rem;
+        width: fit-content;
+        margin-right: unset;
+    }
+    .anchor::after {
+        display: none;
+        position: absolute;
+        top: 104px;
+        content: "";
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+    .anchor.active:after {
+        display: block;
     }
 }
 /*Navigation bar states*/
@@ -286,6 +309,7 @@ h4 {
 }
 .image-filter {
     position: relative;
+    width: fit-content;
 }
 .image-filter:after {
     content: "";
@@ -372,9 +396,7 @@ h4 {
         display: block;
         height: 560px;
     }
-    
 }
-
 @media (max-width: 375px) {
     #hero-img {
         content: url("../assets/home/mobile/image-hero-paramour.jpg");
@@ -575,10 +597,10 @@ h4 {
     height: auto;
     display: block;
 }
-.featured-grid .hero-text h4{
+.hero-text h4{
     color: var(--color-white);
 }
-.featured-grid :is(.hero-text) p {
+.hero-text p {
     opacity: 75%;
 }
 .featured-number {
@@ -601,6 +623,10 @@ h4 {
         top: 29px;
         right: 23px;
     }
+    .featured-container :is(.image-filter) {
+        max-height: unset;
+        width: 100%;
+    }
     #featured-img-1 {
         content: url("../assets/portfolio/tablet/image-del-sol.jpg");
     }
@@ -611,7 +637,6 @@ h4 {
         content: url("../assets/portfolio/tablet/image-prototype.jpg");
     }
 }
-
 @media (max-width: 768px) {
     .featured {
         position: relative;
@@ -626,7 +651,6 @@ h4 {
         line-height: 52px;
         letter-spacing: -1.71px;
     }
-
     .featured-container :is(.hero-text) {
         margin: 0 0 23px 24px;
         padding: unset;
@@ -710,7 +734,6 @@ footer {
         padding: 0 0 0 clamp(40px, 3.5vw, 85px);
     }
 }
-
 @media (max-width: 768px) {
     :is(footer, .footer-body, .footer-menu) {
         flex-direction: column;
@@ -738,5 +761,118 @@ footer {
     .footer-end {
         position: static;
         margin-block: 31px 6rem;
+    }
+}
+/*Portfolio page*/
+.portfolio-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(200px, 1fr));
+    column-gap: 30px;
+    row-gap: 32px;
+    margin-bottom: 160px;
+}
+.portfolio-img {
+    display: block;
+    width: 100%;
+}
+.portfolio-grid .image-filter {
+    width: fit-content;
+}
+.portfolio-grid .image-filter:after {
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));
+}
+.portfolio-grid .featured-container .hero-text {
+    bottom: 0;
+    left: 0;
+    margin: 0 0 39px 40px;
+    height: unset;
+}
+/*Portfolio page responsiveness*/
+@media (max-width: 1024px) {
+    .portfolio-grid {
+        grid-template-columns: 1fr;
+        row-gap: 24px;
+    }
+    .portfolio-grid :is(.image-filter) {
+        width: 100%;
+    }
+}
+@media (min-width: 769px) and (max-width: 1024px) {
+    #portfolio-seraph {
+        content: url("../assets/portfolio/tablet/image-seraph.jpg");
+    }
+    #portfolio-eebox {
+        content: url("../assets/portfolio/tablet/image-eebox.jpg");
+    }
+    #portfolio-federal {
+        content: url("../assets/portfolio/tablet/image-federal.jpg");
+    }
+    #portfolio-sol {
+        content: url("../assets/portfolio/tablet/image-del-sol.jpg");
+    }
+    #portfolio-prototype {
+        content: url("../assets/portfolio/tablet/image-prototype.jpg");
+    }
+    #portfolio-228b {
+        content: url("../assets/portfolio/tablet/image-228b.jpg");
+    }
+    #portfolio-edelweiss {
+        content: url("../assets/portfolio/tablet/image-edelweiss.jpg");
+    }
+    #portfolio-netcry {
+        content: url("../assets/portfolio/tablet/image-netcry.jpg");
+    }
+    #portfolio-hypers {
+        content: url("../assets/portfolio/tablet/image-hypers.jpg");
+    }
+    #portfolio-sxiv {
+        content: url("../assets/portfolio/tablet/image-sxiv.jpg");
+    }
+    #portfolio-trinity {
+        content: url("../assets/portfolio/tablet/image-trinity.jpg");
+    }
+    #portfolio-paramour {
+        content: url("../assets/portfolio/tablet/image-paramour.jpg");
+    }
+}
+@media (max-width: 768px) {
+    .portfolio-grid {
+        margin-inline: 32px;
+    }
+    #portfolio-seraph {
+        content: url("../assets/portfolio/mobile/image-seraph.jpg");
+    }
+    #portfolio-eebox {
+        content: url("../assets/portfolio/mobile/image-eebox.jpg");
+    }
+    #portfolio-federal {
+        content: url("../assets/portfolio/mobile/image-federal.jpg");
+    }
+    #portfolio-sol {
+        content: url("../assets/portfolio/mobile/image-del-sol.jpg");
+    }
+    #portfolio-prototype {
+        content: url("../assets/portfolio/mobile/image-prototype.jpg");
+    }
+    #portfolio-228b {
+        content: url("../assets/portfolio/mobile/image-228b.jpg");
+    }
+    #portfolio-edelweiss {
+        content: url("../assets/portfolio/mobile/image-edelweiss.jpg");
+    }
+    #portfolio-netcry {
+        content: url("../assets/portfolio/mobile/image-netcry.jpg");
+    }
+    #portfolio-hypers {
+        content: url("../assets/portfolio/mobile/image-hypers.jpg");
+    }
+    #portfolio-sxiv {
+        content: url("../assets/portfolio/mobile/image-sxiv.jpg");
+    }
+    #portfolio-trinity {
+        content: url("../assets/portfolio/mobile/image-trinity.jpg");
+    }
+    #portfolio-paramour {
+        content: url("../assets/portfolio/mobile/image-paramour.jpg");
     }
 }
