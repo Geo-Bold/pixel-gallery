@@ -104,7 +104,7 @@ h4 {
     max-width: 1423px;
     width: 100%;
     padding-inline: clamp(97px, 12vw, 156.5px) clamp(98px, 12vw, 156.5px);
-    overflow-x: hidden;
+    overflow: hidden;
 }
 /*Default element responsiveness*/
 @media (max-width: 768px) {
@@ -207,7 +207,6 @@ h4 {
         display: none;
     }
 }
-
 @media (max-width: 768px) {
     .navbar {
         position: relative;
@@ -238,9 +237,11 @@ h4 {
         margin-block-end: unset;
     }
     .navbar-burger {
+        position: absolute;
+        right: 22px;
         height: 5rem;
         width: fit-content;
-        margin-right: unset;
+        margin: unset;
     }
     .anchor::after {
         display: none;
