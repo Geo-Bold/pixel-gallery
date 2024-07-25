@@ -12,11 +12,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Closes the burger menu when the user scrolls
 
-    document.querySelector("#inner-container").addEventListener("scroll", () => {
+    document.addEventListener("scroll", () => { 
 
         document.querySelector(".navbar-menu").classList.remove('is-active');
 
         document.querySelector(".anchor").classList.remove("active")
+
+        document.querySelector(".ham").classList.remove("active")
 
     })
 
@@ -131,5 +133,5 @@ document.addEventListener("DOMContentLoaded", () => {
         })
 
     }
-
+    
 })
