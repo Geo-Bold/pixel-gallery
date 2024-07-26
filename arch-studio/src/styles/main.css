@@ -352,6 +352,7 @@ h4 {
 .hero-text p {
     max-width: 27.8rem;
     color: var(--color-white);
+    letter-spacing: 0px;
 }
 .hero-text h2 {
     margin-bottom: 10px;
@@ -607,6 +608,7 @@ h4 {
 .featured-header h3 {
     display: block;
     height: 3.25rem;
+    margin-top: 10px;
 }
 .featured-grid .image-filter {
     max-height: 35rem;
