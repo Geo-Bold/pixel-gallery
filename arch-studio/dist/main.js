@@ -74,7 +74,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 
                 const heroImageEl = document.getElementById('hero-img');
 
-                heroImageEl.src = `../src/assets/home/desktop/image-hero-${el.dataset.portfolio}.jpg`;
+                heroImageEl.src = `./src/assets/home/desktop/image-hero-${el.dataset.portfolio}.jpg`;
                 
                 // Update text
                 
