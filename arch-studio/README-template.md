@@ -2,18 +2,19 @@
 
 ## Table of contents
 
-- [Overview](#overview)
-  - [The challenge](#the-challenge)
-  - [Screenshot](#screenshot)
-  - [Links](#links)
-- [My process](#my-process)
-  - [Built with](#built-with)
-  - [What I learned](#what-i-learned)
-  - [Continued development](#continued-development)
-  - [Useful resources](#useful-resources)
-- [Author](#author)
-- [Acknowledgments](#acknowledgments)
-- [Project Log](#project-log)
+- [Arch Studio multi-page website](#arch-studio-multi-page-website)
+  - [Table of contents](#table-of-contents)
+  - [Overview](#overview)
+    - [The challenge](#the-challenge)
+    - [Screenshot](#screenshot)
+    - [Links](#links)
+  - [My process](#my-process)
+    - [Built with](#built-with)
+    - [What I learned](#what-i-learned)
+    - [Continued development](#continued-development)
+    - [Useful resources](#useful-resources)
+  - [Author](#author)
+  - [Acknowledgments](#acknowledgments)
 
 ## Overview
 
@@ -30,15 +31,7 @@ Users should be able to:
 
 ### Screenshot
 
-![](./screenshot.jpg)
-
-Add a screenshot of your solution. The easiest way to do this is to use Firefox to view your project, right-click the page and select "Take a Screenshot". You can choose either a full-height screenshot or a cropped one based on how long the page is. If it's very long, it might be best to crop it.
-
-Alternatively, you can use a tool like [FireShot](https://getfireshot.com/) to take the screenshot. FireShot has a free option, so you don't need to purchase it. 
-
-Then crop/optimize/edit your image however you like, add it to your project, and update the file path in the image above.
-
-**Note: Delete this note and the paragraphs above when you add your screenshot. If you prefer not to add a screenshot, feel free to remove this entire section.**
+![](./src/assets/preview.jpg)
 
 ### Links
 
@@ -54,64 +47,30 @@ Then crop/optimize/edit your image however you like, add it to your project, and
 - Flexbox
 - CSS Grid
 - Mobile-first workflow
-- [React](https://reactjs.org/) - JS library
-- [Next.js](https://nextjs.org/) - React framework
-- [Styled Components](https://styled-components.com/) - For styles
-
-**Note: These are just examples. Delete this note and replace the list above with your own choices**
+- LeafletJS
+- Bulma - custom CSS library
 
 ### What I learned
 
-Use this section to recap over some of your major learnings while working through this project. Writing these out and providing code samples of areas you want to highlight is a great way to reinforce your own knowledge.
-
-To see how you can add code snippets, see below:
-
-```html
-<h1>Some HTML code I'm proud of</h1>
-```
-```css
-.proud-of-this-css {
-  color: papayawhip;
-}
-```
-```js
-const proudOfThisFunc = () => {
-  console.log('🎉')
-}
-```
-
-If you want more help with writing markdown, we'd recommend checking out [The Markdown Guide](https://www.markdownguide.org/) to learn more.
-
-**Note: Delete this note and the content within this section and replace with your own learnings.**
+While it may not have felt like it during debugging, this project was by far my favorite to complete. I learned how to implement image filters, gradients and had more experience positioning elements absolutely than ever before. As a result, this project took a long time to design and implement from scratch. While I am pleased that the final product shares an almost pixel perfect resemblance to what the artist envisioned, I must admit that my approach to styling elements has not been optimized and can be done with a drastic improvement in efficiency. More time spent in the planning phase will pay dividends in the implementation of the CSS classes. This critique aside, I was pleased by the results of the logic for the contact page, especially implementing the map and form validation features.
 
 ### Continued development
 
-Use this section to outline areas that you want to continue focusing on in future projects. These could be concepts you're still not completely comfortable with or techniques you found useful that you want to refine and perfect.
-
-**Note: Delete this note and the content within this section and replace with your own plans for continued development.**
+Working on this project exposed me to quite the range of new tools and features, but it also exposed a glaring weakness in my styling. My approach of styling section by individual section is both time consuming and needlessly repetetive. Taking more time to distill overarching themes in the element structure of a website can allow for the creation of modular classes than can be applied to many elements which can then be tweaked as required to acheive a more tailored design. Also, I am well aware of my tendency to fight the browser by defining dimensions as well as margin and padding. For my next project I intend to flow like water.
 
 ### Useful resources
 
-- [Example resource 1](https://www.example.com) - This helped me for XYZ reason. I really liked this pattern and will use it going forward.
-- [Example resource 2](https://www.example.com) - This is an amazing article which helped me finally understand XYZ. I'd recommend it to anyone still learning this concept.
+- [Kevin Powell](https://www.kevinpowell.co/) - His videos explaining responsive design were quite useful.
+- [Web Dev Simplified](https://www.youtube.com/@WebDevSimplified/featured) - Clean, clear and descriptive videos detailing new HTML and CSS features or showcasing existing features help stimulate my creativity and problem solving.
+- [MDN](https://developer.mozilla.org/en-US/) = A classic tool to discover more about every aspect of front end development.
 
-**Note: Delete this note and replace the list above with resources that helped you during the challenge. These could come in handy for anyone viewing your solution or for yourself when you look back on this project in the future.**
 
 ## Author
 
-- Website - [Add your name here](https://www.your-site.com)
-- Frontend Mentor - [@yourusername](https://www.frontendmentor.io/profile/yourusername)
-- Twitter - [@yourusername](https://www.twitter.com/yourusername)
-
-**Note: Delete this note and add/remove/edit lines above based on what links you'd like to share.**
+- Website - [Geo Archbold](https://geobold.dev)
+- Frontend Mentor - [@Geo-Bold](https://www.frontendmentor.io/profile/Geo-Bold)
+- Twitter - [@a_edgeorge](https://x.com/a_edgeorge)
 
 ## Acknowledgments
 
-This is where you can give a hat tip to anyone who helped you out on this project. Perhaps you worked in a team or got some inspiration from someone else's solution. This is the perfect place to give them some credit.
-
-## Project Log
-
-#### 07/13/2024
-    - init: the project files for the website are downloaded and created.
-    - refactor: features will be added to the website in the feature-branch and then pulled into main as per good documentation standards.
-    - log messages will be appended daily to the master branch readme to track progress over time. 
+A special thank you to Peter W. for his help with UI testing and discovering bugs.
