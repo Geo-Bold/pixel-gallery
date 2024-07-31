@@ -1,0 +1,72 @@
+:root {
+    --background-color: #191921;
+    --container-color: #313140;
+    --brand-blue: #3CBEFF;
+    --brand-light-blue: #EBF8FF;
+    --brand-blue-hover: #ADE4FF;
+    --link-github-color: ;
+    --link-frontendmentor-color: ;
+    --link-twitter-color: ;
+    --link-linkedin-color: ;
+    --link-youtube-color: ;
+    --link-facebook-color: ;
+    --link-twitch-color: ;
+    --link-devto-color: ;
+    --link-codewars-color: ;
+    --link-freeCodeCamp-color: ;
+    --link-gitlab-color: ;
+    --link-stackoverflow-color: ;
+    --link-discord-color: ;
+}
+
+@font-face {
+    font-family: "Instrument Sans";
+    src: url("../assets/fonts/InstrumentSans-VariableFont_wdth\,wght.ttf");
+    font-weight: 100 900;
+    font-style: normal;
+}
+
+body {
+    font-family: "Instrument Sans", serif;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    margin: unset;
+    background-color: var(--background-color);
+    line-height: 1.5;
+    color: var(--brand-light-blue);
+    padding: 1.5rem;
+}
+h1 {
+    font-weight: bold;
+    font-size: 2rem;
+}
+h2 {
+    font-weight: bold;
+    font-size: 1rem;
+}
+a {
+
+}
+.container {
+    max-width: 90rem;
+    width: 100%;
+    background-color: var(--background-color);
+}
+.button {
+    padding: 11px 27px 11px 27px;
+}
+
+.selected {
+
+}
+.button-icon {}
+.button-text {}
+
+/*Navbar styles*/
+
+navbar  {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
