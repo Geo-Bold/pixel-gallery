@@ -28,5 +28,5 @@ Welcome to my personal portfolio, a living record of my passion, struggle and pr
 ```
 
 ## 📫 Contact Me
-Discord: irn.mn
+Reach out on [Discord](https://discord.gg/aUWAVGw4)!
 
