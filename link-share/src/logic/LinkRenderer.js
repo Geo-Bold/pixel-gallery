@@ -1,9 +1,6 @@
 export class LinkRenderer {
 
-    static platformData = ['github', 'youtube', 'frontend-mentor', 'twitter', 'linkedin', 'facebook', 'twitch', 'devto', 'codewars', 'codepen', 'freecodecamp', 'gitlab', 'hashnode', 'stack-overflow']
-    static platformOptions = ['GitHub', 'YouTube', 'Frontend Mentor', 'Twitter', 'LinkedIn', 'Facebook', 'Twitch', 'Dev.to', 'Codewars', 'Codepen', 'freeCodeCamp', 'GitLab', 'Hashnode', 'Stack Overflow']
-
-    static render(link, linkContainer, previewContainer) {
+    static render(link, inputObj) {
 
         const linkEl = document.createElement('div')
 
@@ -13,17 +10,17 @@ export class LinkRenderer {
 
         linkEl.setAttribute('draggable', 'true')
 
-        linkEl.append(LinkRenderer.#createHeader(link, linkContainer, previewContainer))
+        linkEl.append(LinkRenderer.#createHeader(link, inputObj.linkParent, inputObj.previewParent))
 
-        linkEl.append(LinkRenderer.#createCombobox(link))
+        linkEl.append(LinkRenderer.#createCombobox(link, inputObj.platformData))
 
         linkEl.append(LinkRenderer.#createUrlInput(link))
 
-        linkContainer.append(linkEl)
+        inputObj.linkParent.append(linkEl)
 
-        previewContainer.append(LinkRenderer.#updateMobilePreview(link))
+        inputObj.previewParent.append(LinkRenderer.#updateMobilePreview(link))
 
-        LinkRenderer.#createDragEventListeners(linkEl, linkContainer)
+        LinkRenderer.#createDragEventListeners(linkEl, inputObj.linkParent, link)
         
         document.addEventListener('click', (e) => { LinkRenderer.#comboboxCloseMenu(e, link) })
 
@@ -77,7 +74,7 @@ export class LinkRenderer {
 
     }
 
-    static #createCombobox(link) {
+    static #createCombobox(link, platformData) {
 
         const comboboxContainer = document.createElement('div')
 
@@ -91,7 +88,7 @@ export class LinkRenderer {
 
         customCombobox.classList.add('custom-select')
 
-        const selectedDiv = LinkRenderer.#createComboboxOption(LinkRenderer.platformOptions[0], LinkRenderer.platformData[0])
+        const selectedDiv = LinkRenderer.#createComboboxOption(platformData[0])
 
         selectedDiv.classList.add('select-selected')
 
@@ -113,13 +110,13 @@ export class LinkRenderer {
 
         selectItems.id = `select-items${link.getId()}`
 
-        for (let i = 0; i < LinkRenderer.platformOptions.length; i++) {
+        for (let i = 0; i < platformData.length; i++) {
 
-            const optionDiv = LinkRenderer.#createComboboxOption(LinkRenderer.platformOptions[i], LinkRenderer.platformData[i])
+            const optionDiv = LinkRenderer.#createComboboxOption(platformData[i])
 
             optionDiv.addEventListener('click', (event) => {
 
-                LinkRenderer.#comboboxUpdatePlatform(optionDiv.dataset.url, link, LinkRenderer.platformOptions[i])
+                LinkRenderer.#comboboxUpdatePlatform(optionDiv.innerText ,optionDiv.dataset.url, link)
 
                 LinkRenderer.#comboboxCloseMenu(event, link)
 
@@ -163,6 +160,8 @@ export class LinkRenderer {
 
         input.placeholder = 'https://github.com/Geo-Bold'
 
+        input.addEventListener('change', LinkRenderer.valid)
+
         inputContainer.append(input)
 
         urlInputContainer.append(label)
@@ -185,11 +184,11 @@ export class LinkRenderer {
 
             previewEl.id = `preview-${link.getId()}`
 
-            const icon = LinkRenderer.#createIcon(link.getIconPath())
+            const icon = LinkRenderer.#createIcon(link.getPlatformData().icon)
 
             const title = document.createElement('p')
             
-            title.innerText = `${link.getPlatform()}`
+            title.innerText = `${link.getPlatformData().title}`
 
             const arrowDiv = document.createElement('div')
 
@@ -209,11 +208,11 @@ export class LinkRenderer {
 
         } else if (link.getId() < 6) {
 
-            const icon = LinkRenderer.#createIcon(link.getIconPath())
+            const icon = LinkRenderer.#createIcon(link.getPlatformData().icon)
 
             existingPreview.firstChild.replaceWith(icon)
 
-            existingPreview.querySelector('p').innerText = `${link.getPlatform()}`
+            existingPreview.querySelector('p').innerText = `${link.getPlatformData().title}`
 
         }
         
@@ -227,25 +226,25 @@ export class LinkRenderer {
 
     }
 
-    static #createComboboxOption(optionText, dataUrl) {
+    static #createComboboxOption(platformData) {
 
         const container = document.createElement('div')
 
-        container.dataset.url = `${dataUrl}`
+        container.dataset.url = `${platformData.icon}`
 
-        container.append(LinkRenderer.#createIcon(dataUrl))
+        container.append(LinkRenderer.#createIcon(platformData.icon))
 
-        container.appendChild(document.createTextNode(`${optionText}`))
+        container.appendChild(document.createTextNode(`${platformData.title}`))
         
         return container
 
     }
 
-    static #createIcon(url) {
+    static #createIcon(icon) {
 
         const iconContainer = document.createElement('div')
 
-        fetch(`./src/assets/images/icon-${url}.svg`)
+        fetch(`./src/assets/images/icon-${icon}.svg`)
 
             .then(response => response.text())
 
@@ -257,15 +256,11 @@ export class LinkRenderer {
 
     }
 
-    static #comboboxUpdatePlatform(url, link, title) {
+    static #comboboxUpdatePlatform(title, url, link) {
 
-        link.setPlatform(title) 
-
-        link.setIconPath(url)
+        link.setPlatformData(title, url)
 
         LinkRenderer.#updateMobilePreview(link)
-
-        const selectedIndex = LinkRenderer.platformData.indexOf(url)
 
         const selected = document.getElementById(`selected-${link.getId()}`)
 
@@ -273,7 +268,7 @@ export class LinkRenderer {
 
         selected.append(LinkRenderer.#createIcon(url))
 
-        selected.appendChild(document.createTextNode(LinkRenderer.platformOptions[selectedIndex]))
+        selected.appendChild(document.createTextNode(title))
 
     }
 
@@ -303,8 +298,6 @@ export class LinkRenderer {
 
     }
 
-    static getDefaultPlatform() { return LinkRenderer.platformData }
-
     static #destroy(link, linkContainer) { 
 
         const node = document.getElementById(`link-${link.getId()}`)
@@ -333,7 +326,7 @@ export class LinkRenderer {
 
     }
 
-    static #createDragEventListeners(linkEl, linkContainer) {
+    static #createDragEventListeners(linkEl, linkBody, link) {
 
         linkEl.addEventListener('dragstart', (e) => {
 
@@ -345,23 +338,23 @@ export class LinkRenderer {
 
         })
 
-        linkContainer.addEventListener('dragover', (e) => {
+        linkBody.addEventListener('dragover', (e) => {
 
             e.preventDefault() // Allow dropping
 
             const draggedElement = document.querySelector('.dragging')
 
-            const afterElement = LinkRenderer.getDragAfterElement(linkContainer, e.clientY)
+            const afterElement = LinkRenderer.getDragAfterElement(linkBody, e.clientY)
         
             if (afterElement) {
 
-                linkContainer.insertBefore(draggedElement, afterElement)
+                linkBody.insertBefore(draggedElement, afterElement)
 
             } else {
 
-                if (draggedElement !== linkContainer.lastElementChild) {
+                if (draggedElement !== linkBody.lastElementChild) {
 
-                    linkContainer.append(draggedElement)
+                    linkBody.append(draggedElement)
 
                 }
 

@@ -3,46 +3,67 @@ import { LinkRenderer } from './LinkRenderer.js'
 export class Link {
     
     #id
-    #platform
+    #platformData
     #iconPath
     #url
     #userId
     #profile
-    static #validId = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
+    linkInputData
+    static #validId = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
 
-    constructor(userId, profile, linkBody, previewBody) {
+    constructor(linkInputData) {
 
-        this.#userId = userId ?? "anon"
+        this.linkInputData = linkInputData
+
+        this.#userId = linkInputData.userId ?? "anon"
 
         this.#id = Link.#validId.shift()
 
-        this.#platform = LinkRenderer.platformOptions[0]
+        this.#platformData = linkInputData.platformData[0]
 
-        this.#iconPath = LinkRenderer.platformData[0]
+        this.#profile = linkInputData.profile
 
-        this.#profile = profile
-
-        if (this.#id < 15) LinkRenderer.render(this, linkBody, previewBody)
+        if (this.#id < 15) LinkRenderer.render(this, linkInputData)
 
     }
 
     getId() { return this.#id }
 
-    getPlatform() { return this.#platform }
+    getPlatformData() { return this.#platformData }
 
-    getIconPath() { return this.#iconPath }
-
-    setIconPath(path) { this.#iconPath = path } 
-
-    setPlatform(platform) { this.#platform = platform }
+    setPlatformData(title, icon) { this.#platformData = { title: title, icon: icon } }
     
-    setUrl() {  }
+    getUrl() {  }
+    
+    setUrl(inputUrl) { 
+        
+        this.linkInputData.forEach(platform => {
+
+            if (platform.urlPattern.test(inputUrl)) {
+
+                this.#url = inputUrl
+
+                this.store()
+
+            }
+            
+            else {  } // Error handling required
+
+        })
+    
+    }
+
+    store() {
+
+        
+
+    }
 
     destroy() { 
 
-        Link.#validId.unshift(this.#id)
+        Link.#validId.unshift(this.#id) // Recycles the valid id
         
-        this.#profile.removeLink(this) // Method to delete the calling link object
+        this.#profile.removeLink(this) // Removes the link from the profile linkArray
 
      }
 
