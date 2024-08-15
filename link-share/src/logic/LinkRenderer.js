@@ -1,3 +1,5 @@
+import { Link } from "./Link.js"
+
 export class LinkRenderer {
 
     static render(link, inputObj) {
@@ -14,7 +16,7 @@ export class LinkRenderer {
 
         linkEl.append(LinkRenderer.#createCombobox(link, inputObj.platformData))
 
-        linkEl.append(LinkRenderer.#createUrlInput(link))
+        linkEl.append(LinkRenderer.#createUrlInput(link, inputObj.platformData))
 
         inputObj.linkParent.append(linkEl)
 
@@ -138,7 +140,7 @@ export class LinkRenderer {
         
     }
 
-    static #createUrlInput(link) {
+    static #createUrlInput(link, inputObj) {
 
         const urlInputContainer = document.createElement('div')
 
@@ -160,7 +162,11 @@ export class LinkRenderer {
 
         input.placeholder = 'https://github.com/Geo-Bold'
 
-        input.addEventListener('change', LinkRenderer.valid)
+        input.addEventListener('change', () => {
+
+            link.validateUrl(input.value, inputObj)
+
+        })
 
         inputContainer.append(input)
 

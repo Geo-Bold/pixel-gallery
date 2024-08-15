@@ -2,68 +2,57 @@ import { LinkRenderer } from './LinkRenderer.js'
 
 export class Link {
     
-    #id
-    #platformData
-    #iconPath
-    #url
-    #userId
-    #profile
-    linkInputData
-    static #validId = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+    id
+    url
+    userId
+    platformData
+    static validId = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
 
     constructor(linkInputData) {
 
-        this.linkInputData = linkInputData
+        this.id = linkInputData.linkId ?? Link.validId.shift()
 
-        this.#userId = linkInputData.userId ?? "anon"
+        this.url = linkInputData.linkUrl ?? undefined
 
-        this.#id = Link.#validId.shift()
+        this.userId = linkInputData.profile.userId ?? 'anon'
 
-        this.#platformData = linkInputData.platformData[0]
+        this.platformData = linkInputData.linkPlatformData ?? linkInputData.platformData[0]
 
-        this.#profile = linkInputData.profile
-
-        if (this.#id < 15) LinkRenderer.render(this, linkInputData)
+        if (this.id < 15) LinkRenderer.render(this, linkInputData)
 
     }
 
-    getId() { return this.#id }
+    getId() { return this.id }
 
-    getPlatformData() { return this.#platformData }
+    getPlatformData() { return this.platformData }
 
-    setPlatformData(title, icon) { this.#platformData = { title: title, icon: icon } }
+    setPlatformData(title, icon) { this.platformData = { title: title, icon: icon } }
     
     getUrl() {  }
     
-    setUrl(inputUrl) { 
+    validateUrl(userInputUrl, linkInputData, profile) { 
         
-        this.linkInputData.forEach(platform => {
+        linkInputData.forEach(platform => {
 
-            if (platform.urlPattern.test(inputUrl)) {
+            if (platform.urlPattern.test(userInputUrl)) {
 
-                this.#url = inputUrl
+                this.url = userInputUrl
 
-                this.store()
+                profile.setLink(this.url)
+
+                return true
 
             }
             
-            else {  } // Error handling required
-
         })
     
     }
 
-    store() {
+    destroy(profile) { 
 
+        Link.validId.unshift(this.id) // Recycles the valid id
         
-
-    }
-
-    destroy() { 
-
-        Link.#validId.unshift(this.#id) // Recycles the valid id
-        
-        this.#profile.removeLink(this) // Removes the link from the profile linkArray
+        profile.removeLink(this) // Removes the link from the profile linkArray
 
      }
 
