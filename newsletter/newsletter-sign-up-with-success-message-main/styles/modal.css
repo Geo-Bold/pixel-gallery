@@ -23,11 +23,13 @@
     font-size: 2.75em;
     font-weight: bold;
     line-height: 1;
+    margin-bottom: 1rem;
 }
 .label {
     font-size: 1em;
     line-height: 1.5;
     font-weight: 400;
+    margin-bottom: 1.5rem;
 }
 @media screen and (max-width: 650px){
     .modal-background {
@@ -39,6 +41,9 @@
         display: flex;
         flex-direction: column;
         justify-content: center;
+    }
+    .modal-card-body > div:nth-of-type(1) {
+        margin-bottom: 1.5rem;
     }
     .modal-card {
         height: 100vh;
