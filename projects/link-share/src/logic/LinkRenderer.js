@@ -20,15 +20,19 @@ export class LinkRenderer {
 
         linkEl.append(LinkRenderer.#createUrlInput(link)) 
 
-        LinkRenderer.renderInfo.linkParent.append(linkEl)
+        if (LinkRenderer.renderInfo.linkParent) {
 
-        LinkRenderer.updateIntroductionNode()
+            LinkRenderer.renderInfo.linkParent.append(linkEl)
 
-        LinkRenderer.renderInfo.previewParent.append(LinkRenderer.#updateMobilePreview(link))
+            LinkRenderer.updateIntroductionNode()
 
-        LinkRenderer.#createDragEventListeners(linkEl, link)
+            LinkRenderer.#createDragEventListeners(linkEl, link)
+
+            document.addEventListener('click', (e) => { LinkRenderer.#comboboxCloseMenu(e, link) })
+
+        }
         
-        document.addEventListener('click', (e) => { LinkRenderer.#comboboxCloseMenu(e, link) })
+        if (LinkRenderer.renderInfo.previewParent) LinkRenderer.renderInfo.previewParent.append(LinkRenderer.#updateMobilePreview(link))
 
     }
 
@@ -96,11 +100,11 @@ export class LinkRenderer {
 
         const selectedDiv = LinkRenderer.#createComboboxOption(link.platformData) 
 
-        selectedDiv.classList.add('select-selected')
+        selectedDiv.classList.add('select-selected') // Renders the selected menu option
 
         selectedDiv.id = `selected-${link.linkId}`
 
-        selectedDiv.addEventListener('click', e => {
+        selectedDiv.addEventListener('click', e => { // Toggles the menu state
 
             selectedDiv.classList.add('blue-border')
 
@@ -110,7 +114,7 @@ export class LinkRenderer {
 
         })
 
-        const selectItems = document.createElement('div')
+        const selectItems = document.createElement('div') // Renders the menu options
 
         selectItems.className = 'select-items select-hide'
 
@@ -193,7 +197,7 @@ export class LinkRenderer {
         return urlInputContainer
 
     }
-
+    // Creates a mobile link preview for the first six links
     static #updateMobilePreview(link) {
 
         const existingPreview = document.getElementById(`preview-${link.linkId}`)
@@ -239,7 +243,7 @@ export class LinkRenderer {
         }
         
     }
-
+    // Removes the mobile link preview
     static #destroyMobilePreview(link) { //fixed
 
         const previewEl = document.getElementById(`preview-${link.linkId}`)
@@ -265,23 +269,39 @@ export class LinkRenderer {
         return container
 
     }
-
+    // Helper function that retrieves svg files to create icons 
     static #createIcon(icon) {
 
         const iconContainer = document.createElement('div')
 
-        fetch(`./src/assets/images/icon-${icon}.svg`)
+        if (LinkRenderer.renderInfo.linkParent) {
 
-            .then(response => response.text())
+            fetch(`./src/assets/images/icon-${icon}.svg`)
 
-            .then(svgContent => { iconContainer.innerHTML = svgContent })
+                .then(response => response.text())
 
-            .catch(error => console.error('Error loading SVG:', error))
+                .then(svgContent => { iconContainer.innerHTML = svgContent })
 
+                .catch(error => console.error('Error loading SVG:'))
+
+
+        } else {
+
+            fetch(`../src/assets/images/icon-${icon}.svg`)
+
+                .then(response => response.text())
+
+                .then(svgContent => { iconContainer.innerHTML = svgContent })
+
+                .catch(error => console.error('Error loading SVG:'))
+
+
+        }
+        
         return iconContainer
 
     }
-
+    // Updates the selected menu option
     static #comboboxUpdatePlatform(title, url, link) {
 
         link.setPlatformData(title, url)

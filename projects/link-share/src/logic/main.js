@@ -4,8 +4,8 @@ import { Profile } from './Profile.js'
 import { LocalStorage } from './LocalStorage.js'
 
 document.addEventListener('DOMContentLoaded', (event) => {
-
-    LinkRenderer.renderInfo = {
+    // Preloads the LinkRenderer with the link parent and mobile preview parent elements as well as the menu options for each link.
+    LinkRenderer.renderInfo = { 
 
         linkParent: document.querySelector('.link-body'), // Container in which the link objects will be rendered
 
@@ -35,10 +35,12 @@ document.addEventListener('DOMContentLoaded', (event) => {
     let profile = new Profile({})
 
     const storedData = new LocalStorage('link-app').returnAllValues()
-
+    // Checks for an existing profile in storage to preload, otherwise creates a new profile.
     if (Object.keys(storedData).length > 0) {
 
         profile = profile.loadProfileFromStorage(storedData.profile)
+
+        console.log(profile.getLink(0))
 
     }
 
@@ -54,13 +56,11 @@ document.addEventListener('DOMContentLoaded', (event) => {
         }) // TESTING only
 
     }
+    console.log(profile.getLink(0))
+    // Creates and renders a generic link. It is only saved once a valid link has been entered.
+
+    const createLinkButton = document.querySelector('.link-container > button')
     
-    /* Create a new link element */
-
-    const createLinkButton = document.querySelector('.link-container > button').addEventListener('click', () => {
-
-        new Link({})
-
-    })
+    if (createLinkButton) createLinkButton.addEventListener('click', () => new Link({}) )
 
 })
