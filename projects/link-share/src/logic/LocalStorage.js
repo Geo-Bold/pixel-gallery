@@ -16,7 +16,9 @@ export class LocalStorage {
 
         const storageData = localStorage.getItem(this.#storageKey)
 
-        return storageData ? JSON.parse(storageData) : {}
+        if (storageData) return JSON.parse(storageData)
+            
+        else return {}
 
     }
 

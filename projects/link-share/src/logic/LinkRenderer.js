@@ -164,7 +164,7 @@ export class LinkRenderer {
 
         const input = document.createElement('input')
 
-        input.classList.add('platform-url')
+        input.classList.add('input-field')
 
         input.setAttribute('type', 'url')
         
