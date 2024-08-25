@@ -1,4 +1,5 @@
 import { LocalStorage } from "./LocalStorage.js"
+import { Renderer } from "./Renderer.js"
 import { Link } from './Link.js'
 
 export class Profile {
@@ -7,9 +8,9 @@ export class Profile {
     lastName
     email
     url
-    linkArray
+    linkArray = []
 
-    constructor(data) {
+    constructor(data = {}) {
 
         this.firstName = data.firstName ?? null
 
@@ -18,12 +19,16 @@ export class Profile {
         this.email = data.email ?? null
 
         this.url = data.url ?? null
-        
-        this.linkArray = []
 
+        if (Object.keys(data).length > 0) data.linkArray.forEach(link => this.addLink(new Link(link)) )
+
+        Renderer.render(this, 'profile')
+        
         document.addEventListener('linkDeleted', (e) => { this.removeLink(e.detail.link) })
 
         document.addEventListener('linkCreated', (e) => { this.addLink(e.detail.link) })
+
+        document.addEventListener('profilePageSaved', (e) => { this.updateFields(e) })
 
     } 
 
@@ -39,8 +44,8 @@ export class Profile {
 
     removeLink(link) { 
 
-        Link.validId.unshift(link.linkId) // Recycles the valid id
-        
+        Link.validId.unshift(link.linkId)
+
         this.linkArray = this.linkArray.filter(obj => obj.linkId !== link.linkId)
         
         this.saveProfile()
@@ -53,13 +58,16 @@ export class Profile {
         localStorage.setItem('profile', this) 
     
     }
-    // Reconstructs a profile and links from JSON strings
-    loadProfileFromStorage(data) {
 
-        let loadedProfile = new Profile(data) // Reconstructs the profile
+    updateFields(event) {
 
-        data.linkArray.forEach(link => loadedProfile.addLink(new Link(link)) ) // Reconstructs link objects and adds them to the profile
-        return loadedProfile
+        this.firstName = event.detail.firstName
+
+        this.lastName = event.detail.lastName
+
+        this.email = event.detail.email
+
+        this.saveProfile()
 
     }
 

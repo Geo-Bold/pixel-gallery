@@ -1,15 +1,19 @@
 import { Link } from './Link.js'
-import { LinkRenderer } from './LinkRenderer.js'
+import { Renderer } from './Renderer.js'
 import { Profile } from './Profile.js'
 import { LocalStorage } from './LocalStorage.js'
 
 document.addEventListener('DOMContentLoaded', (event) => {
-    // Preloads the LinkRenderer with the link parent and mobile preview parent elements as well as the menu options for each link.
-    LinkRenderer.renderInfo = { 
+
+    // Preloads the Renderer with the link parent and mobile preview parent elements as well as the menu options for each link.
+
+    Renderer.renderInfo = { 
 
         linkParent: document.querySelector('.link-body'), // Container in which the link objects will be rendered
 
         previewParent: document.querySelector('.link-preview'), // Container where the mobile previews will be rendered
+
+        profileForm: document.querySelector('.profile-form'),
 
         platformData: [
 
@@ -32,35 +36,28 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
     }
 
-    let profile = new Profile({})
-
     const storedData = new LocalStorage('link-app').returnAllValues()
-    // Checks for an existing profile in storage to preload, otherwise creates a new profile.
-    if (Object.keys(storedData).length > 0) {
 
-        profile = profile.loadProfileFromStorage(storedData.profile)
+    let profile = new Profile(storedData.profile) // Loads existing profile from storage or creates a new profile.
 
-        console.log(profile.getLink(0))
-
-    }
-
-    else {
-
-        profile = new Profile({
-
-            firstName: 'John',
-            lastName: 'Doe',
-            email: 'test@gmail.com',
-            url: 'http://testurl.com'
-    
-        }) // TESTING only
-
-    }
-    console.log(profile.getLink(0))
-    // Creates and renders a generic link. It is only saved once a valid link has been entered.
+    // Creates and renders a generic link
 
     const createLinkButton = document.querySelector('.link-container > button')
     
-    if (createLinkButton) createLinkButton.addEventListener('click', () => new Link({}) )
+    if (createLinkButton) createLinkButton.addEventListener('click', () => {
+
+        Renderer.linkArray.push(new Link({}))
+
+        Renderer.manageLinkPageState()
+
+    } )    
+
+    // Manages the profile page save button state
+
+    if (Renderer.renderInfo.profileForm) Renderer.manageProfilePageState()
+
+    // Manages the save button event for the link and profile pages
+
+    Renderer.manageSaveButtonActions()
 
 })

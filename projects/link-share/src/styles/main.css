@@ -47,6 +47,11 @@ a {
     color: var(--brand-light-blue);
     text-decoration: unset;
 }
+button {
+    line-height: 1.5rem;
+    border: unset;
+    font-size: 1rem;
+}
 button, a {
     font-family: "Instrument Sans", serif;
 }
@@ -199,6 +204,9 @@ button, a {
     align-items: center;
     padding-inline: 1rem;
 }
+.mobile-link > div:nth-child(1) {
+    display: flex;
+}
 .mobile-link :is(object, p) {
     margin: unset;
 }
@@ -222,7 +230,7 @@ button, a {
 }
 .link-body {
     margin-inline: 2.5rem;
-    max-height: 35rem;
+    height: 34.25rem;
     overflow-y: scroll;
     scrollbar-width: none;
 }
@@ -260,6 +268,7 @@ button, a {
     background-color: var(--background-color);
     border-radius: 0.75rem;
     margin-bottom: 1.5rem;
+    max-height: 15rem;
 }
 .link > * {
     margin-bottom: 0.75rem;
@@ -270,6 +279,7 @@ button, a {
     align-items: center;
     column-gap: 0.5rem;
     padding: unset;
+    max-height: 1.5rem;
 }
 .link > header > button {
     justify-self: end;
@@ -404,11 +414,21 @@ button, a {
     margin-right: 8px;
     pointer-events: none; 
 }
+
+/*Dragging events*/
+.dragging {
+    opacity: 0.8; /* Make the dragged element semi-transparent */
+    
+}
+
 /* Hover effect for SVGs */
+
 .select-items > div:hover svg path {
     fill: var(--brand-blue);
 }
+
 /*Profile page*/
+
 .profile-pic, .profile-form {
     background-color: var(--background-color);
     display: grid;

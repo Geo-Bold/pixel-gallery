@@ -1,4 +1,4 @@
-import { LinkRenderer } from './LinkRenderer.js'
+import { Renderer } from './Renderer.js'
 
 export class Link {
     
@@ -10,18 +10,26 @@ export class Link {
 
     constructor(linkInputData) {
 
-        this.linkId = linkInputData.linkId ?? Link.validId.shift()
+        if (linkInputData.linkId) {
+
+            this.linkId = linkInputData.linkId
+            
+            const index = Link.validId.splice(Link.validId.indexOf(linkInputData.linkId), 1) // Removes the existing id from the validId pool
+
+        } else this.linkId = Link.validId.shift()
 
         this.linkUrl = linkInputData.linkUrl ?? null
 
         this.userId = linkInputData.userId ?? null
 
-        this.platformData = linkInputData.platformData ?? LinkRenderer.renderInfo.platformData[0]
+        this.platformData = linkInputData.platformData ?? Renderer.renderInfo.platformData[0]
 
-        if (this.linkId < 15) LinkRenderer.render(this)
+        if (this.linkId < 15) Renderer.render(this, 'link')
+
+        document.addEventListener('linkPageSaved', (e) => { console.log('link saved') })
 
     }
 
     setPlatformData(title, icon) { this.platformData = { title: title, icon: icon } }
-    
+
 }
