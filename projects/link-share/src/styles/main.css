@@ -173,7 +173,6 @@ button, a {
     align-items: center;
 }
 .img-container img {
-    content: url("../assets/images/sample-profile.jpg");
     max-width: 100%;
 }   
 .profile-preview > .name {
@@ -260,8 +259,11 @@ button, a {
     border-top: 1px solid var(--brand-light-blue);
     display: flex;
     justify-content: end;
-    padding: 1.5rem 2.5rem 1.5rem 0;
+    padding: 1.5rem 2.5rem 1.5rem 2.5rem;
     font-weight: 600;
+}
+.link-container > footer:has(#reset) {
+    justify-content: space-between;
 }
 .link {
     padding: 1.25rem;
@@ -441,18 +443,62 @@ button, a {
 .profile-pic {
     grid-template-columns: minmax(auto, 15rem) auto auto;
 }
-.profile-pic > .add-profile-img {
+.profile-pic > .add-profile-input {
+    position: relative;
+    border-radius: inherit;
+    color: var(--brand-blue);
+    width: 12rem;
+    aspect-ratio: 1 / 1;
+    border-radius: inherit;
+    background-color: var(--brand-light-blue);
+    cursor: pointer;
+}
+.profile-pic > .add-profile-input:hover::after {
+    opacity: 0;
+}
+.profile-pic > .add-profile-input:hover :nth-child(3) {
+    opacity: 0;
+}
+.profile-pic > .add-profile-input::after {
+    content: "";
+    background-color: rgba(0, 0, 0, 0.5);
+    position: absolute;
+    top: 0rem;
+    width: 100%;
+    height: 100%;
+    border-radius: inherit;
+    transition: opacity 300ms;
+}
+.add-profile-input.hidden::after {
+    content: none;
+}
+.profile-pic > .add-profile-input > img {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    display: block;
+    border: unset;
+    border-radius: inherit;
+}
+.profile-pic > .add-profile-input > input {
+    display: none;
+}
+.profile-pic > .add-profile-input > div {
+    position: absolute;
+    top: 3.5rem;
+    left: 2.37rem;
+    font-weight: 600;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    border-radius: inherit;
-    width: 12.0625rem;
-    aspect-ratio: 1 / 1;
-    color: var(--brand-blue);
-    background-color: var(--brand-light-blue);
-    font-weight: 600;
+    align-items: center;
+    pointer-events: none;
+    z-index: 1;
+    transition: opacity 300ms;
 }
-.profile-pic > .add-profile-img > p {
+.profile-pic > .add-profile-input > div > object {
+    width: 3.25rem;
+}
+.profile-pic > .add-profile-input > p {
     line-height: 1.25;
     letter-spacing: -0.9px;
 }

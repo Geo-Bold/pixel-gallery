@@ -44,20 +44,18 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
     const createLinkButton = document.querySelector('.link-container > button')
     
-    if (createLinkButton) createLinkButton.addEventListener('click', () => {
+    if (createLinkButton) createLinkButton.addEventListener('click', e => Renderer.linkArray.push(new Link({})) )    
 
-        Renderer.linkArray.push(new Link({}))
+    // Profile page states
 
-        Renderer.manageLinkPageState()
+    if (Renderer.renderInfo.profileForm) {
 
-    } )    
+        const profileImageContainer = document.querySelector('.add-profile-input')
 
-    // Manages the profile page save button state
+        const inputFile = profileImageContainer.querySelector('input')
 
-    if (Renderer.renderInfo.profileForm) Renderer.manageProfilePageState()
+        profileImageContainer.addEventListener('click', e => inputFile.click())
 
-    // Manages the save button event for the link and profile pages
-
-    Renderer.manageSaveButtonActions()
+    }
 
 })

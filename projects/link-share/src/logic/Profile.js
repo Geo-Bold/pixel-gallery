@@ -8,6 +8,7 @@ export class Profile {
     lastName
     email
     url
+    imageString
     linkArray = []
 
     constructor(data = {}) {
@@ -20,7 +21,15 @@ export class Profile {
 
         this.url = data.url ?? null
 
-        if (Object.keys(data).length > 0) data.linkArray.forEach(link => this.addLink(new Link(link)) )
+        this.imageString = data.imageString ?? null
+
+        if (Object.keys(data).length > 0) data.linkArray.forEach(link => {
+
+            link.platformData.urlPattern = new RegExp(link.platformData.urlPattern.slice(1, -1)) 
+
+            this.addLink(new Link(link))
+
+        })
 
         Renderer.render(this, 'profile')
         
@@ -55,6 +64,8 @@ export class Profile {
         
         const localStorage = new LocalStorage('link-app')
 
+        this.linkArray.forEach(link => link.platformData.urlPattern = link.platformData.urlPattern.toString())
+
         localStorage.setItem('profile', this) 
     
     }
@@ -66,6 +77,8 @@ export class Profile {
         this.lastName = event.detail.lastName
 
         this.email = event.detail.email
+
+        this.imageString = event.detail.imageString
 
         this.saveProfile()
 

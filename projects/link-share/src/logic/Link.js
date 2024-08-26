@@ -30,6 +30,6 @@ export class Link {
 
     }
 
-    setPlatformData(title, icon) { this.platformData = { title: title, icon: icon } }
+    setPlatformData(title, icon, pattern) { this.platformData = { title: title, icon: icon, urlPattern: pattern } }
 
 }
