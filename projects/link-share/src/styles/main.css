@@ -542,7 +542,6 @@ button, a {
 }
 .preview-container {
     width: 21.875rem;
-    height: 35.5625rem;
     justify-self: center;
     align-self: center;
     display: flex;
@@ -551,7 +550,7 @@ button, a {
     row-gap: 3.5rem;
     padding: 3rem 3.5rem;
 }
-.preview-container :is(.placeholder) {
+.preview-container :is(.circle, .title, .text) {
     background-color: var(--brand-light-blue);
 }
 .preview-container :is(.link) {
@@ -570,6 +569,13 @@ button, a {
     width: 6.5rem;
     aspect-ratio: 1 / 1;
     margin-bottom: 1.5rem;
+    display: flex;
+    overflow: hidden;
+    border: 4px solid var(--brand-blue);
+}
+.circle > #profile-image {
+    width: 100%;
+    object-fit: cover;
 }
 .profile-div > .title {
     height: 2.75rem;
@@ -581,6 +587,14 @@ button, a {
     height: 1.75rem;
     width: 75%;
     border-radius: 1.5rem;
+}
+.link-div {
+    max-height: 18rem;
+    overflow-y: scroll;
+    scrollbar-width: none;
+}
+.link-div::-webkit-scrollbar {
+    display: none;
 }
 .link-div > .mobile-link {
     width: 100%;

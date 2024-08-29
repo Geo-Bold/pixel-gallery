@@ -23,29 +23,43 @@ export class Profile {
 
         this.imageString = data.imageString ?? null
 
-        if (Object.keys(data).length > 0) data.linkArray.forEach(link => {
+        if (Object.keys(data).length > 0) {
 
-            link.platformData.urlPattern = new RegExp(link.platformData.urlPattern.slice(1, -1)) 
+            const reconstructedLinkArray = data.linkArray.reduce((accumulator, link) => {
 
-            this.addLink(new Link(link))
-
-        })
-
-        Renderer.render(this, 'profile')
+                link.platformData.urlPattern = new RegExp(link.platformData.urlPattern.slice(1, -1))
         
-        document.addEventListener('linkDeleted', (e) => { this.removeLink(e.detail.link) })
+                accumulator.push(new Link(link))
+        
+                return accumulator
 
-        document.addEventListener('linkCreated', (e) => { this.addLink(e.detail.link) })
+            }, [])
+console.log(reconstructedLinkArray)
+            this.addLink(reconstructedLinkArray)
+        
+        }
+        
+        Renderer.render(this, 'profile')
 
-        document.addEventListener('profilePageSaved', (e) => { this.updateFields(e) })
+        document.addEventListener('linkCreated', e => this.addLink(e.detail))
+        
+        document.addEventListener('linkDeleted', (e) => this.removeLink(e.detail))
+
+        document.addEventListener('profilePageSaved', (e) => this.updateFields(e))
 
     } 
 
     getLink(index) { return this.linkArray[index] }
 
-    addLink(link) { 
+    addLink(links) { 
 
-        this.linkArray.push(link)
+        links.forEach( link => {
+
+            const duplicateLinkExists = this.linkArray.some(existingLink => existingLink.linkId === link.linkId)
+
+            if (!duplicateLinkExists) this.linkArray.push(link)
+
+        })
 
         this.saveProfile()
 

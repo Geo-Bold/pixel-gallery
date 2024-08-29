@@ -26,7 +26,7 @@ export class Link {
 
         if (this.linkId < 15) Renderer.render(this, 'link')
 
-        document.addEventListener('linkPageSaved', (e) => { console.log('link saved') })
+        Renderer.linkArray.push(this)
 
     }
 

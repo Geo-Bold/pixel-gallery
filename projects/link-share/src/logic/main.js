@@ -44,8 +44,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
     const createLinkButton = document.querySelector('.link-container > button')
     
-    if (createLinkButton) createLinkButton.addEventListener('click', e => Renderer.linkArray.push(new Link({})) )    
-
+    if (createLinkButton) createLinkButton.addEventListener('click', e => new Link({}) )    
+        
     // Profile page states
 
     if (Renderer.renderInfo.profileForm) {

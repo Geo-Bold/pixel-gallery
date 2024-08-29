@@ -5,7 +5,7 @@ export class Renderer {
     static linkArray = []
 
     static render(renderable, type) {
-
+        console.log(Renderer.linkArray)
         if (type === 'link' && Renderer.renderInfo.linkParent) {
 
             const linkHtml = `
@@ -66,7 +66,7 @@ export class Renderer {
 
         }
 
-        Renderer.manageSaveButtonActions(type)
+        Renderer.manageSaveButtonActions(renderable)
 
     }
 
@@ -78,7 +78,7 @@ export class Renderer {
 
         deleteButton.addEventListener('click', () => {
 
-            const event = new CustomEvent('linkDeleted', { detail: { link: link } }) 
+            const event = new CustomEvent('linkDeleted', { detail: link }) 
 
             document.dispatchEvent(event) // Notifies profile to remove link
 
@@ -92,21 +92,21 @@ export class Renderer {
 
         if (link.linkUrl) input.value = link.linkUrl // Loads existing url from storage
         
-        input.addEventListener('change', () => {
+        // input.addEventListener('change', () => {
 
-            const inputLink = input.value
+        //     const inputLink = input.value
 
-            if (link.platformData.urlPattern.test(inputLink)) {
+        //     if (link.platformData.urlPattern.test(inputLink)) {
 
-                link.linkUrl = inputLink
+        //         link.linkUrl = inputLink
 
-                const event = new CustomEvent('linkCreated', { detail: { link: link } }) 
+        //         const event = new CustomEvent('linkCreated', { detail: { link: link } }) 
 
-                document.dispatchEvent(event) // Notifies profile to add link
+        //         document.dispatchEvent(event) // Notifies profile to add link
 
-            } else {} // Required: error state
+        //     } else {} // Required: error state
                 
-        })
+        // })
 
     }
 
@@ -309,42 +309,58 @@ export class Renderer {
 
     }
 
-    static manageSaveButtonActions(type) {
+    static manageSaveButtonActions(renderable) {
 
         const saveButton = document.getElementById('save')
 
-        let customEvent = null
+        let customEvent
+        
+        if (!saveButton) return
+    
+        if (!saveButton.hasListener) {
 
-        saveButton.addEventListener('click', (e) => {
+            saveButton.addEventListener('click', (e) => {
 
-            if (type === 'link') customEvent = new CustomEvent('linkPageSaved', {detail: Renderer.linkArray})
-    
-            if (type === 'profile') {
-    
-                const profileFormInputs = Array.from(document.querySelector('.profile-form').querySelectorAll('input'))
+                const containsLinkContainer = Renderer.renderInfo.linkParent
 
-                const profileImage = document.getElementById('profile-img')
-    
-                customEvent = new CustomEvent('profilePageSaved', {
-                    
-                    detail: {
-    
-                        firstName: profileFormInputs[0].value,
-                        lastName: profileFormInputs[1].value,
-                        email: profileFormInputs[2].value,
-                        imageString: profileImage.src
-    
-                    }
-    
-                })
-    
-            }
+                const containsLink = containsLinkContainer ? containsLinkContainer.querySelector('.link') : null
 
-            document.dispatchEvent(customEvent)
+                if (containsLinkContainer && containsLink) {
 
-            document.location.reload()
+                    customEvent = new CustomEvent('linkCreated', { detail: Renderer.linkArray })
 
-        })
+                }
+
+                if (Renderer.renderInfo.profileForm) {
+
+                    const profileFormInputs = Array.from(Renderer.renderInfo.profileForm.querySelectorAll('input'))
+
+                    const profileImage = document.getElementById('profile-img')
+    
+                    customEvent = new CustomEvent('profilePageSaved', {
+
+                        detail: {
+                            
+                            firstName: profileFormInputs[0].value,
+                            lastName: profileFormInputs[1].value,
+                            email: profileFormInputs[2].value,
+                            imageString: profileImage.src
+
+                        }
+
+                    })
+    
+                }
+
+                document.dispatchEvent(customEvent)
+    
+                document.location.reload()
+
+            }, { once: true })
+    
+            saveButton.hasListener = true
+
+        }
 
     }
 
