@@ -8,11 +8,11 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
     // Preloads the Renderer with the link parent and mobile preview parent elements as well as the menu options for each link.
 
-    Renderer.renderInfo = { 
+    Renderer.context = { 
 
         linkParent: document.querySelector('.link-body'), // Container in which the link objects will be rendered
 
-        previewParent: document.querySelector('.link-preview'), // Container where the mobile previews will be rendered
+        linkPreviewParent: document.querySelector('.link-preview'), // Container where the mobile previews will be rendered
 
         profileForm: document.querySelector('.profile-form'),
 
@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
         
     // Profile page states
 
-    if (Renderer.renderInfo.profileForm) {
+    if (Renderer.context.profileForm) {
 
         const profileImageContainer = document.querySelector('.add-profile-input')
 

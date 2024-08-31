@@ -22,7 +22,7 @@ export class Link {
 
         this.userId = linkInputData.userId ?? null
 
-        this.platformData = linkInputData.platformData ?? Renderer.renderInfo.platformData[0]
+        this.platformData = linkInputData.platformData ?? Renderer.context.platformData[0]
 
         if (this.linkId < 15) Renderer.render(this, 'link')
 

@@ -1,68 +1,20 @@
 export class Renderer {
 
-    static renderInfo
+    static context
     static parser = new DOMParser()
     static linkArray = []
 
     static render(renderable, type) {
 
-        if (type === 'link' && Renderer.renderInfo.linkParent) {
+        switch(type) {
 
-            const linkHtml = `
+            case 'link': this.#renderLink(renderable)
 
-                <div class="link" id="link-${renderable.linkId}" draggable="true">
-                    <header>
-                        <object class="drag-and-drop" data="/src/assets/images/icon-drag-and-drop.svg" type="image/svg+xml"></object>
-                        <h2 class="label">Link #${renderable.linkId}</h2>
-                        <button class="delete">Remove</button>
-                    </header>
-                    <div class="link-input" id="url-input-${renderable.linkId}">
-                        <label>Link</label>
-                        <div class="url-div">
-                            <input class="input-field" type="url" placeholder="https://${renderable.platformData.urlPattern}">
-                        </div>
-                    </div>
-                </div>
+                break
 
-            `
+            case 'profile': this.#renderProfile(renderable)
 
-            const linkEl = Renderer.parser.parseFromString(linkHtml, 'text/html').body.firstChild
-
-            linkEl.insertBefore(Renderer.#createCombobox(renderable), linkEl.querySelector('.link-input')) 
-
-            Renderer.renderInfo.linkParent.append(linkEl)
-
-            Renderer.#createDragEventListeners(linkEl, renderable)
-
-            Renderer.manageLinkPageState()
-
-            document.addEventListener('click', (e) => { Renderer.#comboboxCloseMenu(e, renderable) })
-
-            Renderer.#addLinkEventListeners(linkEl, renderable)
-
-        }
-
-        if (Renderer.renderInfo.previewParent) {
-
-            const mobilePreview = Renderer.#renderMobilePreview(renderable, type)
-
-            if (mobilePreview) Renderer.renderInfo.previewParent.append(mobilePreview)
-
-        }
-
-        if (type === 'profile' && Renderer.renderInfo.profileForm) {
-
-            const formInputEl = Array.from(Renderer.renderInfo.profileForm.querySelectorAll('input'))
-
-            formInputEl[0].value = renderable.firstName
-
-            formInputEl[1].value = renderable.lastName
-
-            formInputEl[2].value = renderable.email
-
-            Renderer.manageProfilePageState()
-
-            Renderer.manageProfilePictureState(renderable)
+                break
 
         }
 
@@ -110,6 +62,42 @@ export class Renderer {
 
     }
 
+    static #comboboxCloseMenu(event, link) {
+
+        const selected = document.getElementById(`selected-${link.linkId}`)
+
+        const menu = document.getElementById(`select-items${link.linkId}`)
+
+        if (selected && menu && !selected.contains(event.target) && selected.classList.contains('blue-border')) {
+
+            selected.classList.remove('blue-border')
+
+            menu.classList.add('select-hide')
+    
+        }
+
+    }
+
+    static #comboboxUpdatePlatform(title, url, pattern, link) {
+
+        link.setPlatformData(title, url, new RegExp(pattern.slice(1, -1)))
+
+        Renderer.#renderLinkPreview(link)
+
+        const selected = document.getElementById(`selected-${link.linkId}`)
+
+        const input = document.getElementById(`url-input-${link.linkId}`).querySelector('input')
+
+        selected.innerHTML = ''
+
+        selected.append(Renderer.#createIcon(url))
+
+        selected.appendChild(document.createTextNode(title))
+
+        input.placeholder = `https://${pattern.toString()}`
+
+    }
+
     static #createCombobox(link) {
 
         const platformHtml = `
@@ -144,9 +132,9 @@ export class Renderer {
 
         })
 
-        for (let i = 0; i < Renderer.renderInfo.platformData.length; i++) { 
+        for (let i = 0; i < Renderer.context.platformData.length; i++) { 
 
-            const option = Renderer.#createComboboxOption(Renderer.renderInfo.platformData[i])
+            const option = Renderer.#createComboboxOption(Renderer.context.platformData[i])
 
             option.addEventListener('click', (event) => {
 
@@ -182,70 +170,53 @@ export class Renderer {
 
     }
 
-    // Creates a mobile link preview for the first six links 
-    // REQUIRES UPDATING ACCORDING TO NEW LINK DOM ORDER
+    static #createDragEventListeners(linkEl, link) {
 
-    static #renderMobilePreview(link, type) {
+        const linkBody = Renderer.context.linkParent
 
-        if (type === 'profile') {
+        linkEl.addEventListener('dragstart', (e) => {
 
-            const mobileProfile = document.getElementById('mobile-profile-img')
+            linkEl.classList.add('dragging')
+        
+            e.target.style.opacity = '0.5'
 
-            if (link.imageString) mobileProfile.src = link.imageString
+        })
 
-        }
+        linkBody.addEventListener('dragover', (e) => {
 
-        if (type === 'link') {
+            e.preventDefault() // Allow dropping
 
-            const mobilePreviewHtml = `
+            const draggedElement = document.querySelector('.dragging')
 
-            <div class="mobile-link" id="preview-${link.linkId}">
-                <p>${link.platformData.title}</p>
-                <div>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 16 16"><path fill="#fff" d="M2.667 7.333v1.334h8L7 12.333l.947.947L13.227 8l-5.28-5.28L7 3.667l3.667 3.666h-8Z"/></svg>
-                </div>
-            </div>
+            const afterElement = Renderer.getDragAfterElement(linkBody, e.clientY)
+        
+            if (afterElement === null) {
 
-         `
-            const mobilePreviewChildrenCount = Renderer.renderInfo.previewParent.childElementCount
+                linkBody.appendChild(draggedElement)
 
-            if (mobilePreviewChildrenCount < 5) {
+            } else {
 
-                const existingPreview = document.getElementById(`preview-${link.linkId}`)
-
-                if (existingPreview != null) {
-
-                    const icon = Renderer.#createIcon(link.platformData.icon)
-
-                    existingPreview.querySelector('div:nth-child(1)').replaceWith(icon)
-
-                    existingPreview.querySelector('p').innerText = `${link.platformData.title}`
-
-                } else {
-
-                    const mobilePreview = Renderer.parser.parseFromString(mobilePreviewHtml, 'text/html').body.firstChild
-
-                    const icon = Renderer.#createIcon(link.platformData.icon)
-
-                    mobilePreview.insertBefore(icon, mobilePreview.firstChild)
-
-                    return mobilePreview
-                    
-                }
+                linkBody.insertBefore(draggedElement, afterElement)
 
             }
 
-        }
-        
-    }
+        })
 
-    // Helper function that retrieves svg files to create icons
+        linkEl.addEventListener('dragend', (e) => {
+
+            e.target.style.opacity = '1'
+
+            linkEl.classList.remove('dragging')
+
+        })
+
+    }
 
     static #createIcon(icon) {
 
         const iconContainer = document.createElement('div')
 
-        if (Renderer.renderInfo.linkParent) {
+        if (Renderer.context.linkParent) {
 
             fetch(`./src/assets/images/icon-${icon}.svg`)
 
@@ -271,96 +242,196 @@ export class Renderer {
 
     }
 
-    // Updates the selected menu option
+    static #removeLinkAndPreview(link) { //fixed
 
-    static #comboboxUpdatePlatform(title, url, pattern, link) {
+        const node = document.getElementById(`link-${link.linkId}`)
 
-        link.setPlatformData(title, url, new RegExp(pattern.slice(1, -1)))
-
-        Renderer.#renderMobilePreview(link, 'link')
-
-        const selected = document.getElementById(`selected-${link.linkId}`)
-
-        const input = document.getElementById(`url-input-${link.linkId}`).querySelector('input')
-
-        selected.innerHTML = ''
-
-        selected.append(Renderer.#createIcon(url))
-
-        selected.appendChild(document.createTextNode(title))
-
-        input.placeholder = `https://${pattern.toString()}`
-
-    }
-
-    static #comboboxCloseMenu(event, link) {
-
-        const selected = document.getElementById(`selected-${link.linkId}`)
-
-        const menu = document.getElementById(`select-items${link.linkId}`)
-
-        if (selected && menu && !selected.contains(event.target) && selected.classList.contains('blue-border')) {
-
-            selected.classList.remove('blue-border')
-
-            menu.classList.add('select-hide')
-    
-        }
-
-    }
-
-    static manageSaveButtonActions(renderable) {
-
-        const saveButton = document.getElementById('save')
-
-        let customEvent
+        Renderer.context.linkParent.removeChild(node)
         
-        if (!saveButton) return
+        const previewEl = document.getElementById(`preview-${link.linkId}`)
+
+        if (Renderer.context.linkPreviewParent.contains(previewEl)) Renderer.context.linkPreviewParent.removeChild(previewEl)
     
-        if (!saveButton.hasListener) {
+    }
 
-            saveButton.addEventListener('click', (e) => {
+    static #renderLink(link) {
 
-                const containsLinkContainer = Renderer.renderInfo.linkParent
+        if (Renderer.context.linkParent) {
 
-                const containsLink = containsLinkContainer ? containsLinkContainer.querySelector('.link') : null
+            const linkHtml = `
 
-                if (containsLinkContainer && containsLink) {
+                <div class="link" id="link-${link.linkId}" draggable="true">
+                    <header>
+                        <object class="drag-and-drop" data="/src/assets/images/icon-drag-and-drop.svg" type="image/svg+xml"></object>
+                        <h2 class="label">Link #${link.linkId}</h2>
+                        <button class="delete">Remove</button>
+                    </header>
+                    <div class="link-input" id="url-input-${link.linkId}">
+                        <label>Link</label>
+                        <div class="url-div">
+                            <input class="input-field" type="url" placeholder="https://${link.platformData.urlPattern}">
+                        </div>
+                    </div>
+                </div>
 
-                    customEvent = new CustomEvent('linkCreated', { detail: Renderer.linkArray })
+            `
 
-                }
+            const linkEl = Renderer.parser.parseFromString(linkHtml, 'text/html').body.firstChild
 
-                if (Renderer.renderInfo.profileForm) {
+            linkEl.insertBefore(Renderer.#createCombobox(link), linkEl.querySelector('.link-input')) 
 
-                    const profileFormInputs = Array.from(Renderer.renderInfo.profileForm.querySelectorAll('input'))
+            Renderer.context.linkParent.append(linkEl)
 
-                    const profileImage = document.getElementById('profile-img')
-    
-                    customEvent = new CustomEvent('profilePageSaved', {
+            Renderer.#createDragEventListeners(linkEl, link)
 
-                        detail: {
-                            
-                            firstName: profileFormInputs[0].value,
-                            lastName: profileFormInputs[1].value,
-                            email: profileFormInputs[2].value,
-                            imageString: profileImage.src
+            Renderer.manageLinkPageState()
 
-                        }
+            document.addEventListener('click', (e) => { Renderer.#comboboxCloseMenu(e, link) })
 
-                    })
-    
-                }
-
-                document.dispatchEvent(customEvent)
-    
-                document.location.reload()
-
-            }, { once: true })
-    
-            saveButton.hasListener = true
+            Renderer.#addLinkEventListeners(linkEl, link)
 
         }
+
+        if (Renderer.context.linkPreviewParent) {
+
+            const mobilePreviewChildrenCount = Renderer.context.linkPreviewParent.childElementCount
+
+            if (mobilePreviewChildrenCount < 5) {
+
+                const mobilePreview = Renderer.#renderLinkPreview(link)
+
+                Renderer.context.linkPreviewParent.append(mobilePreview)
+
+            }
+
+        }
+
+    }
+
+    static #renderLinkPreview(link) {
+
+        const linkPreviewHtml = `
+
+            <div class="mobile-link" id="preview-${link.linkId}">
+                <p>${link.platformData.title}</p>
+                <div>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 16 16"><path fill="#fff" d="M2.667 7.333v1.334h8L7 12.333l.947.947L13.227 8l-5.28-5.28L7 3.667l3.667 3.666h-8Z"/></svg>
+                </div>
+            </div>
+
+         `
+
+        const existingPreview = document.getElementById(`preview-${link.linkId}`)
+
+        if (existingPreview != null) {
+
+            const icon = Renderer.#createIcon(link.platformData.icon)
+
+            existingPreview.querySelector('div:nth-child(1)').replaceWith(icon)
+
+            existingPreview.querySelector('p').innerText = `${link.platformData.title}`
+
+        } else {
+
+            const mobilePreview = Renderer.parser.parseFromString(linkPreviewHtml, 'text/html').body.firstChild
+
+            const icon = Renderer.#createIcon(link.platformData.icon)
+
+            mobilePreview.insertBefore(icon, mobilePreview.firstChild)
+
+            return mobilePreview
+            
+        }
+
+    }
+
+    static #renderProfile(profile) {
+
+        if (Renderer.context.profileForm) {
+
+            const formInputEl = Array.from(Renderer.context.profileForm.querySelectorAll('input'))
+
+            formInputEl[0].value = profile.firstName
+
+            formInputEl[1].value = profile.lastName
+
+            formInputEl[2].value = profile.email
+
+            Renderer.manageProfilePageState()
+
+            Renderer.manageProfilePictureState(profile)
+
+        }
+
+        if (Renderer.context.linkPreviewParent && profile.linkArray.length > 0) {
+
+            Renderer.#renderProfilePreview(profile)
+
+            Renderer.context.linkPreviewParent.innerHTML = ''
+
+            profile.linkArray.forEach(link => {
+
+                const linkEl = Renderer.#renderLinkPreview(link)
+
+                Renderer.context.linkPreviewParent.append(linkEl)
+
+            })
+
+        }
+
+    }
+
+    static #renderProfilePreview(profile) {
+
+        const profileImage = document.getElementById('mobile-profile-img')
+
+        const name = document.getElementById('preview-name')
+
+        const email = document.getElementById('preview-email')
+
+        if (profile.imageString) {
+
+            profileImage.src = profile.imageString
+
+            profileImage.classList.remove('circle')
+
+        }
+
+        else {}
+
+        if (name) {
+
+            name.innerText = profile.firstName + ' ' + profile.lastName
+
+            name.classList.remove('title')
+
+        }
+
+        if (email) {
+
+            email.innerText = profile.email
+
+            email.classList.remove('text')
+
+        }
+
+    }
+
+    static getDragAfterElement(linkContainer, y) {
+
+        const draggableElements = [...linkContainer.querySelectorAll('.link[draggable="true"]:not(.dragging)')]
+    
+        return draggableElements.reduce((closest, child) => {
+
+            const box = child.getBoundingClientRect()
+            
+            const offset = y - box.top - box.height / 2
+            
+            if (offset < 0 && offset > closest.offset) return { offset: offset, element: child }
+
+            else return closest
+
+        }, { offset: Number.NEGATIVE_INFINITY }).element
 
     }
 
@@ -420,80 +491,6 @@ export class Renderer {
 
     }
 
-    static #removeLinkAndPreview(link) { //fixed
-
-        const node = document.getElementById(`link-${link.linkId}`)
-
-        Renderer.renderInfo.linkParent.removeChild(node)
-        
-        const previewEl = document.getElementById(`preview-${link.linkId}`)
-
-        if (Renderer.renderInfo.previewParent.contains(previewEl)) Renderer.renderInfo.previewParent.removeChild(previewEl)
-    
-    }
-
-    // Returns the closest element to the element being dragged by calculating the offset from mouse position to the div midpoints
-
-    static getDragAfterElement(linkContainer, y) {
-
-        const draggableElements = [...linkContainer.querySelectorAll('.link[draggable="true"]:not(.dragging)')]
-    
-        return draggableElements.reduce((closest, child) => {
-
-            const box = child.getBoundingClientRect()
-            
-            const offset = y - box.top - box.height / 2
-            
-            if (offset < 0 && offset > closest.offset) return { offset: offset, element: child }
-
-            else return closest
-
-        }, { offset: Number.NEGATIVE_INFINITY }).element
-
-    }
-
-    static #createDragEventListeners(linkEl, link) {
-
-        const linkBody = Renderer.renderInfo.linkParent
-
-        linkEl.addEventListener('dragstart', (e) => {
-
-            linkEl.classList.add('dragging')
-        
-            e.target.style.opacity = '0.5'
-
-        })
-
-        linkBody.addEventListener('dragover', (e) => {
-
-            e.preventDefault() // Allow dropping
-
-            const draggedElement = document.querySelector('.dragging')
-
-            const afterElement = Renderer.getDragAfterElement(linkBody, e.clientY)
-        
-            if (afterElement === null) {
-
-                linkBody.appendChild(draggedElement)
-
-            } else {
-
-                linkBody.insertBefore(draggedElement, afterElement)
-
-            }
-
-        })
-
-        linkEl.addEventListener('dragend', (e) => {
-
-            e.target.style.opacity = '1'
-
-            linkEl.classList.remove('dragging')
-
-        })
-
-    }
-
     static manageProfilePictureState(profileObject) {
 
         const profileContainer = document.querySelector('.add-profile-input')
@@ -525,6 +522,61 @@ export class Renderer {
             } else console.log('error no file')
 
         })
+
+    }
+
+    static manageSaveButtonActions(renderable) {
+
+        const saveButton = document.getElementById('save')
+
+        let customEvent
+        
+        if (!saveButton) return
+    
+        if (!saveButton.hasListener) {
+
+            saveButton.addEventListener('click', (e) => {
+
+                const containsLinkContainer = Renderer.context.linkParent
+
+                const containsLink = containsLinkContainer ? containsLinkContainer.querySelector('.link') : null
+
+                if (containsLinkContainer && containsLink) {
+
+                    customEvent = new CustomEvent('linkCreated', { detail: Renderer.linkArray })
+
+                }
+
+                if (Renderer.context.profileForm) {
+
+                    const profileFormInputs = Array.from(Renderer.context.profileForm.querySelectorAll('input'))
+
+                    const profileImage = document.getElementById('profile-img')
+    
+                    customEvent = new CustomEvent('profilePageSaved', {
+
+                        detail: {
+                            
+                            firstName: profileFormInputs[0].value,
+                            lastName: profileFormInputs[1].value,
+                            email: profileFormInputs[2].value,
+                            imageString: profileImage.src
+
+                        }
+
+                    })
+    
+                }
+
+                document.dispatchEvent(customEvent)
+    
+                document.location.reload()
+
+            }, { once: true })
+    
+            saveButton.hasListener = true
+
+        }
 
     }
 

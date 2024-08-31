@@ -116,6 +116,10 @@ button, a {
 .tabs > .icon path  {
     transition: fill 400ms;
 }
+#mobile-profile-img {
+    width: 100%;
+    object-fit: cover;
+}
 
 /*Navbar styles*/
 
@@ -187,6 +191,10 @@ button, a {
 }
 .link-preview {
     width: 100%;
+    height: 19.0625rem;
+    overflow-y: hidden;
+}
+.mobile-link-preview {
     height: 19.0625rem;
     overflow-y: hidden;
 }
@@ -573,10 +581,6 @@ button, a {
     overflow: hidden;
     border: 4px solid var(--brand-blue);
 }
-.circle > #profile-image {
-    width: 100%;
-    object-fit: cover;
-}
 .profile-div > .title {
     height: 2.75rem;
     width: 100%;
@@ -588,15 +592,15 @@ button, a {
     width: 75%;
     border-radius: 1.5rem;
 }
-.link-div {
+.link-preview.preview-link-preview {
     max-height: 18rem;
     overflow-y: scroll;
     scrollbar-width: none;
 }
-.link-div::-webkit-scrollbar {
+.preview-link-preview::-webkit-scrollbar {
     display: none;
 }
-.link-div > .mobile-link {
+.preview-link-preview > .mobile-link {
     width: 100%;
     height: 3.5rem;
     margin-left: unset;
