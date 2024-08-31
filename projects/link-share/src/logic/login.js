@@ -1,8 +1,110 @@
-import { LocalStorage } from "./LocalStorage.js"
+import { LocalStorage } from './LocalStorage.js'
+import { Profile } from './Profile.js' // Don't delete
+import { Session } from './Session.js'
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener('DOMContentLoaded', () => {
 
-    const createAccountHtml = `
+    const container = document.querySelector('.container')
+
+    const currentForm = container.querySelector('form')
+
+    const session = new Session()
+
+    let local = new LocalStorage('account')
+
+    let activeView = updateView()
+
+    if (activeView === 'create-account') { 
+        
+        renderCreateAccountView()
+
+        document.getElementById('submit').addEventListener('click', e => validateInput(e, session.createUser) )
+    
+    } else if (activeView === 'login') {
+
+        document.getElementById('submit').addEventListener('click', e => validateInput(e, session.signInUser.bind(session)))
+
+    }
+
+    /* Switch between login and create account views */
+
+    document.getElementById('login-form-toggle').addEventListener('click', () => {
+
+        if (activeView === 'login') {
+
+            local.setItem('view', 'create-account')
+
+            window.location.reload()
+
+        }
+
+        else {
+
+            local.setItem('view', 'login')
+
+            window.location.reload()
+
+        }
+    })
+
+    
+
+    function updateView() {
+
+        let activeView = 'login'
+
+        if (local.getItem('view')) activeView = local.getItem('view')
+
+        else local.setItem('view', 'login')
+
+        return activeView
+
+    }
+
+    function emailIsValid(emailValue) {
+
+        const emailRegex = /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/ // RegEx for email validation
+    
+        const emailIsValid = emailRegex.test(emailValue)
+    
+        return emailIsValid ? true : false
+
+    }
+
+    function addInvalidInputState(container, message) {
+
+        const existingError = container.querySelector('p')
+
+        const invalidHtml = `<p class="invalid-text invalid">${message}</p>`
+
+        container.querySelector('input').classList.add('invalid')
+
+        if (existingError) existingError.innerText = message
+
+        else {
+
+            const parser = new DOMParser()
+
+            const invalidEl = parser.parseFromString(invalidHtml, 'text/html').body.firstChild
+
+            container.append(invalidEl)
+
+        }
+
+    }
+
+    function clearInvalidInputState() {
+
+        document.querySelectorAll('.invalid-text').forEach(el => el.remove())
+
+        document.querySelectorAll('.invalid').forEach(el => el.classList.remove('invalid'))
+
+    }
+
+    function renderCreateAccountView() {
+
+        const createAccountHtml = `
+
         <form class="login-form">
             <header class="header">
                 <h1>Create Account</h1>
@@ -11,42 +113,33 @@ document.addEventListener("DOMContentLoaded", () => {
             <div class="body">
                 <label for="email">Email</label>
                 <div class="email">
-                    <input type="email" class="input-field" placeholder="e.g. geo@email.com">
+                    <input id="email" type="text" class="input-field" placeholder="e.g. geo@email.com" >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 16 16"><path fill="#EBF8FF" d="M14 3H2a.5.5 0 0 0-.5.5V12a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1V3.5A.5.5 0 0 0 14 3Zm-.5 9h-11V4.637l5.162 4.732a.5.5 0 0 0 .676 0L13.5 4.637V12Z"/></svg>
                 </div>
                 <label for="password">Password</label>
                 <div class="password">
-                    <input type="password" class="input-field" placeholder="At least 8 characters">
+                    <input id="password-1" type="password" class="input-field" placeholder="At least 8 characters" >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 16 16"><path fill="#EBF8FF" d="M13 5h-2V3.5a3 3 0 0 0-6 0V5H3a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1ZM8.5 9.914V11.5a.5.5 0 0 1-1 0V9.914a1.5 1.5 0 1 1 1 0ZM10 5H6V3.5a2 2 0 1 1 4 0V5Z"/></svg>
                 </div>
                 <label for="password">Confirm Password</label>
                 <div class="password">
-                    <input type="password" class="input-field" placeholder="At least 8 characters">
+                    <input id="password-2" type="password" class="input-field" placeholder="At least 8 characters" >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 16 16"><path fill="#EBF8FF" d="M13 5h-2V3.5a3 3 0 0 0-6 0V5H3a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1ZM8.5 9.914V11.5a.5.5 0 0 1-1 0V9.914a1.5 1.5 0 1 1 1 0ZM10 5H6V3.5a2 2 0 1 1 4 0V5Z"/></svg>
                 </div>
-                <button type="submit" class="button primary">Create Account</button>
+                <button id="submit" class="button primary">Create Account</button>
             </div>
             <footer>
                 <p>Already have an account? <span id="login-form-toggle">Login</span></p>
             </footer>
         </form>
+
     `
-    const container = document.querySelector(".container")
 
-    const currentForm = container.querySelector("form")
-
-    let activeView = "login"
-
-    let local = new LocalStorage("account")
-
-    if (local.getItem("view")) activeView = local.getItem("view")
-
-    else local.setItem("view", "login")
-
-    if (activeView === "create-account") {
-
-        container.removeChild(currentForm)
+    container.removeChild(currentForm)
 
         const parser = new DOMParser()
 
-        const document = parser.parseFromString(createAccountHtml, "text/html")
+        const document = parser.parseFromString(createAccountHtml, 'text/html')
 
         const content = document.body.firstChild
 
@@ -54,11 +147,119 @@ document.addEventListener("DOMContentLoaded", () => {
 
     }
 
-    document.getElementById("login-form-toggle").addEventListener("click", () => {
+    function validateInput(event, executeOnSuccess) {
 
-        if (activeView === "login") {
+        event.preventDefault()
 
-            local.setItem("view", "create-account")
+        let validEmail = true
+
+        let validPassword = true
+
+        const emailContainer = document.querySelector('.email')
+
+        const passwordContainer = document.querySelector('.password')
+
+        const email = document.getElementById('email')
+
+        const password = document.getElementById('password-1')
+
+        let cPassword = document.getElementById('password-2')
+
+        if (!email.value) {
+
+            addInvalidInputState(emailContainer, "Can't be empty")
+
+            validEmail = false
+
+        } 
+
+        else if (!emailIsValid(email.value)) {
+
+            addInvalidInputState(emailContainer, 'Not a valid email')
+
+            validEmail = false
+
+        }
+
+        if (!password.value) {
+
+            addInvalidInputState(passwordContainer, "Can't be empty")
+
+            validPassword = false
+
+        }
+
+        else if (password.value.length < 6) {
+
+            addInvalidInputState(passwordContainer, 'Too short')
+
+            validPassword = false
+
+        }
+
+        else if (cPassword && password.value != cPassword.value) {
+
+            addInvalidInputState(passwordContainer, "Passwords don't match")
+
+            password.value = ""
+
+            cPassword.value = ""
+
+            validPassword = false
+
+        }
+
+        if (validEmail && validPassword) {
+
+            executeOnSuccess({ email: email.value, password: password.value })
+                .then(user => console.log('user signed in successfully'))
+                .catch(error => console.error('error signing in:', error.message))
+
+            clearInvalidInputState()
+                
+
+            email.value = ""
+
+            password.value = ""
+
+            if (cPassword) cPassword.value = ""
+            
+        }
+    }
+
+})
+
+/* Use this code once Renderer has been refactored properly
+
+    const storedData = new LocalStorage('link-app').returnAllValues()
+
+    let profile = new Profile(storedData.profile)
+
+    const container = document.querySelector('.container')
+
+    const currentForm = container.querySelector('form')
+
+    let activeView = storedData.getItem('loginView')
+
+    if (activeView === 'create-account') {
+
+        container.removeChild(currentForm)
+
+        const parser = new DOMParser()
+
+        const document = parser.parseFromString(createAccountHtml, 'text/html')
+
+        const content = document.body.firstChild
+
+        container.appendChild(content)
+
+    }
+
+    document.getElementById('login-form-toggle').addEventListener('click', () => {
+
+        if (activeView === 'login') {
+
+            storedData.setItem('loginView', 'create-account')
 
             window.location.reload()
 
@@ -66,11 +267,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
         else {
 
-            local.setItem("view", "login")
+            storedData.setItem('loginView', 'login')
 
             window.location.reload()
 
         }
     })
 
-})
+*/

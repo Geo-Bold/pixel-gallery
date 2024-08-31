@@ -9,6 +9,7 @@ export class Profile {
     email
     url
     imageString
+    loginView
     linkArray = []
 
     constructor(data = {}) {
@@ -23,6 +24,8 @@ export class Profile {
 
         this.imageString = data.imageString ?? null
 
+        this.loginView = data.loginView ?? "login"
+
         if (Object.keys(data).length > 0) {
 
             const reconstructedLinkArray = data.linkArray.reduce((accumulator, link) => {
@@ -34,7 +37,7 @@ export class Profile {
                 return accumulator
 
             }, [])
-console.log(reconstructedLinkArray)
+
             this.addLink(reconstructedLinkArray)
         
         }

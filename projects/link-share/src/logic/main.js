@@ -2,6 +2,7 @@ import { Link } from './Link.js'
 import { Renderer } from './Renderer.js'
 import { Profile } from './Profile.js'
 import { LocalStorage } from './LocalStorage.js'
+import { Session } from './Session.js'
 
 document.addEventListener('DOMContentLoaded', (event) => {
 
@@ -36,6 +37,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
     }
 
+    const session = new Session()
+
     const storedData = new LocalStorage('link-app').returnAllValues()
 
     let profile = new Profile(storedData.profile) // Loads existing profile from storage or creates a new profile.
@@ -57,5 +60,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
         profileImageContainer.addEventListener('click', e => inputFile.click())
 
     }
+
+    document.getElementById('reset').addEventListener('click', e => session.signOutUser())
 
 })

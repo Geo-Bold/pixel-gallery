@@ -5,7 +5,7 @@ export class Renderer {
     static linkArray = []
 
     static render(renderable, type) {
-        console.log(Renderer.linkArray)
+
         if (type === 'link' && Renderer.renderInfo.linkParent) {
 
             const linkHtml = `

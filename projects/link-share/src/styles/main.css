@@ -8,6 +8,7 @@
     --link-border-color: white;
     --link-background-color: var(--brand-light-blue);
     --link-font-color: var(--background-color);
+    --invalid-font-color: #FF3939;
 }
 
 @font-face {
@@ -420,7 +421,6 @@ button, a {
 /*Dragging events*/
 .dragging {
     opacity: 0.8; /* Make the dragged element semi-transparent */
-    
 }
 
 /* Hover effect for SVGs */
@@ -648,17 +648,13 @@ button, a {
     position: relative;
     margin-bottom: 1.5rem;
 }
-.email::after {
+:is(.email, .password) > svg {
     position: absolute;
-    content: url("../assets/images/icon-email.svg");
-    top: 0.85rem;
+    top: 1rem;
     left: 1rem;
 }
-.password::after {
-    position: absolute;
-    content: url("../assets/images/icon-password.svg");
-    top: 0.85rem;
-    left: 1rem;
+:is(.email, .password) svg path {
+    fill: var(--brand-light-blue);
 }
 .login-form > footer {
     display: flex;
@@ -668,4 +664,14 @@ button, a {
     display: inline;
     color: var(--brand-blue);
     cursor: pointer;
+}
+.invalid-text {
+    position: absolute;
+    top: 0.95rem;
+    right: 1rem;
+    text-align: right;
+    font-size: 0.75rem;
+}
+.invalid {
+    border-color: var(--invalid-font-color);
 }
