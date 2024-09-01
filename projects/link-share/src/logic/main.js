@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
     }
 
-    const session = new Session()
+    Session.initialize()
 
     const storedData = new LocalStorage('link-app').returnAllValues()
 
@@ -60,7 +60,5 @@ document.addEventListener('DOMContentLoaded', (event) => {
         profileImageContainer.addEventListener('click', e => inputFile.click())
 
     }
-
-    document.getElementById('reset').addEventListener('click', e => session.signOutUser())
 
 })

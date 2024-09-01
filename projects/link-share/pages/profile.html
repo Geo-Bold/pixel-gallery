@@ -27,7 +27,7 @@
             <p>Preview</p>
           </a>  
         </div>
-        <a class="button secondary" href="./login.html">
+        <a id="auth-button" class="button secondary" href="./login.html">
           Login
         </a>
       </header>
@@ -61,11 +61,17 @@
         </div>
         <form class="profile-form">
           <p>First name*</p>
-          <input type="text" class="input-field" placeholder="e.g. John">
+          <div>
+            <input type="text" class="input-field" placeholder="e.g. John">
+          </div>
           <p>Last name*</p>
-          <input type="text" class="input-field" placeholder="e.g. Appleseed">
+          <div>
+            <input type="text" class="input-field" placeholder="e.g. Appleseed">
+          </div>
           <p>Email</p>
-          <input type="email" class="input-field" placeholder="e.g. email@example.com">
+          <div>
+            <input type="email" class="input-field" placeholder="e.g. email@example.com">
+          </div>
         </form>
         <footer>
           <button class="button secondary alternate" id="reset">Reset</button>

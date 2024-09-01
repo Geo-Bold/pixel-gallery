@@ -1,3 +1,5 @@
+import { Session } from "./Session.js"
+
 export class Renderer {
 
     static context
@@ -16,9 +18,35 @@ export class Renderer {
 
                 break
 
+            case 'auth' : this.#renderAuthView()
+
+                break
+
         }
 
         Renderer.manageSaveButtonActions(renderable)
+        
+    }
+
+    static #addInvalidState(container, message) {
+
+        const existingError = container.querySelector('p')
+
+        const invalidHtml = `<p class="invalid-text invalid">${message}</p>`
+
+        container.querySelector('input').classList.add('invalid')
+
+        if (existingError) existingError.innerText = message
+
+        else {
+
+            const parser = new DOMParser()
+
+            const invalidEl = parser.parseFromString(invalidHtml, 'text/html').body.firstChild
+
+            container.append(invalidEl)
+
+        }
 
     }
 
@@ -44,22 +72,6 @@ export class Renderer {
 
         if (link.linkUrl) input.value = link.linkUrl // Loads existing url from storage
         
-        // input.addEventListener('change', () => {
-
-        //     const inputLink = input.value
-
-        //     if (link.platformData.urlPattern.test(inputLink)) {
-
-        //         link.linkUrl = inputLink
-
-        //         const event = new CustomEvent('linkCreated', { detail: { link: link } }) 
-
-        //         document.dispatchEvent(event) // Notifies profile to add link
-
-        //     } else {} // Required: error state
-                
-        // })
-
     }
 
     static #comboboxCloseMenu(event, link) {
@@ -254,6 +266,48 @@ export class Renderer {
     
     }
 
+    static #renderAuthView() {
+
+        const authButton = document.getElementById('auth-button')
+
+        const page = window.location.pathname
+
+        const previewPage = page.slice(page.indexOf('preview'), page.indexOf('preview') + 7)
+        
+        if (previewPage === 'preview' && Session.isLoggedIn()) {
+
+            authButton.innerText = 'Share Link'
+
+            authButton.href = ''
+
+            authButton.addEventListener('click', e => {
+
+                e.preventDefault()
+
+                console.log('link copied to clipboard')
+
+            })
+
+        } else if (authButton && Session.isLoggedIn()) {
+
+            authButton.innerText = 'Log Out'
+
+            authButton.href = ''
+
+            authButton.addEventListener('click', e => {
+
+                e.preventDefault()
+
+                Session.signOutUser()
+
+            })
+
+        }
+        
+        if (authButton && !Session.isLoggedIn()) document.location.reload()
+
+    }
+
     static #renderLink(link) {
 
         if (Renderer.context.linkParent) {
@@ -277,6 +331,8 @@ export class Renderer {
             `
 
             const linkEl = Renderer.parser.parseFromString(linkHtml, 'text/html').body.firstChild
+
+            linkEl.querySelector('input').innerText = link.linkUrl
 
             linkEl.insertBefore(Renderer.#createCombobox(link), linkEl.querySelector('.link-input')) 
 
@@ -399,7 +455,7 @@ export class Renderer {
 
         else {}
 
-        if (name) {
+        if (name && profile.firstName && profile.lastName) {
 
             name.innerText = profile.firstName + ' ' + profile.lastName
 
@@ -407,7 +463,7 @@ export class Renderer {
 
         }
 
-        if (email) {
+        if (email && profile.email) {
 
             email.innerText = profile.email
 
@@ -543,40 +599,132 @@ export class Renderer {
 
                 if (containsLinkContainer && containsLink) {
 
-                    customEvent = new CustomEvent('linkCreated', { detail: Renderer.linkArray })
+                    this.#validateLinkData()
 
                 }
 
                 if (Renderer.context.profileForm) {
 
-                    const profileFormInputs = Array.from(Renderer.context.profileForm.querySelectorAll('input'))
+                    const isValid = this.#validateProfileData()
 
-                    const profileImage = document.getElementById('profile-img')
-    
-                    customEvent = new CustomEvent('profilePageSaved', {
+                    if (isValid) {
 
-                        detail: {
-                            
-                            firstName: profileFormInputs[0].value,
-                            lastName: profileFormInputs[1].value,
-                            email: profileFormInputs[2].value,
-                            imageString: profileImage.src
+                        const profileFormInputs = Array.from(Renderer.context.profileForm.querySelectorAll('input'))
 
-                        }
+                        const profileImage = document.getElementById('profile-img')
+        
+                        customEvent = new CustomEvent('profilePageSaved', {
 
-                    })
+                            detail: {
+                                
+                                firstName: profileFormInputs[0].value,
+                                lastName: profileFormInputs[1].value,
+                                email: profileFormInputs[2].value,
+                                imageString: profileImage.src
+
+                            }
+
+                        })
+
+                        document.dispatchEvent(customEvent)
+
+                        document.location.reload()
+
+                    }
     
                 }
-
-                document.dispatchEvent(customEvent)
     
-                document.location.reload()
-
             }, { once: true })
     
             saveButton.hasListener = true
 
         }
+
+    }
+
+    static #validateEmail (emailValue) {
+
+        const emailRegex = /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/ // RegEx for email validation
+    
+        const emailIsValid = emailRegex.test(emailValue)
+    
+        return emailIsValid ? true : false
+
+    }
+
+    static #validateLinkData() {
+
+        let dataIsValid = true
+
+        Renderer.linkArray.forEach(link => {
+
+            const urlContainer = document.getElementById(`url-input-${link.linkId}`)
+
+            const urlInputEl = urlContainer.querySelector('.url-div')
+
+            const urlValue = urlInputEl.querySelector('input').value
+
+            const regex = new RegExp(link.platformData.urlPattern)
+
+            if (!urlValue) {
+
+                this.#addInvalidState(urlInputEl, "Can't be empty")
+
+                dataIsValid = false
+
+            } else if (!regex.test(urlValue)) {
+
+                this.#addInvalidState(urlInputEl, "Url doesn't match the platform")
+
+                dataIsValid = false
+
+            } else {
+
+                link.linkUrl = urlValue
+
+                const customEvent = new CustomEvent('linkCreated', { detail: link })
+
+                document.dispatchEvent(customEvent)
+
+                this.linkArray = this.linkArray.filter(tempLink => tempLink.linkId !== link.linkId)
+
+            }
+
+        })
+
+        return dataIsValid
+
+    }
+
+    static #validateProfileData() {
+
+        let dataIsValid = true
+
+        const profileForm = document.querySelector('.profile-form')
+
+        const formInputContainers = profileForm.querySelectorAll('div')
+
+        formInputContainers.forEach(container => {
+
+            const input = container.querySelector('input')
+
+            if (!input.value) {
+
+                this.#addInvalidState(container, "Can't be empty")
+
+                dataIsValid = false
+
+            } else if (input.type === 'email' && !this.#validateEmail(input.value)) {
+
+                this.#addInvalidState(container, "Not a valid email")
+
+                dataIsValid = false
+
+            }
+
+        })
+
+        return dataIsValid
 
     }
 

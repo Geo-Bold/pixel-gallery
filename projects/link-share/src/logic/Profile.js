@@ -9,7 +9,6 @@ export class Profile {
     email
     url
     imageString
-    loginView
     linkArray = []
 
     constructor(data = {}) {
@@ -30,25 +29,23 @@ export class Profile {
 
             const reconstructedLinkArray = data.linkArray.reduce((accumulator, link) => {
 
-                link.platformData.urlPattern = new RegExp(link.platformData.urlPattern.slice(1, -1))
-        
                 accumulator.push(new Link(link))
         
                 return accumulator
 
             }, [])
 
-            this.addLink(reconstructedLinkArray)
+            this.linkArray = [...reconstructedLinkArray]
         
         }
-        
+
         Renderer.render(this, 'profile')
 
         document.addEventListener('linkCreated', e => this.addLink(e.detail))
         
         document.addEventListener('linkDeleted', (e) => this.removeLink(e.detail))
 
-        document.addEventListener('profilePageSaved', (e) => this.updateFields(e))
+        document.addEventListener('profilePageSaved', (e) => this.updateFields(e.detail))
 
     } 
 
@@ -56,15 +53,25 @@ export class Profile {
 
     addLink(links) { 
 
-        links.forEach( link => {
+        if (Array.isArray(links)) {
 
-            const duplicateLinkExists = this.linkArray.some(existingLink => existingLink.linkId === link.linkId)
+            links.forEach( link => {
 
-            if (!duplicateLinkExists) this.linkArray.push(link)
+                const duplicateLinkExists = this.linkArray.some(existingLink => existingLink.linkId === link.linkId)
+    
+                if (!duplicateLinkExists) this.linkArray.push(link)
+    
+            })
 
-        })
+        } else {
 
-        this.saveProfile()
+            const duplicateLinkExists = this.linkArray.some(existingLink => existingLink.linkId === links.linkId)
+    
+            if (!duplicateLinkExists) this.linkArray.push(links)
+    
+        }
+        
+        this.saveProfile() // FIX: leads to saving the profile into local storage directly after loading it from local storage
 
     } 
 
@@ -87,15 +94,15 @@ export class Profile {
     
     }
 
-    updateFields(event) {
+    updateFields(data) {
 
-        this.firstName = event.detail.firstName
+        this.firstName = data.firstName
 
-        this.lastName = event.detail.lastName
+        this.lastName = data.lastName
 
-        this.email = event.detail.email
+        this.email = data.email
 
-        this.imageString = event.detail.imageString
+        this.imageString = data.imageString ?? null
 
         this.saveProfile()
 

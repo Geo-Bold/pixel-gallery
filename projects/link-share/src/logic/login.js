@@ -4,11 +4,11 @@ import { Session } from './Session.js'
 
 document.addEventListener('DOMContentLoaded', () => {
 
+    Session.initialize()
+
     const container = document.querySelector('.container')
 
     const currentForm = container.querySelector('form')
-
-    const session = new Session()
 
     let local = new LocalStorage('account')
 
@@ -18,11 +18,11 @@ document.addEventListener('DOMContentLoaded', () => {
         
         renderCreateAccountView()
 
-        document.getElementById('submit').addEventListener('click', e => validateInput(e, session.createUser) )
+        document.getElementById('submit').addEventListener('click', e => validateInput(e, Session.createUser.bind(Session)) )
     
     } else if (activeView === 'login') {
 
-        document.getElementById('submit').addEventListener('click', e => validateInput(e, session.signInUser.bind(session)))
+        document.getElementById('submit').addEventListener('click', e => validateInput(e, Session.signInUser.bind(Session)))
 
     }
 
@@ -46,8 +46,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         }
     })
-
-    
 
     function updateView() {
 

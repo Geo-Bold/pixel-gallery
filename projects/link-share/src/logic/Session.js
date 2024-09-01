@@ -1,162 +1,113 @@
-import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
+import { Renderer } from './Renderer.js'
 
 export class Session {
+
+    static #anonKey
+    static #client
+    static #databaseUrl
+    static #isLoggedIn = false
+    static #user
     
-    #client
-    #user
-    #isLoggedIn = false 
-    #databaseUrl = 'https://cvxtjsrqrjwhtmxkzwbz.supabase.co'
-    #anonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN2eHRqc3Jxcmp3aHRteGt6d2J6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjIxODA1ODYsImV4cCI6MjAzNzc1NjU4Nn0.tpsW736ywZy-CHU5lkm0zcOZo_PwbUpuAwwVd7lXqUU'
+    static initialize() {
 
-    constructor() {
+        Session.#anonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN2eHRqc3Jxcmp3aHRteGt6d2J6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjIxODA1ODYsImV4cCI6MjAzNzc1NjU4Nn0.tpsW736ywZy-CHU5lkm0zcOZo_PwbUpuAwwVd7lXqUU'
 
-        this.#client = createClient(this.#databaseUrl, this.#anonKey)
+        Session.#databaseUrl = 'https://cvxtjsrqrjwhtmxkzwbz.supabase.co'
 
-        this.#user = null
+        Session.#client = createClient(Session.#databaseUrl, Session.#anonKey)
 
-        this.addEventListener()
+        Session.#user = null
+
+        Session.addEventListener()
 
     }
 
-    async createUser({ email, password }) {
+    static addEventListener() {
 
-        const { user, error } = await this.#client.auth.signUp({ email, password })
+        Session.#client.auth.onAuthStateChange(event => {
 
-        if (error) throw new Error(error.message)
+            switch (event) {
+                
+                case 'INITIAL_SESSION':
 
-        this.#user = user
+                    console.log('session created')
 
-        this.#isLoggedIn = true
+                    break
+    
+                case 'SIGNED_IN':
 
-        return user
+                    console.log('user is logged in')
 
-    }
+                    this.#isLoggedIn = true
 
-    addEventListener() {
+                    Renderer.render(null, 'auth')
 
-        this.#client.auth.onAuthStateChange((event, session) => {
+                    break
+    
+                case 'SIGNED_OUT':
 
-            if (event === 'INITIAL_SESSION') {
-                console.log('session created')
-            } else if (event === 'SIGNED_IN') {
-                console.log('user is logged in')
-            } else if (event === 'SIGNED_OUT') {
-                console.log('user is logged out')
-            } else if (event === 'PASSWORD_RECOVERY') {
-                console.log('password reset')
-            } else if (event === 'TOKEN_REFRESHED') {
-                console.log('session refreshed')
-            } else if (event === 'USER_UPDATED') {
-                console.log('user info updated')
+                    console.log('user is logged out')
+
+                    this.#isLoggedIn = false
+
+                    Renderer.render(null, 'auth')
+
+                    break
+    
+                case 'PASSWORD_RECOVERY':
+
+                    console.log('password reset')
+
+                    break
+    
+                case 'TOKEN_REFRESHED':
+
+                    console.log('session refreshed')
+
+                    break
+    
+                case 'USER_UPDATED':
+
+                    console.log('user info updated')
+
+                    break
+    
+                default:
+
+                    console.log('Unhandled event:', event)
+
+                    break
+
             }
-
+            
         })
 
     }
 
-    async signInUser({ email, password }) {
+    static async createUser({ email, password }) {
 
-        const { user, error } = await this.#client.auth.signInWithPassword({ email, password })
+        const { user, error } = await Session.#client.auth.signUp({ email, password })
 
         if (error) throw new Error(error.message)
 
-        this.#user = user
+        Session.#user = user
 
-        this.#isLoggedIn = true
+        Session.#isLoggedIn = true
 
         return user
 
     }
 
-    async signOutUser() {
+    static getClient() { return this.#client }
 
-        const { error } = await this.#client.auth.signOut()
+    static getUser() { return Session.#user }
 
-        if (error) throw new Error(error.message)
+    static async getUserDetails() {
 
-        this.#user = null
+        if (!Session.#isLoggedIn) throw new Error('User is not logged in.')
 
-        this.#isLoggedIn = false
-
-        return this.#user
-
-    }
-
-    getUser() {
-
-        console.log('working')
-        
-        return this.#user 
-    
-    }
-
-    async retrieveSession() {
-
-        const { data, error } = await this.#client.auth.getSession()
-
-        if (error) throw new Error(error.message)
-
-        this.#user = data.session?.user ?? null
-
-        this.#isLoggedIn = !!this.#user
-
-        return this.#user
-
-    }
-
-    isLoggedIn() { return this.#isLoggedIn }
-
-    async refreshSession() {
-
-        const { data, error } = await this.#client.auth.refreshSession()
-
-        if (error) throw new Error(error.message)
-
-        this.#user = data.session?.user ?? null
-
-        this.#isLoggedIn = !!this.#user
-
-        return this.#user
-
-    }
-
-    async updateUserProfile(updates) {
-
-        const { user, error } = await this.#client.auth.updateUser(updates)
-
-        if (error) throw new Error(error.message)
-
-        this.#user = user
-
-        return user
-
-    }
-
-    async resetPassword(email) {
-
-        const { error } = await this.#client.auth.resetPasswordForEmail(email)
-
-        if (error) throw new Error(error.message)
-
-        return 'Password reset email sent.'
-
-    }
-
-    async updatePassword(newPassword) {
-
-        const { error } = await this.#client.auth.updateUser({ password: newPassword })
-
-        if (error) throw new Error(error.message)
-
-        return 'Password updated successfully.'
-
-    }
-
-    async getUserDetails() {
-
-        if (!this.#isLoggedIn) throw new Error('User is not logged in.')
-
-        const { data, error } = await this.#client.from('profiles').select('*').eq('id', this.#user.id).single()
+        const { data, error } = await Session.#client.from('profiles').select('*').eq('id', Session.#user.id).single()
 
         if (error) throw new Error(error.message)
 
@@ -164,17 +115,107 @@ export class Session {
 
     }
 
-    isSessionExpired() {
+    static isLoggedIn() { return Session.#isLoggedIn }
 
-        if (!this.#user) return true
+    static isSessionExpired() {
 
-        const session = this.#client.auth.session()
+        if (!Session.#user) return true
+
+        const session = Session.#client.auth.session()
 
         if (!session) return true
 
         const expiresAt = session.expires_at * 1000 // Convert to milliseconds
 
         return Date.now() >= expiresAt
+
+    }
+
+    static async refreshSession() {
+
+        const { data, error } = await Session.#client.auth.refreshSession()
+
+        if (error) throw new Error(error.message)
+
+        Session.#user = data.session?.user ?? null
+
+        Session.#isLoggedIn = !!Session.#user
+
+        return Session.#user
+
+    }
+
+    static async resetPassword(email) {
+
+        const { error } = await Session.#client.auth.resetPasswordForEmail(email)
+
+        if (error) throw new Error(error.message)
+
+        return 'Password reset email sent.'
+
+    }
+
+    static async retrieveSession() {
+
+        const { data, error } = await Session.#client.auth.getSession()
+
+        if (error) throw new Error(error.message)
+
+        Session.#user = data.session?.user ?? null
+
+        Session.#isLoggedIn = !!Session.#user
+
+        return Session.#user
+
+    }
+
+    static async signInUser({ email, password }) {
+
+        const { user, error } = await Session.#client.auth.signInWithPassword({ email, password })
+
+        if (error) throw new Error(error.message)
+
+        Session.#user = user
+
+        Session.#isLoggedIn = true
+
+        return user
+
+    }
+
+    static async signOutUser() {
+
+        const { error } = await Session.#client.auth.signOut()
+
+        if (error) throw new Error(error.message)
+
+        Session.#user = null
+
+        Session.#isLoggedIn = false
+
+        return Session.#user
+
+    }
+
+    static async updatePassword(newPassword) {
+
+        const { error } = await Session.#client.auth.updateUser({ password: newPassword })
+
+        if (error) throw new Error(error.message)
+
+        return 'Password updated successfully.'
+
+    }
+
+    static async updateUserProfile(updates) {
+
+        const { user, error } = await Session.#client.auth.updateUser(updates)
+
+        if (error) throw new Error(error.message)
+
+        Session.#user = user
+
+        return user
 
     }
 
