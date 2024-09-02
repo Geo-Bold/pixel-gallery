@@ -4,8 +4,8 @@ export class Link {
     
     linkId
     linkUrl
-    userId
     platformData
+    last_updated
     static validId = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
 
     constructor(linkInputData) {

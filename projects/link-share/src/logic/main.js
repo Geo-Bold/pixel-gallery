@@ -3,18 +3,19 @@ import { Renderer } from './Renderer.js'
 import { Profile } from './Profile.js'
 import { LocalStorage } from './LocalStorage.js'
 import { Session } from './Session.js'
+import { Database } from './Database.js'
 
-document.addEventListener('DOMContentLoaded', (event) => {
+document.addEventListener('DOMContentLoaded', async (event) => {
 
     // Preloads the Renderer with the link parent and mobile preview parent elements as well as the menu options for each link.
 
     Renderer.context = { 
 
-        linkParent: document.querySelector('.link-body'), // Container in which the link objects will be rendered
+        linkParent: document.querySelector('.link-body'), // Container for rendering created links
 
-        linkPreviewParent: document.querySelector('.link-preview'), // Container where the mobile previews will be rendered
+        linkPreviewParent: document.querySelector('.link-preview'), // Container for rendering mobile previews
 
-        profileForm: document.querySelector('.profile-form'),
+        profileForm: document.querySelector('.profile-form'), // Container for profile form 
 
         platformData: [
 
@@ -37,9 +38,13 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
     }
 
-    Session.initialize()
+    await Session.initialize()
 
-    const storedData = new LocalStorage('link-app').returnAllValues()
+    const database = new Database()
+
+    const localStorage = new LocalStorage('link-app', database)
+
+    const storedData = localStorage.returnProfileData()
 
     let profile = new Profile(storedData.profile) // Loads existing profile from storage or creates a new profile.
 
@@ -60,5 +65,13 @@ document.addEventListener('DOMContentLoaded', (event) => {
         profileImageContainer.addEventListener('click', e => inputFile.click())
 
     }
+
+    // document.querySelector('#reset').addEventListener('click', e => {
+
+        // console.log(profile)
+
+        // Database.getProfileData().then(r => console.log(r)).catch(e => console.log(e))
+
+    // })
 
 })

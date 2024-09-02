@@ -266,6 +266,16 @@ export class Renderer {
     
     }
 
+    static #removeInvalidState(container, state) {
+
+        container.classList.remove(state)
+
+        const existingError = container.querySelector('.invalid-text')
+
+        if (existingError) existingError.innerText = ""
+
+    }
+
     static #renderAuthView() {
 
         const authButton = document.getElementById('auth-button')
@@ -312,6 +322,8 @@ export class Renderer {
 
         if (Renderer.context.linkParent) {
 
+            const url = link.linkUrl ? link.linkUrl : ""
+
             const linkHtml = `
 
                 <div class="link" id="link-${link.linkId}" draggable="true">
@@ -323,7 +335,7 @@ export class Renderer {
                     <div class="link-input" id="url-input-${link.linkId}">
                         <label>Link</label>
                         <div class="url-div">
-                            <input class="input-field" type="url" placeholder="https://${link.platformData.urlPattern}">
+                            <input value="${url}" class="input-field" type="url" placeholder="https://${link.platformData.urlPattern}">
                         </div>
                     </div>
                 </div>
@@ -331,8 +343,6 @@ export class Renderer {
             `
 
             const linkEl = Renderer.parser.parseFromString(linkHtml, 'text/html').body.firstChild
-
-            linkEl.querySelector('input').innerText = link.linkUrl
 
             linkEl.insertBefore(Renderer.#createCombobox(link), linkEl.querySelector('.link-input')) 
 
@@ -597,11 +607,7 @@ export class Renderer {
 
                 const containsLink = containsLinkContainer ? containsLinkContainer.querySelector('.link') : null
 
-                if (containsLinkContainer && containsLink) {
-
-                    this.#validateLinkData()
-
-                }
+                if (containsLinkContainer && containsLink) this.#validateLinkData()
 
                 if (Renderer.context.profileForm) {
 
@@ -633,8 +639,10 @@ export class Renderer {
                     }
     
                 }
+
+
     
-            }, { once: true })
+            })
     
             saveButton.hasListener = true
 
@@ -721,6 +729,8 @@ export class Renderer {
                 dataIsValid = false
 
             }
+
+            if (dataIsValid) this.#removeInvalidState(container, 'invalid')
 
         })
 

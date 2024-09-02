@@ -9,7 +9,7 @@ export class Session {
     static #isLoggedIn = false
     static #user
     
-    static initialize() {
+    static async initialize() {
 
         Session.#anonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN2eHRqc3Jxcmp3aHRteGt6d2J6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjIxODA1ODYsImV4cCI6MjAzNzc1NjU4Nn0.tpsW736ywZy-CHU5lkm0zcOZo_PwbUpuAwwVd7lXqUU'
 
@@ -20,6 +20,8 @@ export class Session {
         Session.#user = null
 
         Session.addEventListener()
+
+        await Session.refreshSession()
 
     }
 
@@ -133,15 +135,25 @@ export class Session {
 
     static async refreshSession() {
 
-        const { data, error } = await Session.#client.auth.refreshSession()
+        try {
+            
+            const { data, error } = await Session.#client.auth.refreshSession()
 
-        if (error) throw new Error(error.message)
+            if (error) throw new Error(error.message)
 
-        Session.#user = data.session?.user ?? null
+            Session.#user = data.session?.user ?? null
 
-        Session.#isLoggedIn = !!Session.#user
+            Session.#isLoggedIn = !!Session.#user
 
-        return Session.#user
+            return Session.#user
+
+        } catch (error) {
+            
+            console.error('Error in refreshSession:', error.message)
+
+            return null
+
+        }
 
     }
 

@@ -7,8 +7,8 @@ export class Profile {
     firstName
     lastName
     email
-    url
     imageString
+    last_updated
     linkArray = []
 
     constructor(data = {}) {
@@ -23,7 +23,7 @@ export class Profile {
 
         this.imageString = data.imageString ?? null
 
-        this.loginView = data.loginView ?? "login"
+        this.last_updated = new Date().toISOString()
 
         if (Object.keys(data).length > 0) {
 
@@ -103,6 +103,8 @@ export class Profile {
         this.email = data.email
 
         this.imageString = data.imageString ?? null
+
+        this.last_updated = new Date().toISOString()
 
         this.saveProfile()
 
