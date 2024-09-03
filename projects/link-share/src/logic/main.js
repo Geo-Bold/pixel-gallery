@@ -4,6 +4,7 @@ import { Profile } from './Profile.js'
 import { LocalStorage } from './LocalStorage.js'
 import { Session } from './Session.js'
 import { Database } from './Database.js'
+import { VersionControl } from './VersionControl.js'
 
 document.addEventListener('DOMContentLoaded', async (event) => {
 
@@ -38,13 +39,9 @@ document.addEventListener('DOMContentLoaded', async (event) => {
 
     }
 
-    await Session.initialize()
+    await Session.initialize() // DEV: optimize async code
 
-    const database = new Database()
-
-    const localStorage = new LocalStorage('link-app', database)
-
-    const storedData = localStorage.returnProfileData()
+    const storedData = await VersionControl.intialize(new LocalStorage('link-app'), new Database())
 
     let profile = new Profile(storedData.profile) // Loads existing profile from storage or creates a new profile.
 
@@ -65,13 +62,5 @@ document.addEventListener('DOMContentLoaded', async (event) => {
         profileImageContainer.addEventListener('click', e => inputFile.click())
 
     }
-
-    // document.querySelector('#reset').addEventListener('click', e => {
-
-        // console.log(profile)
-
-        // Database.getProfileData().then(r => console.log(r)).catch(e => console.log(e))
-
-    // })
 
 })

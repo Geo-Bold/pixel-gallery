@@ -18,19 +18,19 @@ export class LocalStorage {
 
     }
 
-    #retrieveStorageData() {
+    retrieveStorageData() {
 
         const storageData = localStorage.getItem(this.#storageKey)
 
         if (storageData) return JSON.parse(storageData)
             
-        else return {}
+        else return null
 
     }
 
     getItem(key) {
 
-        const storageData = this.#retrieveStorageData()
+        const storageData = this.retrieveStorageData()
         
         return storageData[key] || null
 
@@ -38,7 +38,7 @@ export class LocalStorage {
 
     setItem(key, value) {
 
-        const storageData = this.#retrieveStorageData()
+        const storageData = this.retrieveStorageData()
 
         storageData[key] = value
 
@@ -48,41 +48,12 @@ export class LocalStorage {
 
     removeItem(key) {
 
-        const storageData = this.#retrieveStorageData()
+        const storageData = this.retrieveStorageData()
 
         delete storageData[key]
 
         localStorage.setItem(this.#storageKey, JSON.stringify(storageData))
 
-    }
-
-    returnProfileData() {
-
-        let data
-
-        if (Session.isLoggedIn()) {
-
-            this.#database.returnProfileData().then(data => {
-
-                const localData = this.#retrieveStorageData()
-
-                const profileDataInSync = this.compareProfileData(localData.profile, data.profile)
-console.log(profileDataInSync)
-                if (!profileDataInSync) this.#database.setProfileData(localData.profile)
-// Must work with null data
-                console.log("Cloud data: ", data)
-                console.log("Local data: ", localData)
-    
-            })
-
-            data = this.#retrieveStorageData()
-            
-        } else data = this.#retrieveStorageData()
-
-        
-
-        return data
-    
     }
 
     clearStorage() { localStorage.removeItem(this.#storageKey) }
@@ -92,12 +63,6 @@ console.log(profileDataInSync)
         if (localData.firstName !== cloudData.firstName || localData.lastName !== cloudData.lastName || localData.email !== cloudData.email || localData.url !== cloudData.url) return false
 
         return true
-
-    }
-
-    compareLinkData(localData, cloudData) {
-
-
 
     }
 

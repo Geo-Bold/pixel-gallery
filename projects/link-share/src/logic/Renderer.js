@@ -254,7 +254,7 @@ export class Renderer {
 
     }
 
-    static #removeLinkAndPreview(link) { //fixed
+    static #removeLinkAndPreview(link) {
 
         const node = document.getElementById(`link-${link.linkId}`)
 
@@ -607,7 +607,13 @@ export class Renderer {
 
                 const containsLink = containsLinkContainer ? containsLinkContainer.querySelector('.link') : null
 
-                if (containsLinkContainer && containsLink) this.#validateLinkData()
+                if (containsLinkContainer && containsLink && this.#validateLinkData()) {
+
+                    const updateStorageEvent = new CustomEvent('updateStorage')
+
+                    document.dispatchEvent(updateStorageEvent)
+
+                }
 
                 if (Renderer.context.profileForm) {
 

@@ -41,8 +41,6 @@ export class Database {
 
     }
 
-
-
     async getLinkData(profileId) {
 
         const { data, error } = await this.#client
@@ -60,6 +58,7 @@ export class Database {
 
             return data.map(link => ({
 
+                id: link.user_id,
                 linkId: link.id,
                 linkUrl: link.url,
                 platformData: link.platform_data,
@@ -81,6 +80,7 @@ export class Database {
 
             return {
 
+                id: data.id,
                 firstName: data.first_name,
                 lastName: data.last_name,
                 email: data.email,
@@ -98,38 +98,6 @@ export class Database {
 
     }
 
-    async returnProfileData() {
-
-        try {
-
-            const userId = Session.getUser().id 
-            
-            if (!userId) throw new Error('Failed to fetch user id.') 
-
-            let data = { profile: await this.getProfileData(userId) } // Fetch profile data for the user (object)
-
-            if (!data) throw new Error('Failure to fetch profile data.')
-            
-            data.profile.linkArray = []
-            
-            const links = await this.getLinkData(userId) // Fetch all links associated with the user (array)
-        
-            if (!Array.isArray(links)) throw new Error('Failure to fetch links.')
-        
-            links.forEach(link => data.profile.linkArray.push(link))
-
-            return data
-
-        } catch (error) { 
-            
-            console.error('Error in returnAllValues: ', error.message) 
-        
-            return null
-
-        }
-
-    }
-  
     async setProfileData(profile) {
 
         try {
@@ -150,19 +118,21 @@ export class Database {
         
             return data
 
-            } catch (err) {
+        } catch (err) {
 
             console.error('Error in setProfileData: ', err.message)
 
             return null
 
-            }
+        }
 
       }
 
     async setLinkData(links) {
 
-        const { data, error } = await this.#client.from('links').upsert(links)
+        const { data, error } = await this.#client
+            .from('links')
+            .upsert(links)
 
     
         if (error) {
@@ -190,12 +160,6 @@ export class Database {
         }
     
         return data
-
-    }
-
-    updateAllValues() {
-
-        
 
     }
     

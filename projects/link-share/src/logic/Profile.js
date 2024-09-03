@@ -1,9 +1,10 @@
-import { LocalStorage } from "./LocalStorage.js"
+import { VersionControl } from "./VersionControl.js"
 import { Renderer } from "./Renderer.js"
 import { Link } from './Link.js'
 
 export class Profile {
 
+    id
     firstName
     lastName
     email
@@ -12,6 +13,8 @@ export class Profile {
     linkArray = []
 
     constructor(data = {}) {
+
+        this.id = data.id
 
         this.firstName = data.firstName ?? null
 
@@ -23,7 +26,7 @@ export class Profile {
 
         this.imageString = data.imageString ?? null
 
-        this.last_updated = new Date().toISOString()
+        this.last_updated = data.last_updated ?? new Date().toISOString()
 
         if (Object.keys(data).length > 0) {
 
@@ -43,9 +46,11 @@ export class Profile {
 
         document.addEventListener('linkCreated', e => this.addLink(e.detail))
         
-        document.addEventListener('linkDeleted', (e) => this.removeLink(e.detail))
+        document.addEventListener('linkDeleted', e => this.removeLink(e.detail))
 
-        document.addEventListener('profilePageSaved', (e) => this.updateFields(e.detail))
+        document.addEventListener('profilePageSaved', e => this.updateFields(e.detail))
+
+        document.addEventListener('updateStorage', e => this.saveProfile())
 
     } 
 
@@ -53,25 +58,11 @@ export class Profile {
 
     addLink(links) { 
 
-        if (Array.isArray(links)) {
+        if (Array.isArray(links)) links.forEach( link => { if (this.#linkIsUnique(link)) this.linkArray.push(link) })
 
-            links.forEach( link => {
+        if (this.#linkIsUnique(links)) this.linkArray.push(links)
 
-                const duplicateLinkExists = this.linkArray.some(existingLink => existingLink.linkId === link.linkId)
-    
-                if (!duplicateLinkExists) this.linkArray.push(link)
-    
-            })
-
-        } else {
-
-            const duplicateLinkExists = this.linkArray.some(existingLink => existingLink.linkId === links.linkId)
-    
-            if (!duplicateLinkExists) this.linkArray.push(links)
-    
-        }
-        
-        this.saveProfile() // FIX: leads to saving the profile into local storage directly after loading it from local storage
+        // this.saveProfile()
 
     } 
 
@@ -85,12 +76,12 @@ export class Profile {
     
     }
     saveProfile() { 
-        
-        const localStorage = new LocalStorage('link-app')
 
         this.linkArray.forEach(link => link.platformData.urlPattern = link.platformData.urlPattern.toString())
 
-        localStorage.setItem('profile', this) 
+        this.last_updated = new Date().toISOString()
+
+        VersionControl.save(this) 
     
     }
 
@@ -104,10 +95,16 @@ export class Profile {
 
         this.imageString = data.imageString ?? null
 
-        this.last_updated = new Date().toISOString()
-
         this.saveProfile()
 
+    }
+
+    #linkIsUnique(link) {
+
+        if (this.linkArray.some(existingLink => existingLink.linkId === link.linkId)) return false
+
+        else return true
+    
     }
 
 }

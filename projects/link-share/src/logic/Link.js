@@ -1,7 +1,9 @@
 import { Renderer } from './Renderer.js'
+import { Session } from './Session.js'
 
 export class Link {
     
+    id
     linkId
     linkUrl
     platformData
@@ -18,9 +20,11 @@ export class Link {
 
         } else this.linkId = Link.validId.shift()
 
-        this.linkUrl = linkInputData.linkUrl ?? null
+        this.id = linkInputData.id ?? Session.getUser().id
 
-        this.userId = linkInputData.userId ?? null
+        this.last_updated = linkInputData.last_updated ?? new Date().toISOString()
+
+        this.linkUrl = linkInputData.linkUrl ?? null
 
         this.platformData = linkInputData.platformData ?? Renderer.context.platformData[0]
 
