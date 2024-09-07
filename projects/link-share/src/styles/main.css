@@ -215,6 +215,7 @@ button, a {
     column-gap: 0.5rem;
     align-items: center;
     padding-inline: 1rem;
+    cursor: pointer;
 }
 .mobile-link > div:nth-child(1) {
     display: flex;
@@ -245,6 +246,7 @@ button, a {
     height: 34.25rem;
     overflow-y: scroll;
     scrollbar-width: none;
+    position: relative;
 }
 .link-body::-webkit-scrollbar {
     display: none;
@@ -295,6 +297,13 @@ button, a {
     column-gap: 0.5rem;
     padding: unset;
     max-height: 1.5rem;
+    position: relative;
+}
+.link > header > .drag-and-drop {
+    position: absolute;
+    width: 1.5rem;
+    height: 1.5rem;
+    z-index: 2;
 }
 .link > header > button {
     justify-self: end;
@@ -433,7 +442,7 @@ button, a {
 
 /*Dragging events*/
 .dragging {
-    opacity: 0.8; /* Make the dragged element semi-transparent */
+    opacity: 1; /* Make the dragged element semi-transparent */
 }
 
 /* Hover effect for SVGs */
@@ -519,7 +528,7 @@ button, a {
     font-size: 0.75rem;
 }
 .profile-form {
-    grid-template-columns: minmax(auto, 15rem) auto;
+    grid-template-columns: auto minmax(15rem, auto);
     row-gap: 0.75rem;
 }
 .profile-form .input-field {

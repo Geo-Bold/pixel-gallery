@@ -210,7 +210,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (validEmail && validPassword) {
 
             executeOnSuccess({ email: email.value, password: password.value })
-                .then(user => console.log('user signed in successfully'))
+                .then(user => window.location.href = '../')
                 .catch(error => console.error('error signing in:', error.message))
 
             clearInvalidInputState()

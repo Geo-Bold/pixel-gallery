@@ -22,22 +22,15 @@ export class Database {
 
     }
 
-    async getImage(profileId) {
+    async getImageUrl(profileId) {
 
-        const { data, error } = await this.#client
-            .from('profiles')
-            .select('image_string')
-            .eq('id', profileId).single()
-    
-        if (error) {
+        const { data, error } = await this.#client.storage
+            .from('profile-images')
+            .getPublicUrl(`${profileId}`)
 
-            console.error('Error getting image:', error)
+        if (error) console.log('Error getting image url: ', error)
 
-            return null
-
-        }
-    
-        return data.image_string
+        return data.publicUrl
 
     }
 
@@ -147,13 +140,15 @@ export class Database {
 
     }
 
-    async setImage(profileId, imageString) {
-        
-        const { data, error } = await this.#client.from('profiles').update({ image_string: imageString }).eq('id', profileId)
+    async setProfileImage(filePath, blob) {
+
+        const { data, error } = await this.#client.storage
+            .from('profile-images')
+            .upload(filePath, blob, { upsert: true, contentType: blob.type })
     
         if (error) {
 
-            console.error('Error setting image:', error)
+            console.error('Error in setImage: ', error)
 
             return
 

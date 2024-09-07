@@ -19,9 +19,9 @@ export class VersionControl {
 
                 console.log('User logged in. Fetching from local storage.')
 
-                const data = await this.#syncWithCloud(localData)
+                this.#syncWithCloud(localData) // DEV: dont wait for the sync to fetch from local. if local needs to updated, reload the page from inside syncWithCloud
 
-                return data
+                return localData
 
             } else if (Session.isLoggedIn()) {
 
@@ -67,23 +67,15 @@ export class VersionControl {
 
             this.#pushToCloud(local).catch(e => console.log('failed to push to cloud'))
 
-            return local
-
         } else if (localLastUpdateTime < cloudLastUpdateTime) {
 
             console.log("Cloud contains most recent")
 
             this.#pushToLocal(cloud)
 
-            return cloud
+            document.location.reload()
 
-        } else {
-
-            console.log("Local and cloud in sync")
-
-            return local
-
-        }
+        } else console.log("Local and cloud in sync")
 
     }
 
@@ -102,6 +94,10 @@ export class VersionControl {
             let data = { profile: await this.#database.getProfileData(userId) } // Fetch profile data for the user (object)
 
             if (!data) throw new Error('Failure to fetch profile data.')
+            
+            const profileImageUrl = await this.#database.getImageUrl(userId)
+
+            if (profileImageUrl) data.profile.imageString = profileImageUrl
             
             data.profile.linkArray = []
             
@@ -123,13 +119,13 @@ export class VersionControl {
 
     }
 
-    static async #pushToCloud(profile) {
+    static async #pushToCloud(data) {
 
         try {
 
-            await this.#database.setProfileData(profile)
+            this.#database.setProfileData(data.profile)
 
-            let linkArray = profile.linkArray.map(link => {
+            let linkArray = data.profile.linkArray.map(link => {
 
                 return {
 
@@ -143,7 +139,7 @@ export class VersionControl {
 
             })
 
-            await this.#database.setLinkData(linkArray)
+            this.#database.setLinkData(linkArray)
 
         } catch (error) { console.error("Error in pushToCloud: ", error.message) }
 
@@ -153,7 +149,7 @@ export class VersionControl {
 
         const local = this.#localStorage.retrieveStorageData()
 
-        if (Object.keys(local).length > 0 && this.#validate(local)) return local.profile // DEV: requires development of validation
+        if (Object.keys(local).length > 0 && this.#validate(local)) return local["link-share"] // DEV: requires development of validation
         else if (Object.keys(local).length > 0) {
 
             console.log('Invalid data. Clearing local storage.') // DEV: tidy console log
@@ -167,8 +163,8 @@ export class VersionControl {
     static #pushToLocal(data) { this.#localStorage.setItem('link-share', data) }
 
     static save(data) {
-console.log(data)
-        this.#localStorage.setItem(data)
+
+        this.#pushToLocal({profile: data})
 
         this.#pushToCloud(data)
             .then(e => console.log('successfully pushed to cloud'))
@@ -176,24 +172,44 @@ console.log(data)
 
     }
 
-    /* Returns true if the data is in a valid form.  */
+    /* DEV: Returns true if the data is in a valid form.  */
 
-    static #validate(data) {
-        // // Check if all required fields are present
-        // localData.profile.id === Session.getUser().id // Check if id's match
+    static #validate(data) { return true}
 
-        // if (!data || typeof data !== 'object') return false;
-        // if (!data.id || typeof data.id !== 'string') return false;
-        // if (!data.firstName || typeof data.firstName !== 'string') return false;
-        // if (!data.lastName || typeof data.lastName !== 'string') return false;
-        // if (!data.email || !this.isValidEmail(data.email)) return false; // Check if email is valid
-        // if (!data.updatedAt || !this.isValidISODate(data.updatedAt)) return false; // Check if date is valid
-    
-        // // Additional integrity checks (example: version number must be positive integer)
-        // if (data.version && (!Number.isInteger(data.version) || data.version <= 0)) return false;
-    
-        // // All checks passed, data is not corrupted
-        return true;
-      }
+    static #convertBase64ToBlob(base64String) {
+
+        const mimeType = base64String.slice(base64String.indexOf(':') + 1, base64String.indexOf(';'))
+
+        const base64Data = base64String.slice(base64String.indexOf(',') + 1)
+
+        const byteCharacters = atob(base64Data)
+
+        const byteNumbers = new Array(byteCharacters.length)
+
+        for (let i = 0; i < byteNumbers.length; i++) {
+
+            byteNumbers[i] = byteCharacters.charCodeAt(i)
+
+        }
+
+        const byteArray = new Uint8Array(byteNumbers)
+
+        const blob = new Blob([byteArray], { type: mimeType })
+
+        return blob
+
+    }
+
+    static async pushImageToCloud(image) {
+
+        const blob = this.#convertBase64ToBlob(image)
+
+        const filePath = `${Session.getUser().id}`
+
+        this.#database.setProfileImage(filePath, blob)
+
+    }
+
+    static deleteLocalStorageData() { this.#localStorage.clearStorage() }
 
 }

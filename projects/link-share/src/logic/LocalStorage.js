@@ -58,12 +58,4 @@ export class LocalStorage {
 
     clearStorage() { localStorage.removeItem(this.#storageKey) }
 
-    compareProfileData(localData, cloudData) {
-
-        if (localData.firstName !== cloudData.firstName || localData.lastName !== cloudData.lastName || localData.email !== cloudData.email || localData.url !== cloudData.url) return false
-
-        return true
-
-    }
-
 }

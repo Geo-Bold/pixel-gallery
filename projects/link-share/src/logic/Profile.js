@@ -62,8 +62,6 @@ export class Profile {
 
         if (this.#linkIsUnique(links)) this.linkArray.push(links)
 
-        // this.saveProfile()
-
     } 
 
     removeLink(link) { 
@@ -72,7 +70,7 @@ export class Profile {
 
         this.linkArray = this.linkArray.filter(obj => obj.linkId !== link.linkId)
         
-        this.saveProfile()
+        // this.saveProfile()
     
     }
     saveProfile() { 

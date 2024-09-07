@@ -20,7 +20,9 @@ export class Link {
 
         } else this.linkId = Link.validId.shift()
 
-        this.id = linkInputData.id ?? Session.getUser().id
+        if (Session.isLoggedIn()) this.id = Session.getUser().id
+        
+        else this.id = null
 
         this.last_updated = linkInputData.last_updated ?? new Date().toISOString()
 

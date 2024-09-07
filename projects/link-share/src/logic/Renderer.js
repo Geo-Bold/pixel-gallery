@@ -1,4 +1,13 @@
 import { Session } from "./Session.js"
+import { VersionControl } from "./VersionControl.js"
+import {
+    Draggable,
+    Sortable,
+    Droppable,
+    Swappable,
+    Plugins
+  } from 'https://cdn.jsdelivr.net/npm/@shopify/draggable/build/esm/index.mjs';
+
 
 export class Renderer {
 
@@ -92,7 +101,7 @@ export class Renderer {
 
     static #comboboxUpdatePlatform(title, url, pattern, link) {
 
-        link.setPlatformData(title, url, new RegExp(pattern.slice(1, -1)))
+        link.setPlatformData(title, url, pattern)
 
         Renderer.#renderLinkPreview(link)
 
@@ -106,7 +115,7 @@ export class Renderer {
 
         selected.appendChild(document.createTextNode(title))
 
-        input.placeholder = `https://${pattern.toString()}`
+        input.placeholder = `https://${pattern}`
 
     }
 
@@ -182,45 +191,35 @@ export class Renderer {
 
     }
 
-    static #createDragEventListeners(linkEl, link) {
+    static enableDragAndDrop(linkEl) {
 
-        const linkBody = Renderer.context.linkParent
+        const containerSelector = '.link-body'
 
-        linkEl.addEventListener('dragstart', (e) => {
+        const container = document.querySelector(containerSelector)
 
-            linkEl.classList.add('dragging')
-        
-            e.target.style.opacity = '0.5'
+        const sortable = new Sortable(container, {
 
-        })
+            draggable: '.link',
 
-        linkBody.addEventListener('dragover', (e) => {
+            handle: '.drag-and-drop',
 
-            e.preventDefault() // Allow dropping
+            mirror: {
 
-            const draggedElement = document.querySelector('.dragging')
+                appendTo: containerSelector,
 
-            const afterElement = Renderer.getDragAfterElement(linkBody, e.clientY)
-        
-            if (afterElement === null) {
+                constrainDimensions: true,
 
-                linkBody.appendChild(draggedElement)
+            },
 
-            } else {
+          })
+          
+          sortable.on('sortable:start', () => console.log('sortable:start'))
 
-                linkBody.insertBefore(draggedElement, afterElement)
+          sortable.on('sortable:sort', () => console.log('sortable:sort'))
 
-            }
+          sortable.on('sortable:sorted', () => console.log('sortable:sorted'))
 
-        })
-
-        linkEl.addEventListener('dragend', (e) => {
-
-            e.target.style.opacity = '1'
-
-            linkEl.classList.remove('dragging')
-
-        })
+          sortable.on('sortable:stop', () => console.log('sortable:stop'))
 
     }
 
@@ -310,6 +309,8 @@ export class Renderer {
 
                 Session.signOutUser()
 
+                VersionControl.deleteLocalStorageData()
+
             })
 
         }
@@ -328,7 +329,8 @@ export class Renderer {
 
                 <div class="link" id="link-${link.linkId}" draggable="true">
                     <header>
-                        <object class="drag-and-drop" data="/src/assets/images/icon-drag-and-drop.svg" type="image/svg+xml"></object>
+                        <div class="drag-and-drop"></div>
+                        <object data="/src/assets/images/icon-drag-and-drop.svg" type="image/svg+xml"></object>
                         <h2 class="label">Link #${link.linkId}</h2>
                         <button class="delete">Remove</button>
                     </header>
@@ -347,8 +349,6 @@ export class Renderer {
             linkEl.insertBefore(Renderer.#createCombobox(link), linkEl.querySelector('.link-input')) 
 
             Renderer.context.linkParent.append(linkEl)
-
-            Renderer.#createDragEventListeners(linkEl, link)
 
             Renderer.manageLinkPageState()
 
@@ -389,13 +389,17 @@ export class Renderer {
 
         const existingPreview = document.getElementById(`preview-${link.linkId}`)
 
-        if (existingPreview != null) {
+        if (existingPreview) {
+
+            existingPreview.removeEventListener('click', addUrlLocation)
 
             const icon = Renderer.#createIcon(link.platformData.icon)
 
             existingPreview.querySelector('div:nth-child(1)').replaceWith(icon)
 
             existingPreview.querySelector('p').innerText = `${link.platformData.title}`
+
+            existingPreview.addEventListener('click', addUrlLocation)            
 
         } else {
 
@@ -405,9 +409,13 @@ export class Renderer {
 
             mobilePreview.insertBefore(icon, mobilePreview.firstChild)
 
+            mobilePreview.addEventListener('click', e => window.open(link.linkUrl, '_blank'))
+
             return mobilePreview
             
         }
+
+        function addUrlLocation() { window.location.href = link.linkUrl }
 
     }
 
@@ -480,24 +488,6 @@ export class Renderer {
             email.classList.remove('text')
 
         }
-
-    }
-
-    static getDragAfterElement(linkContainer, y) {
-
-        const draggableElements = [...linkContainer.querySelectorAll('.link[draggable="true"]:not(.dragging)')]
-    
-        return draggableElements.reduce((closest, child) => {
-
-            const box = child.getBoundingClientRect()
-            
-            const offset = y - box.top - box.height / 2
-            
-            if (offset < 0 && offset > closest.offset) return { offset: offset, element: child }
-
-            else return closest
-
-        }, { offset: Number.NEGATIVE_INFINITY }).element
 
     }
 
@@ -581,9 +571,15 @@ export class Renderer {
 
                 const fileReader = new FileReader()
 
-                fileReader.onload = e => profileImage.src = e.target.result
-
                 fileReader.readAsDataURL(file)
+
+                fileReader.onload = e => {
+
+                    profileImage.src = e.target.result
+
+                    VersionControl.pushImageToCloud(e.target.result)
+
+                }
 
             } else console.log('error no file')
 
@@ -647,6 +643,10 @@ export class Renderer {
                 }
 
 
+
+    
+    
+
     
             })
     
@@ -678,7 +678,7 @@ export class Renderer {
 
             const urlValue = urlInputEl.querySelector('input').value
 
-            const regex = new RegExp(link.platformData.urlPattern)
+            const regex = this.#convertUrlStringToRegex(link.platformData.urlPattern)
 
             if (!urlValue) {
 
@@ -741,6 +741,14 @@ export class Renderer {
         })
 
         return dataIsValid
+
+    }
+
+    static #convertUrlStringToRegex(string) {
+
+        const escapedString = string.replace(/[.]/g, '\\$&')
+
+        return new RegExp(escapedString)
 
     }
 
