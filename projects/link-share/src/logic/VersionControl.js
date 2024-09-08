@@ -13,11 +13,17 @@ export class VersionControl {
 
         try {
 
+            const naiveUser = Session.getIdFromUrlHash()
+
             const localData = this.pullFromLocal()
 
-            const cloudData = await this.#pullFromCloud()
+            const cloudData = naiveUser ? await this.#pullFromCloud(naiveUser) : await this.#pullFromCloud()
 
-            if (Session.isLoggedIn() && localData) {
+            if (!Session.isLoggedIn() && naiveUser.length > 0) {
+
+                return cloudData
+
+            } else if (Session.isLoggedIn() && localData) {
 
                 console.log('User logged in. Fetching from local storage.')
 
@@ -79,11 +85,11 @@ export class VersionControl {
 
     }
 
-    static async #pullFromCloud() {
+    static async #pullFromCloud(id = null) {
 
         try {
 
-            const userId = Session.getUser().id 
+            const userId = id ?? Session.getUser().id 
             
             if (!userId) throw new Error('Failed to fetch user id.') 
 
@@ -103,6 +109,8 @@ export class VersionControl {
         
             links.forEach(link => data.profile.linkArray.push(link))
 
+            data.profile.linkArray.sort((a, b) => a.order - b.order)
+
             return data
 
         } catch (error) { 
@@ -119,9 +127,9 @@ export class VersionControl {
 
         try {
 
-            this.#database.setProfileData(data)
+            this.#database.setProfileData(data.profile)
 
-            let linkArray = data.linkArray.map(link => {
+            let linkArray = data.profile.linkArray.map(link => {
 
                 return {
 
@@ -129,7 +137,8 @@ export class VersionControl {
                     id: link.linkId,
                     url: link.linkUrl,
                     last_updated: link.last_updated,
-                    platform_data: link.platformData
+                    platform_data: link.platformData,
+                    order: link.order
 
                 }
 
@@ -145,8 +154,13 @@ export class VersionControl {
 
         const local = this.#localStorage.retrieveStorageData()
 
-        if (Object.keys(local).length > 0 && this.#validate(local)) return local["link-share"] // DEV: requires development of validation
-        else if (Object.keys(local).length > 0) {
+        if (Object.keys(local).length > 0) {
+        
+            local["link-share"].profile.linkArray.sort((a, b) => a.order - b.order)
+
+            return local["link-share"]
+        
+        } else if (Object.keys(local).length > 0) {
 
             console.log('Invalid data. Clearing local storage.') // DEV: tidy console log
 
@@ -183,7 +197,8 @@ export class VersionControl {
                         id: link.linkId,
                         url: link.linkUrl,
                         last_updated: link.last_updated,
-                        platform_data: link.platformData
+                        platform_data: link.platformData,
+                        order: link.order
 
                     }
 
@@ -204,8 +219,6 @@ export class VersionControl {
     }
 
     /* DEV: Returns true if the data is in a valid form.  */
-
-    static #validate(data) { return true}
 
     static #convertBase64ToBlob(base64String) {
 

@@ -231,4 +231,28 @@ export class Session {
 
     }
 
+    static generateSessionUrl() {
+
+        const domain = window.location.href
+
+        const userId = Session.getUser().id
+
+        return domain + '#' + userId
+
+    }
+
+    static getIdFromUrlHash() {
+
+        if (!this.getUser()) {
+
+            const page = window.location.hash
+
+            const userId = page.slice(page.indexOf('#') + 1)
+
+            return userId
+
+        }
+
+    }
+
 }

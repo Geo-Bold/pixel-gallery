@@ -4,6 +4,7 @@ import { Session } from './Session.js'
 export class Link {
     
     id
+    order
     linkId
     linkUrl
     platformData
@@ -15,14 +16,14 @@ export class Link {
         if (linkInputData.linkId) {
 
             this.linkId = linkInputData.linkId
+
+            this.order = linkInputData.order ? linkInputData.order : linkInputData.linkId - 1
             
-            const index = Link.validId.splice(Link.validId.indexOf(linkInputData.linkId), 1) // Removes the existing id from the validId pool
+            Link.validId.splice(Link.validId.indexOf(linkInputData.linkId), 1) // Removes the existing id from the validId pool
 
         } else this.linkId = Link.validId.shift()
 
-        if (Session.isLoggedIn()) this.id = Session.getUser().id
-        
-        else this.id = null
+        this.id = Session.isLoggedIn() ? Session.getUser().id : null
 
         this.last_updated = linkInputData.last_updated ?? new Date().toISOString()
 

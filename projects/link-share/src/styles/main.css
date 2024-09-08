@@ -137,6 +137,9 @@ button, a {
     display: flex;
     align-items: center;
 }
+.container > header :first-child {
+    width: min-content;
+}
 .container > header > :nth-child(3) {
     justify-self: end;
 }
@@ -618,6 +621,9 @@ button, a {
     width: 100%;
     height: 3.5rem;
     margin-left: unset;
+}
+#preview-name {
+    font-size: 1.5rem;
 }
 
 /* Login/Sign up page */

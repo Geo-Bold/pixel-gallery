@@ -55,7 +55,8 @@ export class Database {
                 linkId: link.id,
                 linkUrl: link.url,
                 platformData: link.platform_data,
-                last_updated: link.last_updated
+                last_updated: link.last_updated,
+                order: link.order
 
             }))
 
