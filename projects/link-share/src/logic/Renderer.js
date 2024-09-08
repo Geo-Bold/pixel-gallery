@@ -1,5 +1,6 @@
 import { Session } from "./Session.js"
 import { VersionControl } from "./VersionControl.js"
+import { Link } from "./Link.js";
 import {
     Draggable,
     Sortable,
@@ -67,13 +68,15 @@ export class Renderer {
 
         deleteButton.addEventListener('click', () => {
 
-            const event = new CustomEvent('linkDeleted', { detail: link }) 
+            const event = new CustomEvent('linkDeleted', { detail: link })
 
-            document.dispatchEvent(event) // Notifies profile to remove link
+            document.dispatchEvent(event)
+
+            Link.validId.unshift(link.linkId)
 
             Renderer.#removeLinkAndPreview(link) 
 
-            Renderer.manageLinkPageState()
+            // Renderer.manageLinkPageState()
 
             Renderer.linkArray.pop(link)
 
@@ -531,7 +534,7 @@ export class Renderer {
 
         profileFormInputFields.forEach(input => {
 
-            if (input.value) changeSaveButtonState()
+            if (input.value) saveButton.classList.remove('disabled')
 
             input.addEventListener('keyup', changeSaveButtonState)
     

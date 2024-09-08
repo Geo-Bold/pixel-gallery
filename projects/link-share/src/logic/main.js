@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', async (event) => {
 
     let profile = new Profile(storedData.profile) // Loads existing profile from storage or creates a new profile.
 
-    Renderer.enableDragAndDrop() // Implements drag and drop on the link elements.
+    if (Renderer.context.linkParent) Renderer.enableDragAndDrop() // Implements drag and drop on the link elements.
 
     // Creates and renders a generic link
 

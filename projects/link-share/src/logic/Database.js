@@ -39,7 +39,7 @@ export class Database {
         const { data, error } = await this.#client
             .from('links')
             .select('*')
-            .eq('user_id', profileId)
+            .eq('profile_id', profileId)
     
         if (error) {
 
@@ -51,7 +51,7 @@ export class Database {
 
             return data.map(link => ({
 
-                id: link.user_id,
+                id: link.profile_id,
                 linkId: link.id,
                 linkUrl: link.url,
                 platformData: link.platform_data,
@@ -61,6 +61,30 @@ export class Database {
 
         }
     
+    }
+
+    async deleteLinkData(linkArray, profileId) {
+
+        const { data, error } = await this.#client
+            .from('links')
+            .delete()
+            .in('id', linkArray)
+            .eq('profile_id', profileId)
+
+        if (error) {
+
+            console.error('Unable to delete link:', error)
+
+            return null
+
+        }
+
+        console.log('Link deleted successfully:', data)
+
+        return data  // Return the deleted data, if needed
+
+        
+
     }
 
     async getProfileData(profileId) {

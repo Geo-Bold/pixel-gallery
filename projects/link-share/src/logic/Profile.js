@@ -1,6 +1,7 @@
 import { VersionControl } from "./VersionControl.js"
 import { Renderer } from "./Renderer.js"
 import { Link } from './Link.js'
+import { Session } from "./Session.js"
 
 export class Profile {
 
@@ -14,7 +15,9 @@ export class Profile {
 
     constructor(data = {}) {
 
-        this.id = data.id
+        if (Session.isLoggedIn()) this.id = Session.getUser().id 
+        
+        else this.id = null
 
         this.firstName = data.firstName ?? null
 
@@ -66,16 +69,11 @@ export class Profile {
 
     removeLink(link) { 
 
-        Link.validId.unshift(link.linkId)
-
         this.linkArray = this.linkArray.filter(obj => obj.linkId !== link.linkId)
-        
-        // this.saveProfile()
-    
-    }
-    saveProfile() { 
 
-        this.linkArray.forEach(link => link.platformData.urlPattern = link.platformData.urlPattern.toString())
+    }
+
+    saveProfile() { 
 
         this.last_updated = new Date().toISOString()
 

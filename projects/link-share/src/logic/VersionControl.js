@@ -13,7 +13,9 @@ export class VersionControl {
 
         try {
 
-            const localData = this.#pullFromLocal()
+            const localData = this.pullFromLocal()
+
+            const cloudData = await this.#pullFromCloud()
 
             if (Session.isLoggedIn() && localData) {
 
@@ -23,12 +25,10 @@ export class VersionControl {
 
                 return localData
 
-            } else if (Session.isLoggedIn()) {
+            } else if (Session.isLoggedIn() && cloudData) {
 
                 console.log('User logged in. Fetching from cloud and pushing to local.')
                 
-                const cloudData = await this.#pullFromCloud()
-
                 this.#pushToLocal(cloudData)
 
                 return cloudData
@@ -79,10 +79,6 @@ export class VersionControl {
 
     }
 
-    static getLocalData() {  }
-
-    static getCloudData() {  }
-
     static async #pullFromCloud() {
 
         try {
@@ -123,13 +119,13 @@ export class VersionControl {
 
         try {
 
-            this.#database.setProfileData(data.profile)
+            this.#database.setProfileData(data)
 
-            let linkArray = data.profile.linkArray.map(link => {
+            let linkArray = data.linkArray.map(link => {
 
                 return {
 
-                    user_id: Session.getUser().id,
+                    profile_id: Session.getUser().id,
                     id: link.linkId,
                     url: link.linkUrl,
                     last_updated: link.last_updated,
@@ -145,7 +141,7 @@ export class VersionControl {
 
     }
 
-    static #pullFromLocal() { 
+    static pullFromLocal() { 
 
         const local = this.#localStorage.retrieveStorageData()
 
@@ -162,13 +158,48 @@ export class VersionControl {
 
     static #pushToLocal(data) { this.#localStorage.setItem('link-share', data) }
 
-    static save(data) {
+    static async save(data) {
 
-        this.#pushToLocal({profile: data})
+        try {
+            
+            this.#pushToLocal({profile: data})
 
-        this.#pushToCloud(data)
-            .then(e => console.log('successfully pushed to cloud'))
-            .catch(e => console.log('failed to push to cloud'))
+            const cloud = await this.#pullFromCloud()
+
+            const cloudLinks = cloud.profile.linkArray
+
+            let localLinks = data.linkArray
+
+            const linksToDelete = cloudLinks
+                .filter(cloudLink => !localLinks.some(localLink => localLink.linkId === cloudLink.linkId))
+
+            localLinks = localLinks
+                .filter(localLink => !linksToDelete.some(deleteLink => deleteLink.linkId === localLink.linkId))
+                .map(link => {
+
+                    return {
+
+                        profile_id: Session.getUser().id,
+                        id: link.linkId,
+                        url: link.linkUrl,
+                        last_updated: link.last_updated,
+                        platform_data: link.platformData
+
+                    }
+
+                })
+
+            this.#database.setProfileData(data)
+
+            this.#database.setLinkData(localLinks)
+
+            this.#database.deleteLinkData(linksToDelete.map(e => e.linkId), Session.getUser().id)
+
+        } catch (error) {
+            
+            console.error("Error in save: ", error.message)
+
+        }
 
     }
 
