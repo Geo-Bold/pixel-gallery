@@ -2,6 +2,12 @@ import { LocalStorage } from './LocalStorage.js'
 import { Profile } from './Profile.js' // Don't delete
 import { Session } from './Session.js'
 
+/**
+ * Initializes the session and handles form rendering for account creation and login.
+ * Manages switching between the login and create account views, and validates form inputs.
+ *
+ * @event DOMContentLoaded - Executes the logic once the DOM content is fully loaded.
+ */
 document.addEventListener('DOMContentLoaded', () => {
 
     Session.initialize()
@@ -14,6 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let activeView = updateView()
 
+    // If the active view is for account creation, render the account creation form
     if (activeView === 'create-account') { 
         
         renderCreateAccountView()
@@ -26,8 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     }
 
-    /* Switch between login and create account views */
-
+    // Switch between login and create account views
     document.getElementById('login-form-toggle').addEventListener('click', () => {
 
         if (activeView === 'login') {
@@ -47,28 +53,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     })
 
-    function updateView() {
-
-        let activeView = 'login'
-
-        if (local.getItem('view')) activeView = local.getItem('view')
-
-        else local.setItem('view', 'login')
-
-        return activeView
-
-    }
-
-    function emailIsValid(emailValue) {
-
-        const emailRegex = /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/ // RegEx for email validation
-    
-        const emailIsValid = emailRegex.test(emailValue)
-    
-        return emailIsValid ? true : false
-
-    }
-
+    /**
+     * Adds an invalid input state to the specified container, displaying an error message.
+     * @param {Element} container - The container where the error message should be displayed.
+     * @param {string} message - The error message to display.
+     */
     function addInvalidInputState(container, message) {
 
         const existingError = container.querySelector('p')
@@ -91,6 +80,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     }
 
+    /**
+     * Clears all invalid input states and associated error messages from the form.
+     */
     function clearInvalidInputState() {
 
         document.querySelectorAll('.invalid-text').forEach(el => el.remove())
@@ -99,6 +91,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
     }
 
+    /**
+     * Validates if the provided email value is a valid email format.
+     * @param {string} emailValue - The email string to validate.
+     * @returns {boolean} - Returns `true` if the email is valid, otherwise `false`.
+     */
+    function emailIsValid(emailValue) {
+
+        const emailRegex = /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/ // RegEx for email validation
+    
+        const emailIsValid = emailRegex.test(emailValue)
+    
+        return emailIsValid ? true : false
+
+    }
+
+    /**
+     * Renders the "Create Account" view by replacing the current form in the container.
+     */
     function renderCreateAccountView() {
 
         const createAccountHtml = `
@@ -145,6 +155,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
     }
 
+    /**
+     * Updates the view to either "login" or "create-account" based on the current local storage value.
+     * @returns {string} - Returns the active view name ('login' or 'create-account').
+     */
+    function updateView() {
+
+        let activeView = 'login'
+
+        if (local.getItem('view')) activeView = local.getItem('view')
+
+        else local.setItem('view', 'login')
+
+        return activeView
+
+    }
+
+    /**
+     * Validates the input fields (email and password) and executes a callback function on successful validation.
+     * @param {Event} event - The event object.
+     * @param {Function} executeOnSuccess - The callback function to execute after validation succeeds.
+     */
     function validateInput(event, executeOnSuccess) {
 
         event.preventDefault()
@@ -226,50 +257,3 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 })
-
-/* Use this code once Renderer has been refactored properly
-
-    const storedData = new LocalStorage('link-app').returnAllValues()
-
-    let profile = new Profile(storedData.profile)
-
-    const container = document.querySelector('.container')
-
-    const currentForm = container.querySelector('form')
-
-    let activeView = storedData.getItem('loginView')
-
-    if (activeView === 'create-account') {
-
-        container.removeChild(currentForm)
-
-        const parser = new DOMParser()
-
-        const document = parser.parseFromString(createAccountHtml, 'text/html')
-
-        const content = document.body.firstChild
-
-        container.appendChild(content)
-
-    }
-
-    document.getElementById('login-form-toggle').addEventListener('click', () => {
-
-        if (activeView === 'login') {
-
-            storedData.setItem('loginView', 'create-account')
-
-            window.location.reload()
-
-        }
-
-        else {
-
-            storedData.setItem('loginView', 'login')
-
-            window.location.reload()
-
-        }
-    })
-
-*/

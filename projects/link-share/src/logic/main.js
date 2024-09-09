@@ -6,10 +6,16 @@ import { Session } from './Session.js'
 import { Database } from './Database.js'
 import { VersionControl } from './VersionControl.js'
 
+/**
+ * Initializes the application by setting up the `Renderer` context, loading session data, 
+ * and enabling drag-and-drop functionality for links. It also manages the creation of new links 
+ * and profile page interactions.
+ *
+ * @event DOMContentLoaded - Executes when the DOM is fully loaded.
+ */
 document.addEventListener('DOMContentLoaded', async (event) => {
 
-    // Preloads the Renderer with the link parent and mobile preview parent elements as well as the menu options for each link.
-
+    // Preloads the Renderer with context data, including link containers, profile form, and platform data.
     Renderer.context = { 
 
         linkParent: document.querySelector('.link-body'), // Container for rendering created links
@@ -18,6 +24,7 @@ document.addEventListener('DOMContentLoaded', async (event) => {
 
         profileForm: document.querySelector('.profile-form'), // Container for profile form 
 
+        // Platform data including title, icon, and URL patterns for each platform
         platformData: [
 
             { title: 'GitHub', icon: 'github', urlPattern: 'github.com' },
@@ -39,22 +46,21 @@ document.addEventListener('DOMContentLoaded', async (event) => {
 
     }
 
-    await Session.initialize() // DEV: optimize async code
+    
+
+    await Session.initialize() // Loads or initializes stored data from local storage and the database using VersionControl.
 
     const storedData = await VersionControl.intialize(new LocalStorage('link-app'), new Database())
 
-    let profile = new Profile(storedData.profile) // Loads existing profile from storage or creates a new profile.
+    let profile = new Profile(storedData.profile) // Creates or loads an existing profile.
 
-    if (Renderer.context.linkParent) Renderer.enableDragAndDrop() // Implements drag and drop on the link elements.
+    if (Renderer.context.linkParent) Renderer.enableDragAndDrop() // Enables drag-and-drop functionality for the link elements if they exist in the DOM.
 
-    // Creates and renders a generic link
-
-    const createLinkButton = document.querySelector('.link-container > button')
+    const createLinkButton = document.querySelector('.link-container > button') // Adds event listener to create a new generic link when the "Create Link" button is clicked.
     
     if (createLinkButton) createLinkButton.addEventListener('click', e => new Link({}) )    
         
-    // Profile page states
-
+    // Sets up profile page interactions, including uploading a profile image. Clicking on the profile image container triggers the file input for selecting an image.
     if (Renderer.context.profileForm) {
 
         const profileImageContainer = document.querySelector('.add-profile-input')

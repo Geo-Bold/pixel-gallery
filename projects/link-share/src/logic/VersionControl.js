@@ -1,10 +1,57 @@
 import { Session } from "./Session.js"
 
+/**
+ * The `VersionControl` class manages synchronization between local storage and the cloud database.
+ * It handles data retrieval, synchronization, and updates for user profiles and links.
+ */
 export class VersionControl {
 
     static #database
     static #localStorage
 
+    /**
+     * Converts a Base64 string to a Blob object.
+     * 
+     * @param {string} base64String - The Base64 encoded string representing the image.
+     * @returns {Blob} - The Blob object created from the Base64 string.
+     * @private
+     */
+    static #convertBase64ToBlob(base64String) {
+
+        const mimeType = base64String.slice(base64String.indexOf(':') + 1, base64String.indexOf(';'))
+
+        const base64Data = base64String.slice(base64String.indexOf(',') + 1)
+
+        const byteCharacters = atob(base64Data)
+
+        const byteNumbers = new Array(byteCharacters.length)
+
+        for (let i = 0; i < byteNumbers.length; i++) {
+
+            byteNumbers[i] = byteCharacters.charCodeAt(i)
+
+        }
+
+        const byteArray = new Uint8Array(byteNumbers)
+
+        const blob = new Blob([byteArray], { type: mimeType })
+
+        return blob
+
+    }
+
+    /**
+     * Clears all data from local storage.
+     */
+    static deleteLocalStorageData() { this.#localStorage.clearStorage() }
+
+    /**
+     * Initializes the VersionControl class by pulling data from either local storage or the cloud.
+     * 
+     * @param {Object} localStorage - The local storage instance used for saving data locally.
+     * @param {Object} database - The database instance used for saving and retrieving data from the cloud.
+     * @returns {Promise<Object>} - Returns the profile and link data.
+     */
     static async intialize(localStorage, database) {
 
         this.#localStorage = localStorage
@@ -57,34 +104,13 @@ export class VersionControl {
 
     }
 
-    static async #syncWithCloud(local) {
-
-        const cloud = await this.#pullFromCloud().catch(error => console.error("Error in syncWithCloud: ", error.message))
-
-        if (!cloud) this.#pushToCloud(local).catch(e => console.log('failed to push to cloud'))
-
-        const localLastUpdateTime = new Date(local.profile.last_updated).getTime()
-
-        const cloudLastUpdateTime = new Date(cloud.profile.last_updated).getTime()
-
-        if (localLastUpdateTime > cloudLastUpdateTime) {
-
-            console.log("Local contains most recent")
-
-            this.#pushToCloud(local).catch(e => console.log('failed to push to cloud'))
-
-        } else if (localLastUpdateTime < cloudLastUpdateTime) {
-
-            console.log("Cloud contains most recent")
-
-            this.#pushToLocal(cloud)
-
-            document.location.reload()
-
-        } else console.log("Local and cloud in sync")
-
-    }
-
+    /**
+     * Retrieves profile and link data from the cloud database for the given user.
+     * 
+     * @param {string|null} id - The user ID to pull data for, defaults to the current user's ID.
+     * @returns {Promise<Object|null>} - Returns the profile and link data for the user.
+     * @private
+     */
     static async #pullFromCloud(id = null) {
 
         try {
@@ -123,6 +149,54 @@ export class VersionControl {
 
     }
 
+    /**
+     * Retrieves data from local storage.
+     * 
+     * @returns {Object|null} - Returns the local profile and link data if it exists, otherwise `null`.
+     */
+    static pullFromLocal() { 
+
+        const local = this.#localStorage.retrieveStorageData()
+
+        if (Object.keys(local).length > 0) {
+        
+            local["link-share"].profile.linkArray.sort((a, b) => a.order - b.order)
+
+            return local["link-share"]
+        
+        } else if (Object.keys(local).length > 0) {
+
+            console.log('Invalid data. Clearing local storage.') // DEV: tidy console log
+
+            this.#localStorage.clearStorage()
+
+        } else return null
+    
+    }
+
+    /**
+     * Pushes an image to the cloud by converting it from Base64 to Blob format.
+     * 
+     * @param {string} image - The Base64 encoded image string.
+     * @returns {Promise<void>}
+     */
+    static async pushImageToCloud(image) {
+
+        const blob = this.#convertBase64ToBlob(image)
+
+        const filePath = `${Session.getUser().id}`
+
+        this.#database.setProfileImage(filePath, blob)
+
+    }
+
+    /**
+     * Pushes profile and link data to the cloud database.
+     * 
+     * @param {Object} data - The profile and link data to push to the cloud.
+     * @returns {Promise<void>}
+     * @private
+     */
     static async #pushToCloud(data) {
 
         try {
@@ -150,28 +224,21 @@ export class VersionControl {
 
     }
 
-    static pullFromLocal() { 
-
-        const local = this.#localStorage.retrieveStorageData()
-
-        if (Object.keys(local).length > 0) {
-        
-            local["link-share"].profile.linkArray.sort((a, b) => a.order - b.order)
-
-            return local["link-share"]
-        
-        } else if (Object.keys(local).length > 0) {
-
-            console.log('Invalid data. Clearing local storage.') // DEV: tidy console log
-
-            this.#localStorage.clearStorage()
-
-        } else return null
-    
-    }
-
+    /**
+     * Saves profile and link data to local storage.
+     * 
+     * @param {Object} data - The profile and link data to save locally.
+     * @private
+     */
     static #pushToLocal(data) { this.#localStorage.setItem('link-share', data) }
 
+    /**
+     * Saves the profile and link data, ensuring that local and cloud data are synchronized.
+     * Deletes any links from the cloud that are no longer present locally.
+     * 
+     * @param {Object} data - The profile and link data to save.
+     * @returns {Promise<void>}
+     */
     static async save(data) {
 
         try {
@@ -218,42 +285,39 @@ export class VersionControl {
 
     }
 
-    /* DEV: Returns true if the data is in a valid form.  */
+    /**
+     * Synchronizes local data with the cloud by comparing timestamps and updating accordingly.
+     * 
+     * @param {Object} local - The local profile and link data.
+     * @returns {Promise<void>}
+     * @private
+     */
+    static async #syncWithCloud(local) {
 
-    static #convertBase64ToBlob(base64String) {
+        const cloud = await this.#pullFromCloud().catch(error => console.error("Error in syncWithCloud: ", error.message))
 
-        const mimeType = base64String.slice(base64String.indexOf(':') + 1, base64String.indexOf(';'))
+        if (!cloud) this.#pushToCloud(local).catch(e => console.log('failed to push to cloud'))
 
-        const base64Data = base64String.slice(base64String.indexOf(',') + 1)
+        const localLastUpdateTime = new Date(local.profile.last_updated).getTime()
 
-        const byteCharacters = atob(base64Data)
+        const cloudLastUpdateTime = new Date(cloud.profile.last_updated).getTime()
 
-        const byteNumbers = new Array(byteCharacters.length)
+        if (localLastUpdateTime > cloudLastUpdateTime) {
 
-        for (let i = 0; i < byteNumbers.length; i++) {
+            console.log("Local contains most recent")
 
-            byteNumbers[i] = byteCharacters.charCodeAt(i)
+            this.#pushToCloud(local).catch(e => console.log('failed to push to cloud'))
 
-        }
+        } else if (localLastUpdateTime < cloudLastUpdateTime) {
 
-        const byteArray = new Uint8Array(byteNumbers)
+            console.log("Cloud contains most recent")
 
-        const blob = new Blob([byteArray], { type: mimeType })
+            this.#pushToLocal(cloud)
 
-        return blob
+            document.location.reload()
+
+        } else console.log("Local and cloud in sync")
 
     }
-
-    static async pushImageToCloud(image) {
-
-        const blob = this.#convertBase64ToBlob(image)
-
-        const filePath = `${Session.getUser().id}`
-
-        this.#database.setProfileImage(filePath, blob)
-
-    }
-
-    static deleteLocalStorageData() { this.#localStorage.clearStorage() }
 
 }
