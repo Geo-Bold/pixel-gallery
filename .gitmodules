@@ -10,3 +10,6 @@
 [submodule "projects/link-share"]
 	path = projects/link-share
 	url = https://github.com/Geo-Bold/link-share
+[submodule "projects/arch-studio"]
+	path = projects/arch-studio
+	url = https://github.com/Geo-Bold/arch-studio
