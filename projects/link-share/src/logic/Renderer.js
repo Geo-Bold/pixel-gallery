@@ -603,7 +603,7 @@ export class Renderer {
                 <div class="link" id="link-${link.linkId}" draggable="true">
                     <header>
                         <div class="drag-and-drop"></div>
-                        <object data="/src/assets/images/icon-drag-and-drop.svg" type="image/svg+xml"></object>
+                        <object data="./src/assets/images/icon-drag-and-drop.svg" type="image/svg+xml"></object>
                         <h2 class="label">Link #${link.linkId}</h2>
                         <button class="delete">Remove</button>
                     </header>
