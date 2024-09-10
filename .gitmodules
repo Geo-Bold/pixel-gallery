@@ -1,0 +1,15 @@
+[submodule "projects/recipe"]
+	path = projects/recipe
+	url = https://github.com/Geo-Bold/recipe
+[submodule "projects/minimalist-portfolio"]
+	path = projects/minimalist-portfolio
+	url = https://github.com/Geo-Bold/minimalist-portfolio
+[submodule "projects/newsletter"]
+	path = projects/newsletter
+	url = https://github.com/Geo-Bold/newsletter
+[submodule "projects/link-share"]
+	path = projects/link-share
+	url = https://github.com/Geo-Bold/link-share
+[submodule "projects/arch-studio"]
+	path = projects/arch-studio
+	url = https://github.com/Geo-Bold/arch-studio
