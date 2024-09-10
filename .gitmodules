@@ -1,0 +1,3 @@
+[submodule "projects/recipe"]
+	path = projects/recipe
+	url = https://github.com/Geo-Bold/recipe
