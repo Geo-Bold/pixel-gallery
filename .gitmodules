@@ -4,3 +4,6 @@
 [submodule "projects/minimalist-portfolio"]
 	path = projects/minimalist-portfolio
 	url = https://github.com/Geo-Bold/minimalist-portfolio
+[submodule "projects/newsletter"]
+	path = projects/newsletter
+	url = https://github.com/Geo-Bold/newsletter
