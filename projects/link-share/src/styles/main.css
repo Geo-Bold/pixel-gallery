@@ -731,7 +731,7 @@ button, a {
 }
 @media (max-width: 768px) {
     .container.preview {
-        height: 100vh;
+        height: auto;
         background-color: var(--container-color);
     }
     .container.preview::after {
