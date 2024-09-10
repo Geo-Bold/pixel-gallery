@@ -1,3 +1,6 @@
 [submodule "projects/recipe"]
 	path = projects/recipe
 	url = https://github.com/Geo-Bold/recipe
+[submodule "projects/minimalist-portfolio"]
+	path = projects/minimalist-portfolio
+	url = https://github.com/Geo-Bold/minimalist-portfolio
