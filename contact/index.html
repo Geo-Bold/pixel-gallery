@@ -43,12 +43,7 @@
           <h1>Get In Touch</h1>
           <div>
             <p>
-              I’d love to hear about what you’re working on and how I could help. I’m currently 
-              looking for a new role and am open to a wide range of opportunities. My preference 
-              would be to find a position in a company in London. But I’m also happy to hear about 
-              opportunites that don’t fit that description. I’m a hard-working and positive person 
-              who will always approach each task with a sense of purpose and attention to detail. 
-              Please do feel free to check out my online profiles below and get in touch using the form.
+              I’m excited to hear about any projects you’re working on and how I might contribute. I'm currently seeking new opportunities and am open to a variety of roles. Ideally, I’d like to find a position with an on-site company in Jacksonville, Florida, where I can continue to grow and learn hands-on. That said, I’m always open to considering roles outside of this preference if they align with my skills and passions. I pride myself on being detail-oriented and approach every task with a strong sense of purpose and commitment. Feel free to explore my work through the links below, and don’t hesitate to reach out below!
             </p>
             <div class="contact-me-svg is-flex-wrap-wrap is-align-content-center">
               <a href="https://github.com/Geo-Bold" class="github-icon" target="_blank">
@@ -65,36 +60,36 @@
         </container>
         <container class="container contact-me is-flex mx-0 is-justify-content-space-between">
           <h1>Contact Me</h1>
-          <div class="contact-me-form">
+          <form class="contact-me-form">
             <div class="field">
-              <label class="label">Name</label>
+              <label class="label" for="name">Name</label>
               <div class="control">
-                <input class="input" type="text" placeholder="John Appleseed">
+                <input class="input" type="text" id="name" placeholder="John Appleseed">
               </div>
               <p class="help"></p>
             </div>
             <div class="field">
-              <label class="label">Email Address</label>
+              <label class="label" for="email">Email Address</label>
               <div class="control">
-                <input class="input" type="email" placeholder="email@example.com">
+                <input class="input" type="email" id="email" placeholder="email@example.com">
               </div>
               <p class="help"></p>
             </div>
             <div class="field">
-              <label class="label">Message</label>
+              <label class="label" for="message">Message</label>
               <div class="control">
-                <textarea class="textarea contact-me-form-textarea" placeholder="How can I help?"></textarea>
+                <textarea class="textarea contact-me-form-textarea" id="message" placeholder="How can I help?"></textarea>
               </div>
               <p class="help"></p>
             </div>
             <div class="field">
               <div class="control">
-                <a href="" class="button jump-link-btn" id="contact-submit-button">
+                <a class="button jump-link-btn" id="contact-submit-button">
                   <span>SEND MESSAGE</span>
                 </a>
               </div>
             </div>
-          </div>
+          </form>
         </container>
       </div>
       <div class="footer-bottom-container footer-project-block-margin">
@@ -119,7 +114,9 @@
         </div>
       </div>
     </div>
-    <script src="../logic/form-validation.js"></script>
+    <script type="text/javascript"
+    src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script src="../src/logic/form-validation.js"></script>
     <script src="../src/logic/script.js"></script>
   </body>
 </html>
