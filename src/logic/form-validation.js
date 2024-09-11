@@ -26,15 +26,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
             }).then( 
                     
-                    response => { alert("Message sent successfully!") }, 
-                
-                    error => {
+                response => { alert("Message sent successfully!") }, 
+            
+                error => {
 
-                        alert("Failed to send message.")
+                    alert("Failed to send message.")
 
-                    }
+                }
                 
-                )
+            )
 
         }
         
