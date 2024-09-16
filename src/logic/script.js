@@ -9,4 +9,14 @@ document.addEventListener("DOMContentLoaded", () => {
         
     });
 
+    document.addEventListener("scroll", () => { 
+
+        navMenu.classList.remove('is-active');
+
+        navBurger.classList.remove("active")
+
+        document.querySelector(".ham").classList.remove("active")
+
+    })
+
 });
