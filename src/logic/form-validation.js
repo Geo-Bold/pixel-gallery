@@ -1,3 +1,5 @@
+import { Notify } from '../../projects/link-share/src/logic/Notification.js'
+
 document.addEventListener("DOMContentLoaded", () => {
 
     const fieldInputs = document.querySelector(".contact-me-form").querySelectorAll(".field")
@@ -18,23 +20,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
             emailjs.init('ef3-ZRdxfhqemg5QM')
 
-            emailjs.send('service_7bx4lzw', 'template_sdvcriy', {
+            emailjs.send('service_7bx4lzw', 'template_sdvcriy', { from_name: nameEl.value, from_email: emailEl.value, message: messageEl.value }).then(response => { 
 
-                from_name: nameEl.value,
-                from_email: emailEl.value,
-                message: messageEl.value
+                new Notify("Your message has been sent!", 'success')
 
-            }).then( 
-                    
-                response => { alert("Message sent successfully!") }, 
+                nameEl.value = ''
+
+                emailEl.value = ''
+
+                messageEl.value = ''
             
-                error => {
-
-                    alert("Failed to send message.")
-
-                }
-                
-            )
+            })
+            .catch(error => { new Notify("Your message failed to send.", 'error') })
 
         }
         
