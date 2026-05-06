@@ -367,8 +367,8 @@ a {
     transition: background-color 400ms, color 400ms;
 }
 .jump-link-btn:hover #jump-link-btn-icon {
-    background-color: transparent;
-    color: transparent;
+  background-color: #56a292;
+  color: white;
 }
 .jump-link-btn :nth-child(2) {
     width: 100%;
