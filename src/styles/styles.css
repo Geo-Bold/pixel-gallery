@@ -31,6 +31,27 @@ h2 {
     letter-spacing: -0.29px;
     line-height: 2.625rem;
 }
+h3 {
+    font-family: var(--primary-font), serif;
+    font-size: 1.35rem;
+    letter-spacing: -0.35px;
+    line-height: 1.8rem;
+}
+figcaption {
+    font-family: var(--primary-font), serif;
+    font-size: 0.95rem;
+    letter-spacing: -0.35px;
+    line-height: 1.35rem;
+    text-wrap-style: pretty;
+    padding-inline: 2.25rem;
+}
+figcaption::before {
+  content: "Figure " counter(figure-count) " • ";
+  font-weight: bold;
+}
+figure {
+  margin-bottom: 2.25rem;
+}
 p {
     font-family: var(--secondary-font), serif;
     font-size: 1rem;
@@ -57,6 +78,7 @@ a {
     border: 1px solid var(--bulma-body-color);
     box-sizing: border-box;
     transition: background-color 400ms, color 400ms;
+    height: fit-content;
 }
 .custom-button-disabled {
     border: 1px solid rgba(0, 0, 0, 0.1);
@@ -442,8 +464,6 @@ a {
     display: flex;
     align-items: center;
 }
-.portfolio-section figure {
-}
 .margin-left-auto {
     margin-left: auto;
 }
@@ -657,18 +677,50 @@ a {
     display: flex;
     justify-content: space-between;
 }
-.project-body p {
+.project-body p:not(.green-text) {
     font-size: 0.9375rem;
-    margin-top: 1.8125rem;
+    margin-bottom: 1.8125rem;
 }
 .project-body-intro {
-    min-width: 14rem;
-    width: 21.875rem;
-    border-top: 1px solid rgba(0, 0, 0, 0.1);
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  min-width: 14rem;
+  width: 21.875rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 2rem;
+  align-self: flex-start;
 }
 .project-body-intro h1 {
     margin-top: 3rem;
+}
+.toc-section :is(h1,h2,h3) {
+  margin-bottom: 1.875rem;
+}
+.toc-section {
+  margin-bottom: 1.8125rem;
+}
+.toc-section > div {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+}
+.toc-section > div > a {
+  place-self: end;
+}
+.toc-nav ul {
+    list-style: none;
+    padding-left: 0;
+    margin-top: 1rem;
+}
+.toc-nav li + li {
+    margin-top: 0.75rem;
+}
+.toc-link {
+    color: #96969c;
+    font-size: 0.9375rem;
+    transition: color 200ms;
+}
+.toc-link:hover {
+    color: var(--bulma-body-color);
 }
 .green-text {
     color: #5FB4A2;
@@ -686,22 +738,59 @@ code.tech-keyword {
     border-radius: 3px;
     font-size: 0.875em;
 }
-.project-body-intro .green-text {
-    margin-block: 1.4rem 2rem;
-}
 .project-body-background {
-    max-width: 39.69rem;
-    width: auto;
     margin-left: 4rem;
+    counter-reset: figure-count;
 }
-.project-body-background h2:nth-of-type(2) {
-    margin-top: 2.5rem;
+.project-body-background figure {
+  counter-increment: figure-count;
+}
+/* Table of Context + scrollspy are both generated at runtime in
+   script.js from the content's own h2/h3 elements — nothing here (or
+   there) references a specific section's id or name. This block only
+   holds the parts that are identical for every heading/link regardless
+   of how many exist. See script.js for the TOC build and the view-
+   timeline on/off handoff logic. */
+.project-body-background h2,
+.project-body-background h3 {
+    view-timeline-axis: block;
+    view-timeline-inset: 20% 70%;
+}
+.toc-nav ul ul {
+    list-style: none;
+    padding-left: 0.9rem;
+    margin-top: 0.5rem;
+}
+.toc-nav ul ul li + li {
+    margin-top: 0.5rem;
+}
+.toc-nav ul ul .toc-link {
+    font-size: 0.8125rem;
+}
+.toc-link {
+    animation-fill-mode: forwards;
+    animation-timing-function: linear;
+}
+@keyframes toc-on {
+    to {
+        color: var(--selected-font-color);
+        font-weight: 700;
+    }
+}
+@keyframes toc-off {
+    to {
+        color: #96969c;
+        font-weight: 400;
+    }
+}
+@media (prefers-reduced-motion: no-preference) {
+    html {
+        scroll-behavior: smooth;
+        scroll-padding-top: 2rem;
+    }
 }
 .project-body-background img {
     margin-top: 1.75rem;
-}
-.project-body-background img:last-of-type {
-    margin-top: 2rem;
 }
 .project-footer {
     margin-top: 4rem;
@@ -761,6 +850,8 @@ code.tech-keyword {
         display: grid;
         grid-template-columns: 1fr 1fr;
         grid-template-rows: 50px 90px 60px;
+        position: static;
+        top: auto;
     }
     .project-body-intro h1,
     .project-body-intro .green-text,
