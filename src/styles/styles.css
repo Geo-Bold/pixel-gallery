@@ -967,6 +967,9 @@ ol li::before {
 .toc-nav li::before {
     content: none;
 }
+.green-text + a {
+  margin-bottom: 1.875rem;
+}
 .project-footer {
     margin-top: 4rem;
     display: flex;
@@ -1076,6 +1079,14 @@ ol li::before {
     .project-body-intro:has(.table-of-context) .toc-nav::-webkit-scrollbar-thumb {
         background-color: rgba(51, 50, 61, 0.35);
         border-radius: 3px;
+    }
+    .toc-section > div {
+        grid-template-columns: 1fr;
+        row-gap: 1rem;
+    }
+    .toc-section > div > a {
+        width: 100%;
+        text-align: center;
     }
     .project-body-background {
         margin: 2.5rem 0rem 0rem 0rem;

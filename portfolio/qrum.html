@@ -87,70 +87,6 @@
           <div class="project-body-background">
             <div class="toc-section">
               <h1>Qrum</h1>
-              <h2>Preface</h2>
-              <p class="normal-text">
-                Early in my education, while I was still making buttons change
-                colors and learning about time complexities, I desired to obtain
-                a consistent system for measuring my own progress. Initially, I
-                determined that the more I could implement from memory, the more
-                developed I was becoming. With the advent of AI, I began to
-                measure my progress by the number of technologies I could learn
-                or features I could build. If an application worked and the
-                interface looked polished, I considered it complete. This all
-                changed over the last two years of my professional experience
-                building the ProcECS Engine. It was here that I began to
-                appreciate the sheer scale of building production software,
-                maintaining existing systems, and studying how large-scale
-                applications are designed; I realized that writing code is only
-                a small part of engineering. The more difficult questions
-                revolve around preserving data integrity, designing clear system
-                boundaries, understanding tradeoffs, and building software that
-                remains correct as requirements evolve.
-              </p>
-              <p>
-                That shift in perspective is what led to Qrum. The project began
-                as a university capstone intended to help a local organization
-                manage its own volunteering events. Events were tracked manually
-                via a disconnected network of spreadsheets and word documents
-                that easily became outdated and were cumbersome to propagate,
-                both internally and to its network of external volunteers. While
-                the original goal was to create a functional application, I saw
-                it as an opportunity to continue exploring the engineering
-                problems that had become increasingly interesting to me. Rather
-                than treating it as an intellectual exercise, I decided to
-                incorporate it into a personal case study where I could
-                experiment with architectural decisions that are common in
-                production systems but often absent from classroom projects.
-              </p>
-              <p>
-                Each new feature was introduced to solve a specific problem
-                encountered during development. Authorization evolved beyond UI
-                checks into a layered security model backed by PostgreSQL
-                Row-Level Security. Event management became a system of explicit
-                lifecycle transitions protected by database invariants instead
-                of simple CRUD operations. Search progressed from
-                straightforward SQL queries to measured comparisons between
-                PostgreSQL Full-Text Search and Elasticsearch before introducing
-                a change-data-capture pipeline to keep search infrastructure
-                separate from transactional writes. Along the way I added
-                structured logging, observability, deployment automation, and
-                operational tooling--not because the technologies themselves
-                were the goal, but because each addressed a concrete limitation
-                uncovered in discussions with the client and limitations in
-                previous iterations.
-              </p>
-              <p>
-                This document follows that progression. Rather than presenting
-                the final architecture in isolation, it explains how the system
-                evolved, why each decision was made, the alternatives that were
-                considered, and the tradeoffs that shaped the final design. My
-                goal is two-fold; I wish to show the reasoning process behind
-                building a system whose complexity grew only when the problem
-                demanded it as well as create a permanent record, for myself and
-                others, to appreciate the hundreds of hours committed to solving
-                an engineering problem that I can hopefully someday look back
-                upon fondly.
-              </p>
               <div>
                 <p class="green-text">
                   Next.js / TypeScript / Supabase / PostgreSQL / PostGIS<br />
@@ -165,6 +101,72 @@
                   <span>VISIT WEBSITE</span>
                 </a>
               </div>
+              <h2>Preface</h2>
+              <p class="normal-text">
+                Early in my education, while I was still making buttons change
+                colors and learning about time complexities, I desired to obtain
+                a consistent system for measuring my own progress. Initially, I
+                determined that the more I could implement from memory, the more
+                developed I was becoming. With the advent of AI, I began to
+                measure my progress by the number of technologies I could learn
+                or features I could build. If an application functioned and the
+                interface looked polished, I considered it complete. This all
+                changed over the last two years of my professional experience
+                building the ProcECS Engine. It was here that I began to
+                appreciate the sheer scale of building production software,
+                maintaining existing systems, and studying how large-scale
+                applications are designed; I realized that writing code is only
+                a small part of engineering. The more difficult questions
+                revolve around preserving data integrity, designing clear system
+                boundaries, understanding tradeoffs, and building software that
+                remains correct as requirements evolve.
+              </p>
+              <p>
+                That shift in perspective was what led to Qrum. The project
+                began as a university capstone intended to help a local
+                organization manage its own volunteering events. Events were
+                tracked manually via a disconnected network of spreadsheets and
+                word documents that easily became outdated and were cumbersome
+                to propagate, both internally and to its network of external
+                volunteers. While the original goal was to create a functional
+                application, I saw it as an opportunity to continue exploring
+                the engineering problems that had become increasingly
+                interesting to me. Rather than treating it as an intellectual
+                exercise, I decided to incorporate it into a personal case study
+                where I could experiment with architectural decisions that were
+                common in production systems but often absent from classroom
+                projects.
+              </p>
+              <p>
+                Each new feature was introduced to solve a specific problem
+                encountered during development. Authorization evolved beyond UI
+                checks into a layered security model backed by PostgreSQL
+                Row-Level Security. Event management became a system of explicit
+                lifecycle transitions protected by database invariants instead
+                of simple CRUD operations. Search progressed from
+                straightforward SQL queries to measured comparisons between
+                PostgreSQL Full-Text Search and Elasticsearch before introducing
+                a change-data-capture pipeline to keep search infrastructure
+                separate from transactional writes. Along the way I added
+                structured logging, observability, deployment automation, and
+                operational tooling, not because the technologies themselves
+                were the goal, but because each addressed a concrete limitation
+                uncovered in discussions with the client and limitations in
+                previous iterations.
+              </p>
+              <p>
+                This document follows that progression. Rather than presenting
+                the final architecture in isolation, I seek to elaborate on how
+                the system evolved, why each decision was made, the alternatives
+                that were considered, and the tradeoffs that shaped its current
+                design. My goal is two-fold: primarily, I wish to show the
+                reasoning process behind the architecture of a system that I
+                designed and secondarily, but of no less importance, I wish to
+                create a permanent record, for myself and others, to appreciate
+                the hundreds of hours committed to solving these problems;
+                decisions and designs that I can hopefully someday look back
+                upon fondly.
+              </p>
             </div>
             <div class="toc-section">
               <h2>Overview</h2>
@@ -172,13 +174,14 @@
                 Qrum is a volunteer management and event-discovery platform. It
                 was built directly with a nonprofit running volunteer programs.
                 During conversations with staff and coordinators, we realized
-                that events were being managed and tracked by hand: a sign-up
-                spreadsheet, a separate form for new events, a group chat or
-                mass emails for changes, and no reliable way to answer basic
-                questions about who was confirmed, whether an event was actually
-                full, or what had changed since last week.
+                that events were being managed and tracked by hand; whether a
+                sign-up spreadsheet, a separate form for new event or mass
+                emails for changes and alerts, each method provided concrete
+                limitations and no reliable way to answer basic questions about
+                who was confirmed, whether an event was actually full, or what
+                had changed since last week.
               </p>
-              <figure>
+              <figure class="figure-center">
                 <source
                   srcset="./public/d0-dark.svg"
                   media="(prefers-color-scheme: dark)"
@@ -188,69 +191,1989 @@
                   alt="Diagram with three boxes. Volunteers on the left and Nonprofit on the right both point inward with arrows to Events in the center, which is highlighted. Pain points are noted beneath each box. Under Volunteers: discovery gap and no geo-aware search. Under Events: capacity untracked. Under Nonprofit: spreadsheets and forms."
                 />
                 <figcaption>
-                  Events sit at the center of both sides of the problem.
-                  Volunteers struggle to find opportunities without multi-signal
-                  search, the nonprofit runs intake on spreadsheets and forms,
-                  and neither side has immediate visibility into event capacity.
+                  Events sat at the center of both sides of the problem.
+                  Volunteers struggled to find opportunities without
+                  multi-signal search, the nonprofit ran intake on spreadsheets
+                  and forms, and neither side had immediate visibility into
+                  event capacity.
                 </figcaption>
               </figure>
               <p>
                 After several conversations with the client, we determined that
-                this was less of a technology gap than a domain-modeling one.
-                General purpose tools were being asked to represent things they
-                were never built to hold: event lifecycles, capacity limits,
-                roster changes that should show history, and information that's
-                public for some people and sensitive for others. Volunteers, who
-                need to find something worth showing up for nearby and soon, and
-                staff, who need to trust that what the system tells them is
-                actually true, were both underserved by the same underlying gap.
+                this was less of a limitation of technology than a
+                domain-modeling one. General purpose tools were being asked to
+                represent things they were never built to hold: event
+                lifecycles, capacity limits, roster changes that should show
+                history, and information that was public for some people and
+                sensitive for others. Volunteers, who needed to find something
+                worth showing up for nearby and soon, and staff, who needed to
+                trust that what the system told them was actually true, were
+                both being underserved.
               </p>
               <p>
-                Three groups use the resulting system day to day: volunteers
+                Three groups used the resulting system day to day: volunteers
                 browsing and enrolling, staff coordinators creating and managing
-                events and rosters, and administrators with oversight into
-                history the other two don't need.
+                events and rosters, and administrators with oversight into log
+                history and user accounts that the other two didn't need.
               </p>
               <p>
                 The approach throughout was to treat these as system invariants,
                 not screens the interface had to display correctly. This case
                 study follows the project in the order its limitations actually
                 appeared, starting from a plain data model that worked at first,
-                through each specific gap that made it insufficient and finally
-                to the decision that closed it.
+                through each specific limitation that made it insufficient and
+                finally to the decision that closed it.
               </p>
-              <p><span class="tech-keyword">Next.js</span> and</p>
             </div>
             <div class="toc-section">
               <h2>The Problem</h2>
-              <p>Every gap on both sides traces back to the same root: the tools in use had no concept of the domain they were being asked to manage. A spreadsheet doesn't know what an event actually is. It doesn't know an event has a capacity, a state it moves through, or a history worth keeping. It just holds rows. What follows isn't a list of missing features. It's what that absence actually costs the two groups living with it every day.</p>
+              <p>
+                Every shortcoming traced back to the fact that the tools in use
+                had no concept of the domain they were being asked to manage. A
+                spreadsheet didn't know what an event actually represented, it
+                just held rows; it didn't know an event had a capacity, a state
+                it moved through, or a history worth keeping. What followed was
+                the cost of this absence to the two groups using it daily.
+              </p>
               <h3>Volunteers</h3>
               <p>
-                A person interested in volunteering is really asking a narrow
-                question: what's happening near me, soon, that I'd actually want
-                to do? A spreadsheet or a bare list of every event the
-                organization has ever run doesn't answer that. Requiring a user
-                to call and inquire or having a member of staff log into a
-                system and track down a spreadsheet isn't productive or
-                pleasant. The observer is required to do the filtering
+                A person interested in volunteering is simply asking, "What's
+                happening near me, soon, that I'd actually want to do?" A
+                spreadsheet or a bare list of every event the organization had
+                ever run didn't answer that efficiently or at all. Requiring a
+                user to call and inquire or having a member of staff log into a
+                system and track down a spreadsheet wasn't efficient or
+                pleasant. The observer was often required to do the filtering
                 themselves. Sorting by nothing in particular, searching by hand,
-                and hoping the address in row 214 is still accurate is homework,
-                not discovery. It fails in smaller ways too. Misspelled search
-                terms return nothing, an event two states away sits right next
-                to one down the street with no distinction, and there's no way
-                to know whether "full" is current or three days stale.
+                and hoping the address in row 214 was still accurate was not a
+                process that could scale. It failed in smaller ways too.
+                Misspelled search terms returned nothing, an event two states
+                away sat right next to one down the street with no distinction,
+                and there was no way to know whether "full" was current or three
+                days stale.
               </p>
               <p>
-                None of that is a user's fault. It's the predictable result of
-                using a tool with no concept of geography, recency, or
-                relevance, any of which it was never built to have.
+                None of what we discussed was a user's fault. It was the
+                predictable result of using a tool with no concept of geography,
+                recency, or relevance, any of which it was never built to have.
               </p>
               <h3>Staff</h3>
-              <p>Failures on the staff side tend to be more painful. A spreadsheet does not know an event has a fixed number of slots, so it will happily record the twenty-first sign-up for a twenty-person shift, and the coordinator only finds out when twenty-five people show up on Saturday. It can not distinguish a draft event a coordinator is still writing from one that has actually been published, so an unfinished listing goes live, or a live one gets edited with no warning to anyone already signed up. It has no real notion of history either. If a start time changes the week of the event, there is often no record of who changed it, when, or what it said before. And a shared sheet holding volunteer names, phone numbers, and addresses is exactly that, shared, whether or not everyone with access to it should have it.</p>
-              <p>Individually these look like small operational nuisances. Across a volunteer program running many events with turnover in both staff and volunteers, they can start to add real risk: overcommitted events, silent data loss, and no accountability for what changed.</p>
-              <p>Restated plainly, none of this is a screen-design problem. It is a set of rules that a general-purpose tool cannot enforce, because it has no model of the domain at all:
+              <p>
+                Failures on the staff side tended to be more painful. A
+                spreadsheet didn't know that an event had a fixed number of
+                slots, so it was content to record the 21st sign-up for a
+                twenty-person shift, and the coordinator only found out when 25
+                people showed up on Saturday. It could not distinguish a draft
+                event a coordinator was still writing from one that had actually
+                been published, so an unfinished listing went live, or a live
+                one got edited with no warning to anyone already signed up. It
+                had no notion of history either. If a start time changed the
+                week of the event, there was often no record of who changed it,
+                when, or what it said before. And a shared sheet holding
+                volunteer names, phone numbers, and addresses was exactly that,
+                shared, whether or not everyone with access to it should have
+                had it. Let's not even begin to mention the potential liability.
               </p>
-              
+              <p>
+                While individually, these may look like small operational
+                nuisances, across a volunteer program running many events with
+                turnover in both staff and volunteers, they had begun to add
+                risk; overcommitted events, silent data loss, and no
+                accountability for changes.
+              </p>
+              <p>
+                If we examined what actually broke in the stories above, a
+                pattern begins to creep above the bog.
+              </p>
+              <ul>
+                <li>
+                  An event isn't a single fact sitting in a table, it has a life
+                  to it. Someone might draft it, publish it, and recall it. The
+                  system needs to know the difference well enough to stop the
+                  wrong move at the wrong time, not just record the last edit.
+                </li>
+                <li>
+                  That twenty person shift only stays at twenty if something
+                  actually checks the count at the exact moment two people are
+                  both reaching for the last spot, not a second before or after.
+                  This is classic concurrency.
+                </li>
+                <li>
+                  Every roster and every event needs to be logged. Knowing that
+                  something changed is worthless without knowing what it used to
+                  say and who touched it.
+                </li>
+                <li>
+                  Some of what an event holds belongs out in the open, like the
+                  time and the address, and some of it, like a volunteer's phone
+                  number or a full roster, doesn't. That split has to hold on
+                  its own instead of depending on whoever happened to remember
+                  to be careful that day.
+                </li>
+                <li>
+                  Volunteer searching isn't supposed to require scanning through
+                  the whole database. Volunteers might be looking for what is
+                  closest and soonest. They shouldn't have to spell it correctly
+                  to find it.
+                </li>
+              </ul>
+              <figure class="figure-center">
+                <source
+                  srcset="./public/d1.svg"
+                  media="(prefers-color-scheme: dark)"
+                />
+                <img
+                  src="./public/d1-light.svg"
+                  alt="System context diagram with three columns. On the left are the actors. Volunteers browse events, search nearby, sign up, and check in and out. Staff and admins create events, publish or cancel them, manage rosters, and review history. In the center is the system, containing Event discovery, Event operations, and Identity and access. On the right are the domain entities: Events, Addresses, Roster and attendance, Availability, Change log, and Users and roles. Volunteers reach Event discovery by browsing, searching, and enrolling, and reach Event operations by checking in and out. Staff and admins reach Event operations by creating, publishing, and managing events, and reach Identity and access through privileged operations. Event discovery connects to Events and Addresses. Event operations connects to Events, Roster and attendance, Availability, and Change log. Identity and access connects to Users and roles."
+                />
+                <figcaption>
+                  System context for the volunteer event platform. Volunteers
+                  interacted with event discovery and check-in flows, while
+                  staff and administrators handled event creation, publication,
+                  and roster management through privileged operations.
+                </figcaption>
+              </figure>
+              <p>
+                The crux of the matter was that volunteers and staff were asking
+                for a system that understood what an event actually was and who
+                needed access to which part of it. Laid out side by side, their
+                paths traced two different doors into the same data store:
+                browsing, searching, and enrolling on one side, creating,
+                publishing, and managing rosters on the other, each reaching
+                only what it actually needed to touch. And so, the system began
+                to take shape.
+              </p>
+            </div>
+            <div class="toc-section">
+              <h2>A Single Database Application</h2>
+              <p>
+                The first version needed to get events in front of volunteers
+                and give staff a way to create them, nothing more. It was built
+                as a React UI inside Next.js, with server actions handling every
+                mutation, and Supabase providing Postgres, Auth, and Storage
+                underneath. Most operations were user-initiated form submissions
+                colocated with the components that triggered them, so
+                introducing a separate REST service at this stage would have
+                added a network boundary and a serialization contract for a
+                problem that didn't exist yet. Code was organized by feature
+                rather than by layer, keeping each domain's queries, validation,
+                and UI in one place as the feature set grew. That organization
+                made it easy to reason about a single flow end to end, but it
+                left open a bigger question: what should happen when a request
+                needed to distinguish an anonymous browser from a staff member?
+              </p>
+              <h3>Structural data-access boundaries</h3>
+              <p>
+                This question motivated an early decision that is worth
+                clarifying. Rather than have a single data client with
+                conditional logic scattered through it, I split data access into
+                two data layers, one authenticated and the other open. Public
+                event browsing and authenticated staff operations went through
+                different paths entirely, so answering "which of these queries
+                runs for an anonymous visitor" was a matter of reading the
+                import graph rather than tracing conditionals buried in a
+                handler. It was a quiet, but helpful structural choice. It also
+                meant that the boundary between public and private data existed
+                in the code's shape, not just in my ability to remember to check
+                a role. Despite the benefits, that boundary only lived in
+                application code, which was exactly the layer that gets
+                forgotten under time pressure and change.
+              </p>
+              <figure class="figure-center">
+                <source
+                  srcset="./public/d1_v1-dark.svg"
+                  media="(prefers-color-scheme: dark)"
+                />
+                <img
+                  src="./public/d1_v1.svg"
+                  alt="Architecture diagram in four columns, with arrows flowing left to right. The first column is the browser, holding public event pages, a volunteer dashboard, and a staff dashboard. An arrow leads from the browser to the second column, the Next.js app, which holds server actions and route handlers, feature modules, and the React UI. From server actions and route handlers, two arrows branch out to the third column. A red arrow goes up to the auth data layer, which is drawn in red, and a black arrow goes down to the open data layer. Both layers then point into the fourth column, a dashed green boundary labeled Supabase. The red arrow from the auth data layer and the black arrow from the open data layer both land on a database cylinder containing events, addresses, user_event, event_change_log, and roles. Also inside the Supabase boundary are Supabase auth, PostgreSQL, and BLOB storage."
+                />
+                <figcaption>
+                  Runtime architecture. The browser talked only to the Next.js
+                  app, where server actions and route handlers split every
+                  database call down one of two paths. The open data layer
+                  served public reads, while the auth data layer carried
+                  anything that required an authenticated user.
+                </figcaption>
+              </figure>
+              <p>
+                For this iteration, topology was never going to be the
+                interesting part. The more interesting portion was what this
+                topology could and couldn't guarantee on its own.
+              </p>
+              <h3>Sufficiencies and insufficiencies</h3>
+              <p>
+                For a single-database CRUD product, this architecture was
+                correctly simple. This is worth saying explicitly because the
+                temptation in a project like this is to skip straight to the
+                interesting infrastructures that can solve more nuanced
+                problems. Writes were durable and transactional. Postgres was
+                the right tool, and it stayed the right tool through everything
+                that came after. What this version couldn't do was guarantee
+                anything about who was allowed to see or touch what. Every
+                permission check lived in application code, which meant the
+                actual security posture of the system was "remembered
+                everywhere." It wasn't backed by policy and was brittle, and it
+                was the first thing that had to change. Another tradeoff worth
+                mentioning was that server actions in Next.js simplified
+                colocated product development, but public HTTP boundaries were
+                still useful where clients needed URL-driven, cacheable, or
+                independently testable behavior. That was exactly why search
+                later became
+                <code class="tech-keyword">/api/search</code> rather than an
+                action.
+              </p>
+            </div>
+            <div class="toc-section">
+              <h2>Authorization at the Application and Database Layers</h2>
+              <p>
+                Getting the shape of the request paths right didn't answer the
+                harder question sitting underneath it. Once a request could be
+                correctly routed as public or authenticated, something still had
+                to enforce that distinction, and application code alone was
+                never going to be that something.
+              </p>
+              <h3>Threat model</h3>
+              <p>
+                Having experience with application enforced authentication and
+                authorization, I understood that the most likely threat here was
+                a forgotten check or incorrect import by a new teammate, not a
+                sophisticated attacker. One new server action that queried
+                events without filtering by role, and volunteer contact details
+                could become readable by anyone holding a session token.
+                UI-level gating made this worse, not better, because hiding a
+                button doesn't hide a row. If the data was still reachable
+                underneath, a hidden button was just a lock with no door
+                attached to it.
+              </p>
+              <h3>Roles in the access token, and application RBAC</h3>
+              <p>
+                The solution was simple straightforward. Role claims got written
+                into the user's JWT metadata through a custom access token hook,
+                so every request already carried its own authorization context
+                without a separate lookup. Server actions checked those roles
+                before doing any work, which produced fast, specific failures. A
+                volunteer attempting a staff mutation got a clear error back
+                instead of a quiet empty result set. While that was an
+                improvement for anyone using the system, it did nothing for the
+                request that skipped the check entirely.
+              </p>
+              <h3>PostgreSQL Row-Level Security</h3>
+              <p>
+                We reached for RLS to achieve defense in depth with what native
+                Postgres could provide. The same JWT claims that the server
+                action already checked got evaluated again, this time by the
+                database, against the actual rows being touched. Public event
+                fields stayed broadly readable while rosters, contact details,
+                and draft events were restricted by policy instead of by
+                convention. The property that mattered was what happened when
+                the application layer forgot. The database still refused.
+                Authorization lived where the data lived, so it applied to every
+                path that could reach that data.
+              </p>
+              <figure class="figure-center">
+                <source
+                  srcset="./public/d4-dark.svg"
+                  media="(prefers-color-scheme: dark)"
+                />
+                <img
+                  src="./public/d4.svg"
+                  alt="Sequence diagram set inside a dashed box labeled Trusted server and db boundary, with lifelines for User, Supabase Auth, NextJS Server Action, App RBAC, PostgreSQL RLS, and Database. The User signs in to Supabase Auth, which runs a Custom Access Token Hook to mint an access token and add user roles, then returns a JWT to the User. The User sends a privileged action carrying that JWT to the NextJS Server Action, which calls App RBAC to verify the role. Two labeled outcomes branch from that check: a green role-allowed path continues into the boundary, and a red else path returns a clear application error straight back to the user, marked by a callout reading Better errors and early rejection. On the allowed path, the Server Action sends a policy evaluation with the JWT claims to PostgreSQL RLS, which asks whether the policy permits the row. A green outcome proceeds to the Database and commits; a red else outcome has the database reject the operation instead, marked by a second callout reading Actual enforcement boundary."
+                />
+                <figcaption>
+                  The full path from sign-in to a committed write. Supabase Auth
+                  mints an access token and a custom hook adds user roles before
+                  the JWT reaches the browser. A privileged action carries that
+                  JWT into the trusted server and database boundary, where App
+                  RBAC verifies the role first. A failed check returns a clear
+                  application error immediately. A passing check still has to
+                  clear PostgreSQL RLS, which evaluates the same claims against
+                  policy and the specific row being written. Only then does the
+                  operation commit. If the policy doesn't permit it, the
+                  database itself rejects the operation.
+                </figcaption>
+              </figure>
+              <p>
+                So we arrived at two almost identical failure paths, and while
+                they looked almost identical from the outside, they caught
+                different things. One stood in for every check a developer might
+                forget to write. The other was what happened regardless of
+                whether that check ever got written at all.
+              </p>
+              <h3>Why both layers existed</h3>
+              <p>
+                "But," I heard you ask, "why not consolidate the application's
+                authorization checks with the RLS policies instead?" An
+                excellent question, dear Reader. Allow me to elucidate.
+              </p>
+              <p>
+                A plain RLS policy can't carry a custom message on its own, a
+                failed <code>USING</code> or <code>WITH CHECK</code> clause
+                always returned the same generic violation regardless of table
+                or policy. This could be solved with a trigger or
+                security-definer RPC that raises its own exception with a
+                specific message, so some of that specificity could come back
+                without technically leaving Postgres. What couldn't come back
+                was the cost. That check would still only fire after a request
+                had already consumed a connection and query-planner work, and at
+                scale that would be capacity spent rejecting traffic that was
+                never going to succeed, capacity legitimate requests were
+                competing for. A role check in memory rejects the same request
+                for close to nothing. And the client still needs something to
+                catch that database error and translate it into language a user
+                understands. Thus the app layer's responsibility changed from
+                deciding whether an action was allowed to explaining why it
+                wasn't.
+              </p>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Approach</th>
+                    <th>Benefit</th>
+                    <th>Failure mode</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>UI checks</td>
+                    <td>Simple UX</td>
+                    <td>Not security</td>
+                  </tr>
+                  <tr>
+                    <td>App RBAC</td>
+                    <td>Early failure, clear errors</td>
+                    <td>One missed endpoint bypassed it</td>
+                  </tr>
+                  <tr>
+                    <td>RLS</td>
+                    <td>Hard data boundary</td>
+                    <td>More policy complexity</td>
+                  </tr>
+                  <tr>
+                    <td>RBAC + RLS</td>
+                    <td>Defense in depth</td>
+                    <td>Rules existed in two places</td>
+                  </tr>
+                </tbody>
+              </table>
+              <p>
+                The honest cost of defense in depth is duplication. A rule
+                change meant touching application code and a policy both, and
+                the two could drift out of sync with each other. I accepted this
+                cost because the failure modes weren't equally bad. Drift
+                between the two layers produced a confusing error message,
+                something a developer noticed and fixed. A missing check with no
+                backstop produced a data leak, something a developer might not
+                notice until someone else already had.
+              </p>
+              <p>
+                Once authorized users could actually mutate events, a different
+                question opened up. Did those mutations preserve the domain's
+                rules once retries and concurrent requests entered the picture?
+              </p>
+            </div>
+            <div class="toc-section">
+              <h2>Concurrency Considerations</h2>
+              <p>
+                While authorization decided who was allowed to touch an event,
+                there was still the matter of whether the event itself made
+                sense once they had. Publishing an event with no location,
+                inserting an enrollment twice by a retried request, and changing
+                a start time with no record of who changed it were all things an
+                authorized, correctly permitted user could still do to a system
+                that had no opinion about what a valid event looked like. Thus,
+                this was the malady that the next iteration sought to remedy. An
+                event had to be treated as something with enforceable rules to
+                it.
+              </p>
+              <h3>Event state transitions</h3>
+              <p>
+                Picture an event with a status column; because it is just text,
+                anyone with the right permission could set it to whatever they
+                wanted. That sounds fine until you actually consider that it
+                allows a coordinator, halfway through writing a draft event, to
+                publish an event that is missing a location and date. It would
+                go live exactly as broken as it was mid-edit. An event that got
+                cancelled last week could get flipped back to active by a stray
+                click, with nothing checking whether that was even a sensible
+                thing to do. The column itself has no awareness of the
+                difference between a deliberate, valid change and a mistake. It
+                just stores whatever it is told. To a sharp reader, this may
+                have seemed obvious: business objects must be governed by
+                business rules. This instinct is correct, but there are so many
+                ways to pave this road. How should it be done?
+              </p>
+              <p>
+                The fix was built by rephrasing the question entirely. Instead
+                of asking "what does the client want this field to say," the
+                system asks "does this row actually satisfy what the target
+                state requires?" Publishing stopped being a simple edit. It
+                became a transition. Transitions only succeed if the event
+                clears whatever that specific move demands. The client is no
+                longer trusted to set status and instead becomes something the
+                system produces, the output of a move that the server has to
+                validate. The client could only be trusted for basic input
+                validation, and even then the server has to verify.
+              </p>
+              <h3>Enrollment and attendance</h3>
+              <p>
+                The naive version would have been to split a single relationship
+                across multiple places. Sign-ups could live somewhere and
+                attendance somewhere else entirely. But then the system could
+                have two records that were both trying to describe the same
+                data: whether this volunteer was coming to this event. Because
+                of this independence the two records could disagree with each
+                other. A volunteer could show up and get checked in on the
+                attendance side while the sign-up record still said they'd never
+                enrolled at all, or a cancelled sign-up could have left a stray
+                attendance row behind it with nothing to explain where it came
+                from.
+              </p>
+              <p>
+                The actual problem underneath wasn't really about tables.
+                Sign-up and attendance were two snapshots of one evolving
+                relationship between a volunteer and an event, and splitting
+                that relationship into two records would have meant that the
+                system had two places that both needed updating every time
+                something about it changed. And God have mercy on me if I missed
+                one of those updates. The two records could have happily stop
+                agreeing with each other, with nothing in the schema itself to
+                catch it.
+              </p>
+              <p>
+                So enrollment moved into one place, <code>user_event</code>, a
+                join between a volunteer and an event rather than a field bolted
+                onto either one. Checking in and checking out extended that same
+                row instead of getting a table of their own. Signed up, showed
+                up, and left all became states of one relationship, something
+                that had to stay consistent in exactly one place. That single
+                source of truth was also what made the next problem answerable
+                at all. Capacity was just a count against one table.
+              </p>
+              <h3>Append-only history</h3>
+              <p>
+                If the event row only ever held the current value, an ordinary
+                update would erase whatever was there before it. The date would
+                change, and there was no way to say what it used to be or who
+                changed it. That was fine right up until it wasn't, usually the
+                week something actually went wrong and a coordinator needed to
+                know exactly that, or worse, wished to revert to a previous
+                valid state.
+              </p>
+              <p>
+                Thus every meaningful change got written to a changelog that sat
+                apart from the event itself. The event row answered what was
+                true right now. The changelog answered how it got there. The
+                moment history lived in the same row as the current state, an
+                ordinary update could overwrite it. The only caveat was that
+                there would be a requirement for clearing entries after some
+                configurable amount of time had passed.
+              </p>
+              <h3>Preventing duplicate event creation</h3>
+              <p>
+                There were a host of issues that could result in duplicate
+                requests being sent to the server: a double click, a flaky
+                connection, an optimistic retry firing twice, or an impatient
+                user spamming a button to watch it go brrr. If creating an event
+                just meant inserting a new row, each of those retries made a new
+                event, and now there could be two identical listings for the
+                same shift.
+              </p>
+              <p>
+                As with most problems, the solution was multilayered. Before the
+                request leaves the browser, the client generates a UUID up front
+                and that ID became the row's identity. A retried request
+                carrying this idempotency key would collide with the row that
+                already existed instead of making a second one. Coupled with
+                client-side debouncing with the Tanstack Pacer library, a simple
+                yet robust solution to performance and result fidelity was
+                achieved. It was cheaper to make duplication impossible at the
+                identifier level than to go looking for duplicates after the
+                fact.
+              </p>
+              <h3>Capacity under concurrency</h3>
+              <p>
+                Say an event had exactly one slot left, and two volunteers hit
+                enroll within a few milliseconds of each other. The obvious
+                approach would be to check the current count before inserting,
+                and if it was under the limit, let the enrollment through. While
+                this could work, there was a classic check-then-change issue.
+                The edge case that failed occurred when both requests could read
+                that same "one slot left" state before either one had written
+                anything. Both checks would pass. So both inserts would occur.
+                The event would now have twenty-one people signed up for twenty
+                slots, and nothing in that flow had technically done anything
+                wrong. While this may not have been a likely or common issue for
+                our client, it was worth the mental exercise, especially when
+                the solution was simple.
+              </p>
+              <p>
+                The application-level check simply couldn't see the other
+                request while it was making its decision. The only place that
+                was actually true was inside the database, at the moment of the
+                write itself, so that was where the check had to live. So I made
+                the server execute an atomic transaction for the update. The
+                first request through succeeds and the second one gets rejected
+                with a clear capacity error instead of quietly overbooking the
+                event.
+              </p>
+              <figure class="figure-center">
+                <source
+                  srcset="./public/d4-concurrency-dark.svg"
+                  media="(prefers-color-scheme: dark)"
+                />
+                <img
+                  src="./public/d4-concurrency.svg"
+                  alt="Sequence diagram titled Concurrent Enrollment Sequence, with five lifelines across the top: Volunteer A, Volunteer B, NextJS, DB, and Capacity trigger. Volunteer A is drawn in blue and Volunteer B in orange, and their messages follow those colors. Volunteer A signs up, then Volunteer B signs up. NextJS reads capacity for A, then reads capacity for B. A note reads that both requests may observe a single vacant position. NextJS then inserts a user_event row for A, followed by a user_event row for B. The capacity trigger fires before insert. It allows the first insert, so A receives enrolled. It raises a capacity exception on the second, so B receives event full."
+                />
+                <figcaption>
+                  Concurrent enrollment on the final open slot. Because both
+                  requests can read capacity before either writes, the
+                  application layer alone could not prevent an overbooking. A
+                  before-insert trigger on the database enforced the limit, so
+                  the first insert succeeds and the second raises a capacity
+                  exception that surfaces to the volunteer as an event full
+                  warning.
+                </figcaption>
+              </figure>
+              <p>
+                The application check gives a volunteer a friendly "this event
+                is full" instead of a raw database error. It just wasn't the
+                thing actually holding the limit. That distinction, a check for
+                user-experience sitting on top of a check for correctness, was
+                the same one that showed up with authorization, and it showed up
+                again here for the same underlying reason: anything that only
+                runs in application memory can be raced, and anything that runs
+                inside the write itself cannot.
+              </p>
+              <p>
+                Correct event operations solved the coordinator's side of
+                things, but discovery hadn't been addressed. Volunteers could
+                still only browse a flat list, with no sense of what was
+                actually near them.
+              </p>
+            </div>
+            <div class="toc-section">
+              <h2>Move Geographic Computation into PostGIS</h2>
+              <p>
+                The question that every volunteer asks is, "What events are
+                happening near me and soon?" A flat list of every event ever
+                created wouldn't answer it. Correct event operations had solved
+                the coordinator's half of the problem, leaving us to solve the
+                discovery portion with the next iteration.
+              </p>
+              <p>
+                To illustrate, we started with the simplest version of the
+                problem. A staff member typing in an ordinary street address
+                into a form, and it being stored as a plain text field on the
+                event. This field can be searched against when a volunteer looks
+                for something nearby.
+              </p>
+              <p>
+                This process failed immediately. Since the address was just a
+                string to the database, there was no concept of where it
+                actually sat in the world. It had no way to answer for proximity
+                because that was a geometric question and text has no geometry.
+                Matching became exact matching, or something close to it. Even
+                with fuzzy matching, a volunteer searching in Jacksonville
+                wouldn't surface an event with a city listed as Jax, nor would
+                one that was two blocks away in a neighboring zip code the
+                search term never mentioned. There is no radius, distance, or
+                ordering by closest first. The system could only tell you
+                whether or not an address contained a substring. It couldn't
+                tell you whether an event was five minutes away or five hours
+                away.
+              </p>
+              <p>
+                Getting an actual latitude and longitude out of that address
+                meant somewhere, that address needed to become coordinates the
+                database could query against. One approach could be calling a
+                geocoding provider during the create flow, waiting for
+                coordinates, and only then saving the event.
+              </p>
+              <p>
+                However, this approach had some serious downsides. The event
+                creation process was dependent on some third-party API's uptime.
+                If Geoapify was slow, event creation was slow. If Geoapify was
+                down, event creation was down. For a feature that had nothing to
+                do with geography, this would tightly couple the two services.
+                We could do better.
+              </p>
+              <h3>Geocoding, without blocking event creation</h3>
+              <p>
+                So I decided to save the address row immediately, on its own, as
+                part of the same request that created the event. The external
+                geocoding call happened outside that path entirely. If the
+                provider was slow or unreachable, the event still got created.
+                It simply wasn't geo-searchable yet, and it picked up
+                coordinates the moment the geocoding call succeeded, whenever
+                that completed.
+              </p>
+              <figure class="figure-center">
+                <source
+                  srcset="./public/s5-dark.svg"
+                  media="(prefers-color-scheme: dark)"
+                />
+                <img
+                  src="./public/s5.svg"
+                  alt="Sequence diagram titled Storing Location, with five lifelines across the top: staff event form, NextJS server action, PostgreSQL, Geoapify, and PostGIS. The staff event form sends a street address to the NextJS server action. The server action saves the canonical address to PostgreSQL. It then makes an async geocode call to Geoapify, drawn as a dashed arrow. Geoapify returns a latitude and longitude to the server action. The server action then sends an update address location message across to PostGIS."
+                />
+                <figcaption>
+                  Address storage and geocoding. The canonical street address
+                  persists before any external call, so a slow or failing
+                  geocoder never blocks event creation. Geocoding runs
+                  asynchronously against Geoapify, and the return coordinates
+                  are written back as a PostGIS location that powers proximity
+                  search.
+                </figcaption>
+              </figure>
+              <p>
+                Although the time between saving the address and resolving its
+                coordinates may only have been a few seconds, it had to be
+                accounted for. Even an event created just before the geocoder
+                went down still got created and showed up in every list that
+                didn't depend on location, while it patiently waited its turn to
+                become searchable by distance. Nothing about event creation
+                itself ever noticed the difference.
+              </p>
+              <h3>Geography points and spatial indexing</h3>
+              <p>
+                So we had coordinates, but that alone didn't answer "what's near
+                me?". A latitude and a longitude were just two numbers sitting
+                in two ordinary columns as far as Postgres was concerned, and a
+                plain database had no built-in idea of distance between two
+                pairs of numbers, let alone a fast way to find every row within
+                some radius of a third pair. Getting proximity search meant the
+                database needed to actually understand geography as a concept,
+                and that was exactly what PostGIS was for.
+              </p>
+              <p>
+                PostGIS is an extension to Postgres that adds spatial types and
+                the functions and index structures that go along with them.
+                Through a simple installation, a column could hold a geography
+                point instead of two disconnected floats. A geography point,
+                unlike two floats, knows that it sits on the surface of a
+                sphere. Instead of treating latitude and longitude like flat
+                <code>x</code> and <code>y</code> coordinates on a flat plane,
+                distance between two points automatically accounted for the
+                earth's curvature.
+              </p>
+              <p>
+                Knowing what a point was didn't make searching using it fast on
+                its own. That's what the GIST index is for. The GIST index that
+                PostGIS added alongside the type wasn't an ordinary btree index
+                built for comparing single values against each other. This index
+                allowed Postgres to narrow a spatial query down to a small set
+                of candidate rows instead of checking every row in the table one
+                at a time.
+              </p>
+              <p>
+                Finally there was <code>ST_DWithin</code>, the function that
+                actually asks and answers the question our patient volunteer
+                cared about. Called on its own it would need to compute the
+                distance between every event and the search point, one row at a
+                time. However, called against a geography column that had a GIST
+                index, it could use that index to rule out almost everything up
+                front and only do the distance math on rows that could plausibly
+                qualify. Ordering the results by closest first worked similarly,
+                using the index rather than a separate calculation after the
+                fact. The best part was the speed, with both returning in
+                single-digit milliseconds even against a table with millions of
+                events in it, thanks to the spatial query itself only ever
+                answering which events qualified. Full event data still loaded
+                through the same canonical data layer as everything else, so the
+                geography logic stayed isolated to the one job it was optimized
+                for.
+              </p>
+              <figure class="figure-center">
+                <source />
+                <img
+                  src="./public/d5v2.svg"
+                  alt="Sequence diagram titled Finding Nearby Events, with five lifelines across the top: Volunteer Location, Nearby Events RPC, GIST Spatial Index, Events and Addresses, and Distance-sorted Results. Volunteer Location sends latitude, longitude, and radius to the Nearby Events RPC. The RPC calls ST_DWithin against the GIST Spatial Index. The index returns matching rows to Events and Addresses. Those rows are ordered nearest first into Distance-sorted Results, which are sent back to the browser."
+                />
+                <figcaption>
+                  Finding nearby events. A volunteer's coordinates and radius
+                  reach the RPC, which calls ST_DWithin against the GIST index
+                  rather than scanning every row. Matching rows are pulled from
+                  Events and Addresses, ordered nearest first, and returned to
+                  the browser already sorted.
+                </figcaption>
+              </figure>
+              <p>
+                A volunteer's location and radius go in, the GIST index narrows
+                the field before <code>ST_DWithin</code> ever has to do the
+                distance math on it, and what comes back is already ordered
+                nearest first, with the canonical layer supplying the actual
+                event data at the end. None of that work touched JavaScript at
+                any point.
+              </p>
+              <h3>Why have the database perform the calculation</h3>
+              <p>
+                The alternatives were worse in specific ways. Computing
+                Haversine distance in JavaScript meant fetching candidate rows
+                to filter them in application memory, and the database couldn't
+                use an index for a predicate it never saw, so this degraded with
+                row count rather than with result count. A dedicated geographic
+                service would have added a network hop and a synchronization
+                problem to solve a query Postgres already answered. Storing bare
+                latitude and longitude columns without a spatial type would have
+                given up the index and the correctness of geodesic distance in
+                one move.
+              </p>
+              <p>
+                With the addition of PostGIS to our database answering the
+                geographic filtering issue, we could move on to keyword
+                searching. Keyword search still treated every text match as
+                equivalent, with no typo tolerance and no way to combine
+                distance, recency, and relevance into a single ordering. On to
+                the next iteration.
+              </p>
+            </div>
+            <div class="toc-section">
+              <h2>From String Matching to Search Engineering</h2>
+              <p>
+                Search started as
+                <code class="code-block"
+                  >WHERE title ILIKE '%query%' OR description ILIKE
+                  '%query%'</code
+                >, about as simple as search got. However, I realized that no
+                index could serve a leading wildcard, so as the events table
+                grew, every search meant scanning rows one at a time. While this
+                was fine with smaller datasets, there was also no typo tolerance
+                and no ranking beyond whatever order the rows happened to come
+                back in. I pointed out to the client that a volunteer searching
+                for "beach cleanup" could miss an event titled "Cleanup Day"
+                over a mismatched word buried in a longer description, with no
+                way for the system to say one result mattered more than another.
+              </p>
+              <p>
+                The standard way to get fuzzy and partial matching inside
+                Postgres was to incorporate trigram indexes. And this showed
+                promise! Users could power through typos and substrings started
+                matching. While trigram indexes carry write overhead at scale to
+                keep updated on a table that is constantly being written to, at
+                the scale our client was expecting, this would have been a
+                nonissue. What wasn't addressed was ranking.
+              </p>
+              <blockquote class="info-quote">
+                <span class="info-quote-icon" aria-hidden="true">i</span>
+                A trigram is a similarity measure between two strings using any
+                overlapping three-character chunks. While
+                <code>similarity()</code> sounds like ranking on the surface, it
+                isn't. <code>pg_trgm</code> doesn't know what a word is; it
+                operates purely on character sequences, so "the beach" and "each
+                teach" share a meaningful chunk of trigrams despite one having
+                nothing to do with the other. No meaning is captured.
+              </blockquote>
+              <p>
+                So I reached for full-text search. FTS felt like the right tool,
+                providing generated tsvector columns and a GIN index. What's
+                more, it was built specifically for ranked text search inside
+                Postgres with relevance scoring and an index. While this meant
+                that we would no longer require hand-rolled scanning, it also
+                meant that we would lose any meaningful typo tolerance, partial
+                word matching, and there was no native, planner-optimized way to
+                combine text relevance with something like distance or recency
+                into a single ordering without hand-rolling an expression the
+                indexer can't help with.
+              </p>
+              <p>
+                So I considered the nuclear option. I was familiar with
+                Elasticsearch: an external, dedicated search engine that
+                tokenized every entry and built an inverted index that provided
+                typo tolerance, partial word matching, and combined multiple
+                signals like text relevance, distance, and recency into a single
+                ranked score, and did it fast...extremely fast. With it being a
+                whole separate service to run, keep in sync, and operate, I
+                understood that it was a heavy answer to reach for, especially
+                for a volunteer application that, at this point, was still
+                mostly a CRUD app with a search box. Reaching for it would mean
+                adding considerable infrastructure and hefty operational weight.
+              </p>
+              <p>
+                Wanting a tool and needing one are different claims and claiming
+                that Postgres was too slow was a claim I wasn't willing to make
+                without a way to actually test it. So before touching
+                Elasticsearch at all, I built a benchmark, something concrete
+                enough to either justify that weight or rule it out.
+              </p>
+              <h3>Controlled performance harness</h3>
+              <p>
+                With the help of Claude, I generated one million synthetic
+                events and 100,000 addresses in a self-hosted Supabase dev
+                database, with deliberately controlled term frequencies, food at
+                56%, shelter at 5%, watershed at 0.5%, pollinator at 0.1%, and
+                one term that never appeared at all, so I could measure how each
+                backend behaved across selectivities rather than at one
+                arbitrary point. I used Postgres 15.8, tuned with
+                <code>shared_buffers=4GB</code>,
+                <code>effective_cache_size=12GB</code>,
+                <code>work_mem=32MB</code>. All numbers were warm-cache medians
+                of repeated runs under <code>EXPLAIN (ANALYZE, BUFFERS)</code>.
+              </p>
+              <p>
+                Three Postgres backends were compared against Elasticsearch
+                across six query shapes: ILIKE with a forced sequential scan,
+                pg_trgm GIN indexes on title and description, and a generated
+                tsvector column with a GIN index.
+              </p>
+              <h3>Testing results</h3>
+              <p>
+                Unsurprisingly, Postgres full-text search bested every other
+                Postgres option across the board: roughly 5&times; faster on
+                dense matches, and by four orders of magnitude on the
+                nonexistent term.
+              </p>
+              <p>
+                It was noteworthy that <code>pg_trgm</code>
+                scarcely engaged. The planner reached for it only on the
+                nonexistent term, and even then reluctantly. At 0.5%
+                selectivity, it preferred a plain sequential scan with early
+                exit to the bitmap-index-plus-heap-recheck path a trigram index
+                would have demanded. I wanted to know why.
+              </p>
+              <p>
+                The planner, after all, is cost-based. When given a
+                <code>LIMIT 50</code> and no <code>ORDER BY</code>, Postgres can
+                early return the moment it gathered fifty matching rows. Thus it
+                didn't need to see the remainder of the table at all. The search
+                term, "watershed", sat at roughly one row in every two hundred,
+                so a plain sequential scan, reading pages in their natural
+                order, ran into fifty matches after only a small slice of the
+                table.
+              </p>
+              <p>
+                The trigram path afforded no such shortcut. A GIN index over
+                trigrams yielded a bitmap of candidate pages, but because
+                trigram matching was prone to false positives, every candidate
+                still had to be rechecked against the actual row before it could
+                be trusted to match. At 0.5% selectivity, those matching rows
+                were not clustered but scattered fairly evenly across the whole
+                table, so the pages containing even a single match came to cover
+                nearly as many pages as the table possessed in total. Building
+                that bitmap, walking it, and rechecking each candidate row one
+                by one ended up costing more total work than the sequential
+                scan's early exit did, notwithstanding an index sitting right
+                there waiting to be used.
+              </p>
+              <p>
+                Knowing this, we could see the required shape for when a trigram
+                index actually paid for itself. For a term that appeared once,
+                or not at all, matching rows were rare enough to be genuinely
+                sparse, and so the index could skip almost the entire table
+                rather than touch nearly all of it. Our search term of
+                "watershed" was rare enough on its face, but not rare in that
+                particular sense.
+              </p>
+              <p>
+                <code>ORDER BY</code> defeated every index alike, which
+                surprised me. Returning the top fifty by date required
+                evaluating every matching row first, so neither scan type was
+                permitted to exit early, regardless of what index sat beneath
+                it. FTS's advantage on that particular shape came almost
+                entirely from a cheaper per-row check since it uses a token
+                match against a pre-tokenized vector rather than
+                character-scanning raw text.
+              </p>
+              <p>
+                Finally, I tested a realistic production query. I selected the
+                search term "food", along with a 25 km geo filter around New
+                York City, ordered by <code>event_date</code>, with a limit
+                fifty. Here were the results.
+              </p>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Backend</th>
+                    <th>Query</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>ILIKE</td>
+                    <td>1962 ms</td>
+                  </tr>
+                  <tr>
+                    <td>Postgres FTS</td>
+                    <td>380.87 ms</td>
+                  </tr>
+                  <tr>
+                    <td>Elasticsearch</td>
+                    <td>20 ms</td>
+                  </tr>
+                </tbody>
+              </table>
+              <p>
+                <code>ILIKE</code> came in at nearly two full seconds, slow
+                enough that a volunteer would notice and begin to wonder whether
+                the page had broken outright. <code>FTS</code> brought that down
+                to 381 ms. While this was definitely an improvement that a user
+                could live with, it would still feel sluggish on a slower
+                connection or with high volumes of traffic. Elasticsearch landed
+                at 20 ms, blazingly fast as expected.
+              </p>
+              <h3>Interpretation and conclusions</h3>
+              <p>
+                Postgres FTS was not a failed design; I want that said outright
+                before going any further. It brought the realistic query down to
+                about 381 ms. Most companies never engage enough users to every
+                worry about read/write query latency. "Postgres can't handle
+                this" was not the claim I sought to make, and this was confirmed
+                by the benchmark.
+              </p>
+              <p>
+                So the case for Elasticsearch never truly rested on speed at
+                all. It rested on capability, with latency relegated as a final
+                reason rather than granted the first.
+              </p>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Reason</th>
+                    <th>Where Postgres FTS fell short</th>
+                    <th>What Elasticsearch did instead</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Typo tolerance</td>
+                    <td>missed voluteer to volunteer entirely</td>
+                    <td>
+                      <code>multi_match</code> with
+                      <code>fuzziness: AUTO</code> caught it without effort
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Partial-word search</td>
+                    <td>
+                      missed volun to volunteer, with no clear path to closing
+                      it
+                    </td>
+                    <td>matched directly on partial terms</td>
+                  </tr>
+                  <tr>
+                    <td>Multi-signal ranking</td>
+                    <td>
+                      combining geo distance, recency, and text relevance meant
+                      hand-rolled SQL the planner optimized poorly
+                    </td>
+                    <td>
+                      <code>function_score</code> did exactly that natively
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Write amplification</td>
+                    <td>
+                      a <code>tsvector</code> column plus GIN indexes meant four
+                      or more index updates on every write, on the transactional
+                      database, purely to serve reads
+                    </td>
+                    <td>
+                      search indexing happened on a separate system entirely
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Latency</td>
+                    <td>381 ms on the realistic query</td>
+                    <td>20 ms, about 19&times; faster</td>
+                  </tr>
+                </tbody>
+              </table>
+              <p>
+                Of the five, multi-signal ranking was probably the one that
+                mattered most. The other four could become issues as the number
+                of users increased, but this was the one genuinely hard to fake
+                inside Postgres, short of writing and maintaining a pile of SQL
+                the planner was never going to optimize well in the first place.
+              </p>
+              <h3>What the measurements didn't prove</h3>
+              <p>
+                I find it worth stating plainly that I was aware of several
+                glaring limitations to my testing. Because I created a synthetic
+                dataset that was built around five controlled terms and not Zipf
+                distributed user text with far more genuinely rare words in it,
+                I realize the planner was likely to favor the indexed backends
+                more than this test showed.
+              </p>
+              <figure class="figure-center">
+                <source
+                  srcset="./public/d6-dark.svg"
+                  media="(prefers-color-scheme: dark)"
+                />
+                <img
+                  src="./public/d6.svg"
+                  alt="Two-part figure comparing four search approaches. The top row holds four cards. ILIKE is simple, has no ranking, no typo tolerance, and expensive scans. pg_trgm supports partial matching, has large indexes, and the planner often avoids it. Postgres FTS offers tokenized search and a strong Postgres baseline, but limited fuzzy behavior and ranking that becomes complex. Elasticsearch offers fuzzy multi-match, geo and recency scoring, and a dedicated search index, at the cost of added operational complexity. Below is a horizontal bar chart of query latency for three of them. ILIKE is the longest bar at about 1950 milliseconds, Postgres FTS is about 400 milliseconds, and Elasticsearch is the shortest at about 20 milliseconds. A note beneath reads that the performance harness used 1 million events and 100 thousand addresses."
+                />
+                <figcaption>
+                  Search approach evaluation against a harness of 1 million
+                  events and 100 thousand addresses.
+                </figcaption>
+              </figure>
+              <p>
+                Every figure here was only single-query latency. Throughput and
+                p99 under concurrency were never measured nor was a k6 load test
+                performed. Elasticsearch, too, capped <code>hits.total</code> at
+                10,000 by default, while <code>EXPLAIN ANALYZE</code> counted
+                everything, so the totals were not strictly comparable even
+                though both servers were performing the same
+                find-and-return-top-50 task. Nor was the write-latency cost of
+                the added Postgres indexes ever measured directly. The relative
+                comparison between backends was the part carrying significant
+                weight here; thus, take the absolute millisecond figures here as
+                merely approximations.
+              </p>
+            </div>
+            <div class="toc-section">
+              <h2>A Derived Search System</h2>
+              <p>
+                Elasticsearch had earned its place on capability, not speed, but
+                that verdict left an open question sitting right underneath it.
+                Every earlier iteration had been built around treating Postgres
+                as the one place authorization, capacity, and history could be
+                trusted. Adding a second datastore for search required me to
+                plan on how that second store would reconcile changes without
+                becoming a second source of truth.
+              </p>
+              <h3>Writes committed only to Postgres</h3>
+              <p>
+                The naive approach was to implement dual writes. The server
+                would write to Postgres, then write the same change to
+                Elasticsearch, both inside the same request. On the surface that
+                sounded fine, but what would happen if one of the two calls
+                failed on its own? Say if the Postgres commit succeeded and the
+                Elasticsearch call timed out. Now the two systems would disagree
+                with each other and there would be no record of which one was
+                correct. Retrying wouldn't fix that cleanly either, since a
+                retry after a partial failure could just as easily create the
+                opposite kind of mismatch.
+              </p>
+              <p>
+                So I decided that the application would never write to
+                Elasticsearch directly, instead, it wrote to Postgres exactly as
+                it always had, with no dual write and no awareness that a search
+                index even existed. The pipeline would read what Postgres was
+                already producing on its own, the write-ahead log, before
+                Postgres considered it durable. That log would let the database
+                survive a crash, since it could replay anything that was written
+                but never applied. Debezium was used to tail that log through a
+                logical replication slot and published each change as a JSON
+                message to a topic in Redpanda, a Kafka-compatible broker. A
+                small consumer I called the indexer would read those messages
+                one at a time, joined in the address row to pull geo
+                coordinates, normalize a few field types, and upsert the result
+                into Elasticsearch. Deletes arrived the same way, as a rewritten
+                record carrying a
+                <code>__deleted</code> flag, and become a delete on the
+                Elasticsearch side. End to end, a Postgres write showed up in
+                search in under a second.
+              </p>
+              <p>
+                That was the whole point of building it this way. Redpanda could
+                go down, Elasticsearch could catch fire, the indexer could
+                crash, and event creation could still be relied upon to stay
+                online. The only casualty was how fresh search results were.
+                This tradeoff in correctness was one that we agreed that we
+                could accept.
+              </p>
+              <blockquote class="info-quote">
+                <span class="info-quote-icon" aria-hidden="true">i</span>
+                This was raw table CDC, reading the events table directly,
+                rather than an outbox pattern where the application would write
+                an explicit change record as part of its own transaction. Outbox
+                was the more production-correct answer at scale, since it
+                decoupled whatever was consuming those changes from the table's
+                actual schema. With exactly one consumer that I also owned, raw
+                CDC stayed simpler and that coupling cost nothing yet. It was a
+                tradeoff worth revisiting, and I come back to it later when
+                talking about what I'd change if I did this again.
+              </blockquote>
+              <figure class="figure-center">
+                <source
+                  srcset="./public/s7-dark.svg"
+                  media="(prefers-color-scheme: dark)"
+                />
+                <img
+                  src="./public/s7.svg"
+                  alt="Change data capture pipeline diagram. The NextJS app sends inserts, updates, and deletes to PostgreSQL, which sits inside a green dotted boundary labeled canonical transaction layer. A red dashed arrow from the app directly to Elasticsearch is struck through with a large red cross and labeled no synchronous dual writes. Postgres commits to the write-ahead log, which reaches Debezium by logical replication. Debezium emits a CDC event to a Redpanda topic. An indexer consumes from that topic ordered by event_id and upserts or deletes documents in the Elasticsearch index named events_v1, which sits inside a purple dotted boundary labeled disposable derived search index. The indexer also performs an address lookup back against PostgreSQL. A note beside the indexer lists its work: join geo data by address_id, convert Debezium date integers, extract latitude and longitude, and handle deleted records."
+                />
+                <figcaption>
+                  Search index synchronization by change data capture. The
+                  application writes only to Postgres, which remains the sole
+                  canonical transaction layer. Changes propagate through the WAL
+                  log to Debezium and a Redpanda topic, where an indexer
+                  consumes them in event order, enriches each record with geo
+                  data looked up by address_id, and upserts into events_v1.
+                </figcaption>
+              </figure>
+              <p>
+                That's the whole mechanism for getting a change from Postgres
+                into the index. What Elasticsearch actually did with that data
+                once it arrived, deciding which result to show first, was a
+                separate problem entirely.
+              </p>
+              <h3>Elasticsearch ranked, Postgres hydrated</h3>
+              <p>
+                Getting text into an index solved matching. It didn't solve
+                ordering, and ordering was what a volunteer actually cared
+                about. A query for beach cleanup shouldn't just return every
+                event containing those words, it should put the one happening
+                this weekend, five minutes away, ahead of one happening next
+                month on the other side of the state.
+              </p>
+              <p>
+                The live query used something Elasticsearch called
+                <code>function_score</code>, which took a base relevance score
+                and layered additional factors on top of it. Matches inside the
+                title counted twice as much as matches inside the description.
+                The thought process behind this was that it was more likely that
+                someone typing "beach cleanup" into the search box was more
+                likely describing what an event actually was than mentioning it
+                once somewhere inside a longer paragraph. The same fuzziness
+                setting that caught typos during the benchmark carried straight
+                through into this query too.
+              </p>
+              <p>
+                Recency and distance both got applied as Gaussian decay, instead
+                of a hard cutoff that treated everything past some line as
+                equally irrelevant. For recency, the center was right now, so an
+                event scored highest today and decayed gradually the further out
+                it was scheduled, tuned to a two week scale. For distance, the
+                center was wherever the volunteer was searching from, and
+                coordinates entered that formula only when they were actually
+                present, without ever falling back to some invented default
+                location.
+              </p>
+              <p>
+                Take an event happening three months out, somewhere far away. If
+                the geo decay and the recency decay both multiplied straight
+                into the text score, that event would get hit by both penalties
+                at once, crushing its score by more than either one deserved on
+                its own. Summing the two signals together first, then
+                multiplying that sum against text relevance, meant a far and
+                late event only paid for being far and late once instead of
+                paying twice over for the same two facts.
+              </p>
+              <p>
+                Two smaller choices are worth delving into. City and state
+                stayed out of the searchable text entirely, kept as filters and
+                metadata instead. Letting a search box match directly against a
+                state name would have surfaced every event in Florida the moment
+                someone typed Florida, regardless of whether any of them were
+                actually relevant to what that person was looking for.
+              </p>
+              <p>
+                Here was what that produced for "beach cleanup", searched from
+                Jacksonville. Three Jacksonville events led, with scores
+                dropping from 22.5 down to 16.1, ordering among them driven by
+                recency once distance had already put them in a tight cluster.
+                Then a cliff down to 2.62 for an event in Huntsville, roughly
+                600 kilometers out, trailing off to 0.03 for one in New York,
+                where both distance and time were working against it at once.
+              </p>
+              <p>
+                Ranking only ever went one direction after that. Elasticsearch
+                handed back an ordered list of ids and scores while Postgres
+                supplied the actual rows for those ids, rendered back out in
+                whatever order Elasticsearch had decided on. An id that no
+                longer existed just got dropped from the results, and any
+                mismatch between the two counts surfaced as a warning instead of
+                failing silently. Detail pages and edit forms skipped
+                Elasticsearch entirely and went straight to Postgres, since
+                Elasticsearch's job started and ended at deciding order. Nothing
+                about what a volunteer actually saw on the page was allowed to
+                live in the index alone.
+              </p>
+              <figure class="figure-center">
+                <source
+                  srcset="./public/d8-dark.svg"
+                  media="(prefers-color-scheme: dark)"
+                />
+                <img
+                  src="./public/d8.svg"
+                  alt="Diagram of two read paths. Along the top is the search path. Browser search sends a query with latitude and longitude to slash api slash search, which issues a function_score request to ES. A side note lists what that scoring covers: text relevance, geographic decay, and recency decay. ES returns ranked event ids as UUIDs and scores. Those ids go to PostgreSQL as a where id in query, which returns canonical event data back to slash api slash search, labeled preserve Elasticsearch order, and the response returns to the browser. A side note reads that this path allows discovery and ranking events. Along the bottom is a dashed boundary labeled direct canonical read, containing event detail and edit connected by a two-way arrow to the NextJS data layer, which reads and writes PostgreSQL directly. Side notes read: read or mutate exact records, and browse with no search query. PostgreSQL is annotated as the source of truth for status, capacity, deletion state, and relations."
+                />
+                <figcaption>
+                  Search queries go to Elasticsearch for scoring only, and it
+                  returns nothing but UUIDs and scores; the rows themselves are
+                  fetched from Postgres and reordered to match the Elasticsearch
+                  ranking, so status, capacity, and deletion state are never
+                  served from a stale index. Detail views and mutations skip
+                  search entirely and read Postgres directly.
+                </figcaption>
+              </figure>
+              <p>
+                That split, one system deciding order and another supplying the
+                truth, only covered how a search actually worked. It said
+                nothing about the paths that never touched Elasticsearch at all,
+                event detail, editing, or browsing without a query, all of which
+                read straight from Postgres. Which path a request took, and how
+                fresh it needed to be, turned out to depend entirely on what a
+                person was doing.
+              </p>
+              <h3>Consistency, chosen per workflow</h3>
+              <p>
+                Every write now had to travel through Debezium, Redpanda, and
+                the indexer before it showed up in search, and that trip could
+                take a non-trivial amount of time. I wondered whether this
+                actually mattered. The answer turned out that it depended
+                entirely on what a user was doing.
+              </p>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Workflow</th>
+                    <th>Consistency requirement</th>
+                    <th>Source</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Search discovery</td>
+                    <td>A short delay was fine</td>
+                    <td>Elasticsearch ranking, Postgres for the rows</td>
+                  </tr>
+                  <tr>
+                    <td>Event detail</td>
+                    <td>Whatever was true right now</td>
+                    <td>Postgres</td>
+                  </tr>
+                  <tr>
+                    <td>Event edit</td>
+                    <td>Had to reflect your own change immediately</td>
+                    <td>Postgres</td>
+                  </tr>
+                  <tr>
+                    <td>Browsing without a query</td>
+                    <td>The full canonical list</td>
+                    <td>Postgres</td>
+                  </tr>
+                </tbody>
+              </table>
+              <p>
+                If a user edited an event and searched for it right away, the
+                change might not show up for about a second. I was okay with
+                this since search ranking was only ever an ordering heuristic,
+                never the place anything about an event's actual state got
+                decided. Whatever a volunteer saw about an event itself, its
+                status, how many spots were left, whether enrollment was even
+                open, always came straight from Postgres, where it was correct
+                the instant it changed. Empty or very short searches fell back
+                to the ordinary Postgres-backed browse grid entirely, so looking
+                at everything never touched the index at all.
+              </p>
+              <p>
+                Underneath all of it sat one invariant the whole design depended
+                on. The index had to stay disposable, rebuildable from Postgres
+                at any moment, because nothing lived inside it that didn't also
+                live in the database. One statement was enough to prove it.
+                <code class="code-block"
+                  >UPDATE events SET updated_at = updated_at;</code
+                >
+                Since even a change that updated nothing still got written to
+                the write-ahead log and flowed straight back through the same
+                pipeline, rebuilding the index from nothing.
+              </p>
+              <p>
+                That pipeline also meant there were now several independent
+                services that could each fail on their own, which was exactly
+                where thinking about failure needed to start.
+              </p>
+            </div>
+            <div class="toc-section">
+              <h2>Failure Modes Are Part of the Architecture</h2>
+              <p>
+                Five services meant five separate things that could each go
+                wrong on their own. I wanted to be careful to not overengineer
+                without justification and having this many failure points was
+                cause for reflection. I reason that this was acceptable and not
+                reckless since every one of those failures had a bounded, known
+                consequence.
+              </p>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Failure</th>
+                    <th>User-visible effect</th>
+                    <th>Data loss?</th>
+                    <th>Recovery</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Indexer down</td>
+                    <td>Search went stale</td>
+                    <td>No</td>
+                    <td>Resume from consumer offset</td>
+                  </tr>
+                  <tr>
+                    <td>Elasticsearch down</td>
+                    <td>Search unavailable</td>
+                    <td>No canonical loss</td>
+                    <td>Indexer retried; queue drained</td>
+                  </tr>
+                  <tr>
+                    <td>Redpanda down</td>
+                    <td>CDC couldn't advance</td>
+                    <td>No immediate loss</td>
+                    <td>Broker recovered, Debezium caught up</td>
+                  </tr>
+                  <tr>
+                    <td>Bad indexer code</td>
+                    <td>Wrong search documents</td>
+                    <td>No canonical loss</td>
+                    <td>Fix, drop index, re-PUT mapping, reindex</td>
+                  </tr>
+                  <tr>
+                    <td>Postgres down</td>
+                    <td>Application unavailable</td>
+                    <td>Core dependency</td>
+                    <td>Database recovery</td>
+                  </tr>
+                </tbody>
+              </table>
+              <p>
+                Kafka consumer offsets were what made most of this table
+                predictable instead of worrisome. An indexer restart would
+                resume exactly where it left off, since the offset would mark
+                the last message it actually processed, while a bad
+                transformation would be recoverable because the source of truth
+                was never touched. Treating Postgres as canonical and
+                Elasticsearch as disposable would be the reason a broken indexer
+                was a fix-and-reindex problem instead of a data-recovery
+                problem.
+              </p>
+              <p>
+                One failure mode on this list wasn't like the others, and it was
+                the one that actually worried me. Postgres wouldn't
+                garbage-collect its write-ahead log past the point a replication
+                slot had confirmed it was read. That was normally invisible,
+                since Debezium was usually keeping pace and confirming as it
+                went. But if the indexer went down for a week, Postgres would
+                just keep holding onto a week's worth of WAL, waiting for a
+                consumer that wasn't coming back anytime soon. Disk could fill
+                causing the database to stop dead. And there would be no smoke
+                in the path of this fire; search going stale would read as a
+                minor, cosmetic problem right up until Postgres ran out of
+                space. Replication slot lag was the one metric I actually wanted
+                an alert on, and the only thing in this system that deserved to
+                page me at 3AM. Why? Because healthy looked like an active slot
+                with lag measured in kilobytes.
+              </p>
+              <figure class="figure-center">
+                <source
+                  srcset="./public/d9-dark.svg"
+                  media="(prefers-color-scheme: dark)"
+                />
+                <img
+                  src="./public/d9.svg"
+                  alt="Failure mode diagram for the change data capture pipeline. Across the top, a green box states that canonical data remains recoverable, connected down to a row of five pipeline components: PostgreSQL, Debezium, Redpanda, Indexer, and ES. Four brown boxes below describe failure scenarios, each connected to the component it concerns. Indexer unavailable: consumer offset retained, restart resumes processing, search becomes stale. Elasticsearch unavailable: postgres writes continue, indexer retries, search is unavailable or stale. Redpanda unavailable: debezium cannot publish, replication-slot lag increases, pipeline catches up after recovery. Bad indexer deployment: fix transformer, drop and recreate indexes, reindex from pg. At the bottom, a red box warns about replication slot lag, noting that unconsumed WAL accumulates until the Postgres disk is exhausted."
+                />
+                <figcaption>
+                  Because Postgres stays canonical and the search index is
+                  derived, every scenario degrades search rather than being
+                  data-lossy. The indexer resumes from its retained offset,
+                  Elasticsearch outages leave writes unaffected, and a bad
+                  deployment is corrected by dropping the index and reindexing.
+                  The only condition requiring an operational alarm is
+                  replication slot lag, where unconsumed WAL accumulates until
+                  it exhausts the Postgres disk.
+                </figcaption>
+              </figure>
+              <p>
+                Four rules came out of this architecture with each one existing
+                because I could point to how ignoring it could turn into an
+                incident.
+              </p>
+              <ol>
+                <li>
+                  Elasticsearch never got exposed publicly. The application was
+                  the actual auth boundary here, and Elasticsearch's wire
+                  protocol was rich enough that proxy-level auth alone usually
+                  wasn't enough to trust in front of it.
+                </li>
+                <li>
+                  The application never wrote to Elasticsearch directly. Every
+                  write went to Postgres and propagated from there.
+                </li>
+                <li>
+                  Nothing lived in the index that didn't also live in Postgres.
+                  If it couldn't be reconstructed from the canonical data, it
+                  was gone the next time the index got rebuilt.
+                </li>
+                <li>
+                  Documents never flowed before the mapping was in place.
+                  Elasticsearch's dynamic mapping could fail silently and guess
+                  field types, and by the time that is noticed, it could already
+                  be wrong in production.
+                </li>
+              </ol>
+              <p>
+                Every failure mode above was something the system did to itself.
+                The current assumption was there was good faith on the other end
+                of the wire, where users would make requests that ran into
+                broken infrastructure. This assumption would no longer hold when
+                considering the edges of the application that were being exposed
+                to the internet. Login, enrollment, and search are all public
+                surfaces, and nothing in the table above would have anything to
+                say about what happens when one of those surfaces gets hit far
+                harder and faster than any legitimate user ever would. This
+                failure type needed its own layer standing in front of it.
+              </p>
+            </div>
+            <div class="toc-section">
+              <h2>Rate Limiting as an Operational Control</h2>
+              <p>
+                Authorization had already answered who was allowed to do
+                something, but it said nothing about how often they were allowed
+                to do it. This could become an issue. A legitimate volunteer
+                accidentally hitting enroll twice would be harmless. A script
+                hitting the login endpoint a thousand times a minute would not,
+                and nothing in the RBAC or RLS layers from earlier was ever
+                designed to notice the difference. The question of how fast
+                needed its own answer.
+              </p>
+              <h3>Why fixed windows weren't enough</h3>
+              <p>
+                One of the simplest rate limiting methods is counting requests
+                in a fixed window, say sixty seconds, and rejecting anything
+                past some threshold within that window. It is easy to reason
+                about and easier to implement. It also has a specific,
+                exploitable hole right at the seam between windows. Nothing
+                prevents a client from firing his or her entire quota in the
+                last second of one window, then firing the same quota again in
+                the first second of the next window the instant it resets. While
+                technical, these conditions would allow two full quotas to be
+                served back to back, and by any reasonable measure, double what
+                the limit was supposed to allow.
+              </p>
+              <h3>Weighted sliding window, executed atomically</h3>
+              <p>
+                Fortunately the solution is well documented. Instead of counting
+                requests inside a single fixed bucket, the limiter can track two
+                adjacent windows and blend them. This is done by taking the
+                previous window's count and weighing it by how much of that
+                window overlaps the current sliding interval and then adding
+                that weighted figure to the current window's own count. Right at
+                a reset boundary, the previous window would still count for
+                almost its full weight, meaning there would no longer be a clean
+                seam where the counter dropped to zero and gave an attacker a
+                free quota to spend again.
+              </p>
+              <p>
+                That still left a familiar concurrency problem. Reading the
+                current count, deciding whether to allow the request, and then
+                incrementing the count are three separate steps. If done as
+                three separate round trips to Redis, two concurrent requests
+                could both read the same count, both decide they were under the
+                limit, and both get allowed through, exactly the same
+                check-then-write race that showed up with enrollment capacity
+                earlier in the
+                <a href="#concurrency-considerations" class="section-link"
+                  >Concurrency Considerations</a
+                >
+                section. The fix here was no different. Reading both windows,
+                computing the weighted count, deciding allow or deny, and
+                incrementing, runs inside a single Redis Lua script that
+                executes atomically on Redis's side.
+              </p>
+              <figure class="figure-center">
+                <source
+                  srcset="./public/d10-dark.svg"
+                  media="(prefers-color-scheme: dark)"
+                />
+                <img
+                  src="./public/d10.svg"
+                  alt="Sequence diagram titled Rate Limiter Decision, with lifelines for Client, Named rate limiter, Redis Lua script, and Protected operation. The client sends a request to the named rate limiter, which resolves its key, limit, and window configuration and calls the Redis Lua script. The script reads the previous and current window counts, computes a weighted total, and increments the count atomically, all in one round trip. Two outcomes branch from the script's result: an allowed outcome returns to the rate limiter, which lets the request continue to the protected operation, and a limited outcome returns a rejection to the client instead. A third path shows Redis itself unavailable, where the rate limiter fails open and forwards the request to the protected operation anyway, marked by a callout reading Fails open, not closed."
+                />
+                <figcaption>
+                  A protected request reaches a named rate limiter, which pulls
+                  its key, limit, and window configuration and hands off to a
+                  Redis Lua script that reads the previous and current window
+                  counts, computes a weighted total, and increments atomically,
+                  all in one round trip.
+                </figcaption>
+              </figure>
+              <p>
+                That atomic script is also what made the rest of this
+                configurable without getting complicated. Every limiter funnels
+                through the exact same read-compute-increment operation
+                underneath it. The only variance was in the numbers being fed
+                into it.
+              </p>
+              <h3>Named limiters, and failing open</h3>
+              <p>
+                Not every endpoint deserves the same ceiling. Login attempts,
+                enrollment, and search all have different abuse profiles, and
+                they cost a legitimate user something different when that user
+                actually hit the limit. So limits were configured per operation
+                rather than as one global number applied everywhere, each one
+                named and tuned to what it was actually protecting.
+              </p>
+              <p>
+                If Redis itself was unavailable, the limiter failed open,
+                meaning requests proceeded as if no limit existed at all.
+                Perhaps this looks backwards: doesn't failing open mean an
+                outage removes the abuse control right when it might be needed
+                most?
+              </p>
+              <p>
+                Yes, it does, but that is deliberate. Rate limiting here is a
+                control on abuse, not on authorization. Besides, authorization
+                has already been enforced independently in the app as well as
+                the database, regardless of whether or not Redis is even
+                running. Failing closed would have meant the opposite trade, a
+                Redis outage would instantly become a total outage: nobody could
+                sign in or enroll, all to stop traffic that was merely excessive
+                rather than traffic that was actually unauthorized. That isn't a
+                good trade for a system where the security boundary doesn't live
+                in Redis to begin with. If Redis had actually been the thing
+                standing between a request and unauthorized access, this would
+                have gone the other way entirely, fail closed, because then an
+                outage would have been the worse of the two outcomes.
+              </p>
+              <blockquote class="info-quote">
+                <span class="info-quote-icon" aria-hidden="true">i</span>
+                A managed rate-limiting product would have meant less code to
+                own and maintain. Building it directly in Redis and Lua meant
+                explicit control over the algorithm, and it kept every protected
+                action out of a third hosted dependency's failure domain, one
+                less external service that could take the whole system down if
+                it had a bad day. Also, it was worth my time to implement for my
+                own sake.
+              </blockquote>
+            </div>
+            <div class="toc-section">
+              <h2>A Typed Contract for Failure</h2>
+              <p>
+                Redis and Lua give rate limiting one honest, atomic answer to
+                the question of whether a request is allowed. Let me spend some
+                time elucidating the state of error handling in the application.
+                Rather than handling errors arbitrarily, special care and
+                consideration was spent implementing a system that was both
+                robust and helpful. A capacity trigger raising a Postgres
+                exception, an RLS policy silently returning nothing, a geocoding
+                call timing out or a validation check failing can have different
+                ways of handling these errors. So that begs the question, what
+                happens to a failure between the moment it occurs and the moment
+                a volunteer, or a log line, actually observes it? This can be
+                done with a thrown exception in one file, a null check in
+                another, a stray console.log somewhere else.
+              </p>
+              <h3>One shape for every error</h3>
+              <p>
+                With my experience from Rust, I decide to model the fix directly
+                on Rust's <code>Result</code> type. Rust doesn't let a function
+                silently fail, in fact, it requires explicit, almost painful,
+                handling of every error. A function that can fail returns
+                <code>Result&lt;T, E&gt;</code>, an enum with exactly two
+                variants, <code>Ok</code> holding the success value or
+                <code>Err</code> holding the error. This allows the compiler to
+                force the caller to actually deal with both before it can touch
+                the value inside. Now we don't rely on thrown exceptions. The
+                failure is part of the function's actual return type, not a side
+                channel that can be forgotten.
+              </p>
+              <p>
+                While TypeScript doesn't have a genuine algebraic type like that
+                built in, a tuple enables the desired behavior. Every server
+                action in the codebase now returns a
+                <code>Result&lt;TData, TError&gt;</code>, defined as
+                <code>[error: TError, null] | [null, data: TData]</code>.
+                Success looks like <code>ok(data)</code>, which returns
+                <code>[null, data]</code>. Failure looks like
+                <code>err(type, fields, logger)</code>, which returns
+                <code>[error, null]</code>, and logs the error as a side effect
+                of being called, immediately, at the exact point the failure
+                occurs. Every error is a member of a discriminated union called
+                <code>AppError</code>, each variant carrying a
+                <code>type</code> string and a <code>message</code>, so a
+                not-found error and a validation error are structurally
+                different values the compiler can tell apart, not two generic
+                exceptions that happen to carry different text.
+              </p>
+              <pre class="code-block"><code>type EventNotFound = {
+  type: "app.event.not_found";
+  message: string;
+};
+
+return err("app.event.not_found", { message: "This event could not be found." }, qrumLogger);</code></pre>
+              <p>
+                The rule that makes this actually hold together is simple,
+                <code>err()</code> logs automatically, so nothing downstream is
+                ever allowed to log the same failure again. This keeps a
+                database timeout from turning into four duplicate log lines by
+                the time it finally reaches the client.
+              </p>
+              <figure class="figure-center">
+                <source
+                  srcset="./public/d12-1-dark.svg"
+                  media="(prefers-color-scheme: dark)"
+                />
+                <img src="./public/d12-1.svg" alt="" />
+                <figcaption>
+                  The return of any function that can fail returns
+                  <code>Result&lt;Data, Error&gt;</code>.
+                  <code>ok(event)</code> produces <code>[null, event]</code>.
+                  <code>err(error, {...})</code> produces
+                  <code>[error, null]</code> and logs as a side effect of being
+                  called.
+                </figcaption>
+              </figure>
+
+              <p>
+                A type on its own doesn't do anything, though. What actually
+                matters is what happens to that tuple as it moves from wherever
+                the failure originates all the way back out to a user.
+              </p>
+              <h3>Passing failure up through the layers</h3>
+              <p>
+                A single check-in action, <code>checkIntoEvent()</code>, passes
+                through several layers before it ever touches a database, a
+                server action that calls a domain function,
+                <code>updateRoster()</code>, which in turn calls a repository
+                function, <code>updateRosterRecord()</code>, which finally
+                reaches the database. Any one of those layers can fail, the
+                question is what each layer above that failure is supposed to do
+                with it.
+              </p>
+              <p>
+                The answer is, almost always, nothing. A
+                <code>Result</code> comes back from the repository layer, and
+                the domain function above it just returns that same
+                <code>Result</code> untouched, unless it has a genuinely new
+                failure of its own to report. The Server Action does the same
+                thing on top of that. Nothing gets caught and rethrown as a
+                fresh error at each boundary, because catching and rethrowing is
+                exactly the pattern that makes the original mess in the first
+                place, a failure changing shape every time it crosses a function
+                boundary. A <code>Result</code> moving up through four layers
+                unchanged is still recognizably the same failure it starts as by
+                the time the browser sees it.
+              </p>
+              <figure class="figure-center">
+                <source
+                  srcset="./public/d12-3-dark.svg"
+                  media="(prefers-color-scheme: dark)"
+                />
+                <img
+                  src="./public/d12-3.svg"
+                  alt="Call stack diagram with five layers connected top to bottom by gray arrows: Browser, Server Action checkIntoEvent, Domain Func updateRoster, Repository updateRosterRecord, and Supabase. Red arrows labeled err rise up the left side, returning errors from the repository to the domain function, from the domain function to the server action, and from the server action to the browser. Green arrows labeled ok rise up the right side along the same hops, carrying success results."
+                />
+                <figcaption>
+                  checkIntoEvent() calls updateRoster(), which calls
+                  updateRosterRecord(), which reaches Supabase. A failure at any
+                  layer returns as err, passed back up through the layers above
+                  it unchanged, until it reaches the browser as the same Result
+                  it starts as.
+                </figcaption>
+              </figure>
+              <p>
+                That answers what happens to a failure on its way out. It
+                doesn't answer what the client is actually supposed to do once a
+                <code>Result</code> carrying an error finally arrives, and that
+                turns out to depend entirely on how the browser asks for the
+                data in the first place.
+              </p>
+              <h3>Two functions, two contexts</h3>
+              <p>
+                React draws a hard line between two different moments in a
+                component's life, the render phase, where a component figures
+                out what to display, and event handlers, where a component
+                reacts to something a user actually does. So why does this
+                matter? Take for example <code>showNotification</code>, a
+                function that when called shows a toast with a message to the
+                user. This function calls <code>setState</code> internally, and
+                React forbids calling
+                <code>setState</code>
+                during render. Ergo, a toast can only ever be shown from an
+                event handler.
+              </p>
+              <p>
+                That constraint alone is enough to justify two separate
+                functions to handle errors. I created
+                <code>handleClientError</code> for errors that come from event
+                handlers such as <code>onClick</code>, <code>onSubmit</code>, or
+                any async callback that fires after a button press. It shows a
+                toast and returns <code>void</code>. Every error toasts here,
+                with no distinction drawn between a business rejection like an
+                event being full and an actual infrastructure failure, because
+                the user has just clicked something and needs some kind of
+                feedback regardless of which it is. There is also no error
+                boundary available to catch anything here even if I wanted to
+                lean on one, React boundaries don't catch errors thrown from
+                event handlers at all.
+              </p>
+              <pre
+                class="code-block"
+              ><code>const [error, data] = await someAction();
+if (error) return handleClientError(error);</code></pre>
+              <p>
+                I created <code>handleStreamError</code> for errors that result
+                from streaming components that unwrap a
+                <code>Promise&lt;Result&gt;</code> using
+                <code>use()</code> during render. This one has no side effects
+                of its own and returns <code>never</code>, since its only job is
+                to throw to the nearest error boundary. No toast makes sense
+                here, since the user hasn't initiated anything, a section of the
+                page is simply loading, and it either finishes loading or falls
+                back to whatever that boundary's fallback shows.
+              </p>
+              <pre
+                class="code-block"
+              ><code>const [error, data] = use(dataPromise);
+if (error) handleStreamError(error);
+// data is narrowed to non-null past this point</code></pre>
+              <table>
+                <thead>
+                  <tr>
+                    <th></th>
+                    <th><code>handleClientError</code></th>
+                    <th><code>handleStreamError</code></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Context</td>
+                    <td>Event handlers</td>
+                    <td>Render phase, <code>use()</code></td>
+                  </tr>
+                  <tr>
+                    <td>Side effects</td>
+                    <td>Toast</td>
+                    <td>None</td>
+                  </tr>
+                  <tr>
+                    <td>Returns</td>
+                    <td><code>void</code></td>
+                    <td><code>never</code></td>
+                  </tr>
+                  <tr>
+                    <td>Error goes to</td>
+                    <td>A toast on screen</td>
+                    <td>The nearest error boundary</td>
+                  </tr>
+                  <tr>
+                    <td>Why not throw</td>
+                    <td>Boundaries don't catch event handler errors</td>
+                    <td>Boundaries only catch render errors</td>
+                  </tr>
+                </tbody>
+              </table>
+              <figure class="figure-center">
+                <source
+                  srcset="./public/d12-2-dark.svg"
+                  media="(prefers-color-scheme: dark)"
+                />
+                <img
+                  src="./public/d12-2.svg"
+                  alt="Flow diagram inside a boundary labeled Client. A const err comma data destructuring feeds into a blue diamond that asks whether there is no error. The yes branch goes right in green to render data. The no branch goes down in red into a red box labeled handle errors, which contains two circles: handle streaming error and handle client error."
+                />
+                <figcaption>
+                  An error result reaching the client branches on where it is
+                  received. Render phase errors, unwrapped with use(), throw to
+                  the nearest error boundary. Event handler errors call
+                  <code>handleClientError</code> and surface as a toast instead,
+                  since a boundary can't catch them either way.
+                </figcaption>
+              </figure>
+
+              <h3>Boundaries that fail independently</h3>
+              <p>
+                Every section of a page wrapped in <code>Suspense</code> also
+                gets wrapped in its own <code>ErrorBoundary</code>, each
+                carrying a <code>testId</code> so Playwright can target it
+                directly in tests. A roster failing to load doesn't take
+                enrollment or the event's change history down with it. Three
+                sections on the same page represent three independent chances to
+                fail without one dragging the other two along.
+              </p>
+              <pre
+                class="code-block"
+              ><code>&lt;ErrorBoundary testId="error-roster" fallback={&lt;Text c="red.4"&gt;Failed to load roster.&lt;/Text&gt;}&gt;
+  &lt;Suspense fallback={&lt;RosterLoading /&gt;}&gt;
+    &lt;Roster rosterPromise={getRosterData(id, event)} /&gt;
+  &lt;/Suspense&gt;
+&lt;/ErrorBoundary&gt;</code></pre>
+              <p>
+                Boundaries only ever catch what gets thrown during rendering,
+                component bodies, <code>use()</code>, lifecycle methods. Nothing
+                thrown from an event handler, an async callback, or a
+                <code>setTimeout</code> reaches one, which is the whole reason
+                mutations toast instead of throwing in the first place. A
+                mutation throwing straight into a boundary just fails silently,
+                since no boundary sits in that path to catch it.
+              </p>
+              <h3>One log line, one place</h3>
+              <p>
+                Everything up to this point is in service of one property, a
+                failure gets logged exactly once, at the exact moment it
+                happens.
+                <code>err()</code> is that one place. It logs as a side effect
+                of constructing the error, and every layer above it, domain
+                function, Server Action, client handler, only ever moves that
+                already-logged failure the rest of the way to a person, without
+                adding a second copy of it anywhere along the way.
+              </p>
+              <p>
+                That single log line is also where this section stops being
+                about the application and starts being about everything
+                downstream of it. <code>err()</code> writes a structured JSON
+                line, <code>type</code>, <code>message</code>, and whatever else
+                the caller attaches, straight to disk.
+              </p>
+              <figure class="figure-center">
+                <source
+                  srcset="./public/d12-4-dark.svg"
+                  media="(prefers-color-scheme: dark)"
+                />
+                <img
+                  src="./public/d12-4.svg"
+                  alt="Diagram of two Result paths and the logging pipeline that branches off one of them. The top row, in green, shows ok of data leading to return null and data. The bottom row, in red, shows err leading to a structured object with type, message, and more fields, then to logger.error, then to return error and null. From logger.error a gray arrow labeled json drops down into a pipeline that runs left to right: log.txt, then Alloy highlighted in purple, then Loki, then Grafana."
+                />
+                <figcaption>
+                  err() builds the structured error, calls logger.error(), and
+                  returns [error, null] to the caller. The logger writes a JSON
+                  line to log.txt, which Alloy tails and ships to Loki,
+                  queryable through Grafana.
+                </figcaption>
+              </figure>
+
+              <p>
+                That log line doesn't stay on disk for long. Alloy is already
+                watching for it the moment it lands, and where it goes from
+                there is the operational side of this whole system, the part
+                built to run it, watch it, and know the moment something in it
+                actually breaks.
+              </p>
+            </div>
+            <div class="toc-section">
+              <h2>From Working Code to an Operable System</h2>
+              <p>
+                Everything up to this point was tailored around the system
+                itself and how it functioned. None of it said anything about
+                whether I'd actually know if any of it stopped working once it
+                left my machine. Getting Qrum running on the Pi, and being able
+                to trust what it told me about its own health once it was there,
+                was its own set of decisions, separate from anything the
+                application code itself was doing.
+              </p>
+              <h3>Build and runtime</h3>
+              <p>
+                A multi-stage Docker build produced a standalone Next.js output:
+                dependencies and build tooling stayed in the builder stage, so
+                the runtime image shipped the compiled application and nothing
+                else. It ran as a non-root user with a health check, built for
+                ARM64 via buildx and pushed to a private registry, with a guard
+                so production images only came from the production branch.
+                Elasticsearch was reachable only on the internal Docker network;
+                nothing routed to port 9200 from outside.
+              </p>
+              <figure>
+                <source
+                  srcset="./public/d11-dark.svg"
+                  media="(prefers-color-scheme: dark)"
+                />
+                <img
+                  src="./public/d11.svg"
+                  alt="Deployment diagram. The internet reaches a router configured to port forward 80 and 443 to a Raspberry Pi running Ubuntu. Inside the Pi, an nginx reverse proxy handles SSL and TLS termination, Let's Encrypt certificates, domain routing, and auth and middleware. Nginx routes to two groups of services: a Docker Compose stack containing the Qrum Next.js application, Redis, and Supabase, and a set of host services running outside Docker containing Loki for log storage, Grafana for visualization, and Alloy as the log collector."
+                />
+                <figcaption>
+                  Everything ran on a single Raspberry Pi. A router forwarded
+                  ports 80 and 443 to nginx, which terminated TLS and routed by
+                  domain into two groups of services, the application stack
+                  running in Docker Compose and the observability stack running
+                  directly on the host.
+                </figcaption>
+              </figure>
+              <p>
+                That diagram shows where everything ran, but I now wanted to
+                tell, from outside any of those boxes, when something inside one
+                of them started failing.
+              </p>
+              <h3>Logs and metrics</h3>
+              <p>
+                The path from <code>err()</code> to a line in
+                <code>log.txt</code>
+                was already covered. Once written to a log file, it was tailed
+                by Alloy, shipped to Loki, and queried through Grafana. This
+                separation meant the logger knew nothing about any other system.
+                Log delivery could break entirely without ever touching a
+                request.
+              </p>
+              <p>
+                The schema decision that mattered was label cardinality. Only
+                three fields were indexed as Loki labels: <code>service</code>,
+                <code>env</code>, and <code>level</code>. Everything identifying
+                lived in the JSON body under <code>meta</code>. Putting
+                <code>user_id</code> or <code>event_id</code> in a label would
+                create a separate stream per value, which was how Loki
+                installations fell over. Errors were always structured objects
+                rather than strings, and events used dot notation,
+                <code>event.volunteer.joined</code>, <code>db.query.slow</code>,
+                so the label answered where the code ran and the event field
+                answered what happened to what.
+              </p>
+              <h3>Observable signals</h3>
+              <ul>
+                <li>Request latency and error rate</li>
+                <li>Search endpoint latency</li>
+                <li>Redis and Elasticsearch availability</li>
+                <li>Index document count versus source row count</li>
+                <li>Indexer consumer-group lag</li>
+                <li>PostgreSQL replication-slot lag</li>
+                <li>Host disk usage</li>
+              </ul>
+              <p>
+                Two of those were pipeline-specific and neither was obvious from
+                application metrics. Doc-count agreement caught silent
+                divergence such as if the indexer was running but dropping
+                records. Slot lag caught the disk-fills scenario from
+                <a
+                  href="#failure-modes-are-part-of-the-architecture"
+                  class="section-link"
+                  >Failure Modes Are Part of the Architecture</a
+                >. An application dashboard showing all green was compatible
+                with both problems.
+              </p>
+            </div>
+            <div class="toc-section">
+              <h2>Looking Back</h2>
+
+              <p>
+                If you, dear reader, have made it this far, allow me to thank
+                you for perusing the fruit of my labor. I'd like to give a
+                special thanks to Preston Battle for his help in delivering this
+                project. This project took what felt like a millennia to
+                complete, and this article, an eternity more. Granted, I learned
+                and applied new principles and architecture patterns that I will
+                carry with me throughout my career.
+              </p>
+
+              <p>
+                Looking back, I'm proud of the architecture decisions sitting in
+                this document. This started as a courtesy for a nonprofit that
+                needed its volunteer program to stop running on spreadsheets.
+                Putting it into words afterward, section by section, became the
+                closest thing I have to a record of how I think. I'm tired in a
+                way that's hard to explain to anyone who hasn't tried to write
+                this much about their own decisions, tired in my hands and tired
+                in whatever part of my brain keeps asking whether a sentence is
+                actually true. But I'm glad this record exists now, sitting
+                alongside the project itself, because I know I'm not finished
+                learning. There will be more principles worth reinforcing and
+                more patterns worth carrying into whatever I build next.
+              </p>
+
+              <p>
+                While I am confident in the thought process that led to these
+                decisions, I cannot be completely sure that I got everything
+                right here. If anything needs amending, please reach out to me
+                <a href="../contact/" class="section-link">here</a>. At every
+                step throughout this project, to the best of my ability, I tried
+                to record every thought and decision of import. In whatever I
+                build next, I hope I bring that same care and consideration
+                along with me.
+              </p>
             </div>
             <div class="toc-section">
               <h2>Static Previews</h2>
