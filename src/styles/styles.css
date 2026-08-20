@@ -31,16 +31,58 @@ h2 {
     letter-spacing: -0.29px;
     line-height: 2.625rem;
 }
+h3 {
+    font-family: var(--primary-font), serif;
+    font-size: 1.35rem;
+    letter-spacing: -0.35px;
+    line-height: 1.8rem;
+}
+figcaption {
+    font-family: var(--primary-font), serif;
+    font-size: 0.95rem;
+    letter-spacing: -0.35px;
+    line-height: 1.35rem;
+    text-wrap-style: pretty;
+    padding-inline: 2.25rem;
+}
+figcaption::before {
+  content: "Figure " counter(figure-count) " • ";
+  font-weight: bold;
+  color: var(--selected-font-color);
+}
+figure {
+  margin-bottom: 2.25rem;
+}
+.figure-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 p {
     font-family: var(--secondary-font), serif;
     font-size: 1rem;
     line-height: 1.875rem;
+}
+strong {
+    color: var(--bulma-body-color);
+    font-weight: 700;
 }
 a {
     font-family: var(--secondary-font);
     color: var(--bulma-body-color);
     font-size: 0.75rem;
     letter-spacing: 2px;
+}
+.section-link {
+    font-family: inherit;
+    font-size: inherit;
+    letter-spacing: inherit;
+    color: var(--selected-font-color);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+.section-link:hover {
+    color: var(--bulma-body-color);
 }
 #brand-logo {
     height: 100%;
@@ -57,6 +99,7 @@ a {
     border: 1px solid var(--bulma-body-color);
     box-sizing: border-box;
     transition: background-color 400ms, color 400ms;
+    height: fit-content;
 }
 .custom-button-disabled {
     border: 1px solid rgba(0, 0, 0, 0.1);
@@ -442,8 +485,6 @@ a {
     display: flex;
     align-items: center;
 }
-.portfolio-section figure {
-}
 .margin-left-auto {
     margin-left: auto;
 }
@@ -657,23 +698,79 @@ a {
     display: flex;
     justify-content: space-between;
 }
-.project-body p {
+.project-body p:not(.green-text) {
     font-size: 0.9375rem;
-    margin-top: 1.8125rem;
+    margin-bottom: 1.8125rem;
 }
 .project-body-intro {
-    min-width: 14rem;
-    width: 21.875rem;
-    border-top: 1px solid rgba(0, 0, 0, 0.1);
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  min-width: 14rem;
+  width: 21.875rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 2rem;
+  align-self: flex-start;
 }
 .project-body-intro h1 {
     margin-top: 3rem;
+}
+.toc-section :is(h1,h2,h3) {
+  margin-bottom: 1.875rem;
+}
+.toc-section {
+  margin-bottom: 1.8125rem;
+}
+.toc-section > div {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+}
+.toc-section > div > a {
+  place-self: end;
+}
+.toc-nav {
+    display: block;
+    max-height: calc(100vh - 10rem);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+.toc-nav::-webkit-scrollbar {
+    display: none;
+}
+.toc-nav ul {
+    list-style: none;
+    padding-left: 0;
+    margin-top: 1rem;
+    margin-bottom: 0;
+}
+.toc-nav li {
+    padding-left: 0;
+}
+.toc-nav li + li {
+    margin-top: 0.75rem;
+}
+.toc-link {
+    color: #96969c;
+    font-size: 0.85rem;
+    letter-spacing: 0.2px;
+    transition: color 200ms;
+}
+.toc-link:hover {
+    color: var(--bulma-body-color);
 }
 .green-text {
     color: #5FB4A2;
     font-weight: bold;
     line-height: 2.6rem;
+}
+code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+    font-size: 0.85em;
+    color: var(--selected-font-color);
+    background-color: rgba(51, 50, 61, 0.07);
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
 }
 .tech-keyword {
     color: #5FB4A2;
@@ -686,22 +783,192 @@ code.tech-keyword {
     border-radius: 3px;
     font-size: 0.875em;
 }
-.project-body-intro .green-text {
-    margin-block: 1.4rem 2rem;
+.code-block {
+    display: inline-block;
+    max-width: 100%;
+    padding: 0.5em 0.85em;
+    margin: 0.15em 0;
+    background-color: rgba(51, 50, 61, 0.07);
+    border-radius: 6px;
+    font-size: 0.85em;
+    line-height: 1.5;
+    vertical-align: middle;
+}
+pre.code-block {
+    display: block;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow-x: auto;
+    white-space: pre;
+    padding: 0.85em 1em;
+    margin: 0.75em 0;
+    line-height: 1.6;
+    background-color: rgba(95, 180, 162, 0.1);
+    color: var(--selected-font-color);
+}
+pre.code-block code {
+    background: none;
+    padding: 0;
+    border-radius: 0;
+    font-size: 1em;
+    color: inherit;
+}
+.info-quote {
+    position: relative;
+    margin: 2rem 0;
+    padding: 1.25rem 1.75rem 1.25rem 2.25rem;
+    border-left: 3px solid var(--selected-font-color);
+    background-color: rgba(51, 50, 61, 0.04);
+    border-radius: 8px;
+}
+.info-quote p {
+    margin: 0;
+}
+.info-quote-icon {
+    position: absolute;
+    top: -14px;
+    left: -14px;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background-color: #fafafa;
+    border: 2px solid var(--selected-font-color);
+    color: var(--selected-font-color);
+    font-family: Georgia, "Times New Roman", serif;
+    font-style: italic;
+    font-weight: 700;
+    font-size: 0.9rem;
+    line-height: 1;
 }
 .project-body-background {
-    max-width: 39.69rem;
-    width: auto;
     margin-left: 4rem;
+    min-width: 0;
+    counter-reset: figure-count;
 }
-.project-body-background h2:nth-of-type(2) {
-    margin-top: 2.5rem;
+.project-body-background figure {
+  counter-increment: figure-count;
+}
+/* Table of Context + scrollspy are both generated at runtime in
+   script.js from the content's own h2/h3 elements — nothing here (or
+   there) references a specific section's id or name. This block only
+   holds the parts that are identical for every heading/link regardless
+   of how many exist. See script.js for the TOC build and the view-
+   timeline on/off handoff logic. */
+.project-body-background h2,
+.project-body-background h3 {
+    view-timeline-axis: block;
+    view-timeline-inset: 20% 70%;
+}
+.toc-nav ul ul {
+    list-style: none;
+    padding-left: 0.9rem;
+    margin-top: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 350ms ease, margin-top 350ms ease;
+}
+.toc-parent.is-expanded > ul {
+    margin-top: 0.5rem;
+}
+.toc-nav ul ul li + li {
+    margin-top: 0.5rem;
+}
+.toc-nav ul ul .toc-link {
+    font-size: 0.75rem;
+}
+.toc-link {
+    animation-fill-mode: forwards;
+    animation-timing-function: linear;
+}
+@keyframes toc-on {
+    to {
+        color: var(--selected-font-color);
+        font-weight: 700;
+    }
+}
+@keyframes toc-off {
+    to {
+        color: #96969c;
+        font-weight: 400;
+    }
+}
+@media (prefers-reduced-motion: no-preference) {
+    html {
+        scroll-behavior: smooth;
+        scroll-padding-top: 2rem;
+    }
 }
 .project-body-background img {
     margin-top: 1.75rem;
 }
-.project-body-background img:last-of-type {
-    margin-top: 2rem;
+.project-body-background table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1.8125rem;
+    font-family: var(--secondary-font), serif;
+    font-size: 0.9375rem;
+}
+.project-body-background th,
+.project-body-background td {
+    text-align: left;
+    padding: 0.75rem 1rem;
+    line-height: 1.6rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+.project-body-background th {
+    font-family: var(--primary-font), serif;
+    font-weight: 600;
+    color: var(--bulma-body-color);
+    border-bottom: 1px solid var(--bulma-body-color);
+}
+.project-body-background td:first-child {
+    color: #5FB4A2;
+    font-weight: 600;
+}
+ul {
+    list-style: none;
+    padding-left: 1.5rem;
+    margin-bottom: 1.8125rem;
+}
+li {
+    font-family: var(--secondary-font), serif;
+    font-size: 0.9375rem;
+    line-height: 1.875rem;
+    position: relative;
+    padding-left: 1.75rem;
+}
+li + li {
+    margin-top: 0.5rem;
+}
+li::before {
+    content: "↬";
+    position: absolute;
+    left: 0;
+    color: #5FB4A2;
+    font-weight: 600;
+}
+ol {
+    list-style: none;
+    counter-reset: rule-count;
+    padding-left: 1.5rem;
+    margin-bottom: 1.8125rem;
+}
+ol li {
+    counter-increment: rule-count;
+}
+ol li::before {
+    content: counter(rule-count) ".";
+    color: #5FB4A2;
+    font-weight: 600;
+}
+.toc-nav li::before {
+    content: none;
+}
+.green-text + a {
+  margin-bottom: 1.875rem;
 }
 .project-footer {
     margin-top: 4rem;
@@ -761,6 +1028,8 @@ code.tech-keyword {
         display: grid;
         grid-template-columns: 1fr 1fr;
         grid-template-rows: 50px 90px 60px;
+        position: static;
+        top: auto;
     }
     .project-body-intro h1,
     .project-body-intro .green-text,
@@ -782,13 +1051,52 @@ code.tech-keyword {
         display: flex;
         align-items: start;
     }
-    .green-text {
+    .project-body-intro .green-text {
         max-width: 270px;
+    }
+    /* The TOC sidebar variant (qrum.html) has none of the stat-block
+       children above, so it drops the grid entirely rather than inherit
+       row heights sized for a different page's layout. */
+    .project-body-intro:has(.table-of-context) {
+        display: block;
+        width: 100%;
+        padding-block: 1.5rem;
+    }
+    .project-body-intro:has(.table-of-context) .toc-nav {
+        max-height: 50vh;
+        overflow-y: scroll;
+        scrollbar-width: thin;
+        -ms-overflow-style: auto;
+    }
+    .project-body-intro:has(.table-of-context) .toc-nav::-webkit-scrollbar {
+        display: block;
+        width: 6px;
+    }
+    .project-body-intro:has(.table-of-context) .toc-nav::-webkit-scrollbar-track {
+        background: rgba(51, 50, 61, 0.07);
+        border-radius: 3px;
+    }
+    .project-body-intro:has(.table-of-context) .toc-nav::-webkit-scrollbar-thumb {
+        background-color: rgba(51, 50, 61, 0.35);
+        border-radius: 3px;
+    }
+    .toc-section > div {
+        grid-template-columns: 1fr;
+        row-gap: 1rem;
+    }
+    .toc-section > div > a {
+        width: 100%;
+        text-align: center;
     }
     .project-body-background {
         margin: 2.5rem 0rem 0rem 0rem;
         max-width: 689px;
         width: auto;
+    }
+    .project-body-background table {
+        display: block;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
     }
     .project-body-background img:nth-of-type(1) {
         margin-top: 2.5rem;
@@ -848,7 +1156,7 @@ code.tech-keyword {
     .project-footer a {
         flex-direction: column;
     }
-    .green-text {
+    .project-body-intro .green-text {
         max-width: 16rem;
     }
     .footer-container-left,
