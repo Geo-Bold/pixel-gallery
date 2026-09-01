@@ -1466,13 +1466,13 @@ footer {
 }
 
 /* ── ProcECS static-preview tiles ──────────────────────────────────────
-   picking.jpg is a wide screenshot; the two mobile crops are only ~354px
-   wide so they must not be blown up. The wide shot sits on top at a
-   capped width, then a brick row of [phone, phone, square] with the
-   column ratio (1 : 1 : 1.79) tuned so all three land the same height. */
+   Two rows: the wide screenshots, then the phone crops. Each image
+   carries its own aspect-ratio so the box is reserved before load and
+   never distorts. The phone crops are ~354px wide, so their columns are
+   capped near that to avoid upscaling. Everything stacks to a single
+   centred column under 768px. */
 .project-procecs-previews {
-    max-width: 900px;
-    margin: 1.75rem auto 0;
+    margin-top: 1.75rem;
 }
 .project-body-background .project-procecs-previews img {
     width: 100%;
@@ -1480,25 +1480,32 @@ footer {
     margin-top: 0;
     display: block;
 }
+.project-procecs-img2 { aspect-ratio: 867 / 630; }
+.project-procecs-img4 { aspect-ratio: 903 / 902; }
+.project-procecs-img3 { aspect-ratio: 354 / 632; }
+.project-procecs-img5 { aspect-ratio: 354 / 630; }
 .project-procecs-preview-row {
     display: grid;
-    grid-template-columns: 1fr 1fr 1.79fr;
     gap: 1rem;
     align-items: start;
     margin-top: 1rem;
 }
-@media (max-width: 700px) {
-    .project-procecs-preview-row {
-        grid-template-columns: 1fr 1fr;
-    }
-    .project-procecs-preview-row .project-procecs-img4 {
-        grid-column: 1 / -1;
-    }
+.project-procecs-preview-row:first-child {
+    margin-top: 0;
 }
-@media (max-width: 430px) {
-    .project-procecs-preview-row {
-        grid-template-columns: 1fr;
-        max-width: 20rem;
-        margin-inline: auto;
+.project-procecs-preview-row--wide {
+    grid-template-columns: 1.38fr 1fr;
+}
+.project-procecs-preview-row--mobile {
+    grid-template-columns: repeat(2, minmax(0, 340px));
+    justify-content: center;
+}
+@media (max-width: 768px) {
+    .project-procecs-preview-row--wide {
+        grid-template-columns: minmax(0, 460px);
+        justify-content: center;
+    }
+    .project-procecs-preview-row--mobile {
+        grid-template-columns: minmax(0, 340px);
     }
 }
