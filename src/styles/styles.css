@@ -1464,3 +1464,32 @@ footer {
         transition: none;
     }
 }
+
+/* ── ProcECS static-preview tiles ──────────────────────────────────────
+   picking.jpg is landscape, picking-mobile.jpg is a tall phone crop,
+   picklist-picked.jpg is roughly square. The wide shot spans the top;
+   the phone crop and the square sit beneath it at a column ratio that
+   keeps their heights close, for a simple two-tile brick. */
+.project-procecs-previews {
+    display: grid;
+    grid-template-columns: minmax(0, 0.55fr) minmax(0, 1fr);
+    gap: 1rem;
+    align-items: start;
+    margin-top: 1.75rem;
+}
+.project-body-background .project-procecs-previews img {
+    width: 100%;
+    height: auto;
+    margin-top: 0;
+    display: block;
+}
+.project-procecs-previews .project-procecs-img2 {
+    grid-column: 1 / -1;
+}
+@media (max-width: 560px) {
+    .project-procecs-previews {
+        grid-template-columns: 1fr;
+        max-width: 24rem;
+        margin-inline: auto;
+    }
+}
