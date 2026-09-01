@@ -82,6 +82,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 item.classList.add("toc-parent");
 
+                const partDivider = heading.closest(".part-divider");
+
+                if (partDivider) {
+
+                    item.classList.add("toc-part");
+
+                    const overline = partDivider.querySelector(".part-overline");
+
+                    if (overline) link.dataset.partLabel = overline.textContent.trim();
+
+                }
+
                 parentItem = item;
 
                 subList = null;
