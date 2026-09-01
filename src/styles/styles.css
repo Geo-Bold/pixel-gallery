@@ -848,6 +848,9 @@ pre.code-block code {
     min-width: 0;
     counter-reset: figure-count;
 }
+.project-body-background p {
+  text-align: justify;
+}
 .project-body-background figure {
   counter-increment: figure-count;
 }
@@ -969,6 +972,53 @@ ol li::before {
 }
 .green-text + a {
   margin-bottom: 1.875rem;
+}
+/* ── Part dividers ──────────────────────────────────────────────────
+   Book-style split into Parts. A .part-divider block opens each Part. script.js tags that h2's Table
+   of Context row with .toc-part and copies the overline text into
+   data-part-label, so adding Part III is a pure content change with
+   no new CSS and no ids. */
+.toc-section.part-divider {
+    border-top: 2px solid var(--selected-font-color);
+    margin-top: 4rem;
+    padding-top: 2rem;
+}
+.toc-section.part-divider .part-overline {
+    font-family: var(--primary-font), serif;
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--selected-font-color);
+    margin-bottom: 0.5rem;
+}
+.toc-section.part-divider h2 {
+    font-size: 1.9rem;
+    margin-bottom: 1.25rem;
+}
+.toc-section.part-divider .part-lede {
+    font-size: 1.03rem;
+    color: #5b5a63;
+    margin-bottom: 1.8125rem;
+}
+/* Part-opener rows in the Table of Context, rendered as labelled breaks. */
+.toc-nav .toc-part > .toc-link {
+    display: block;
+    margin-top: 0.75rem;
+    padding-top: 0.9rem;
+    border-top: 1px solid rgba(51, 50, 61, 0.25);
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-size: 0.72rem;
+    font-weight: 700;
+}
+.toc-nav .toc-part > .toc-link[data-part-label]::before {
+    content: attr(data-part-label);
+    display: block;
+    font-size: 0.62rem;
+    letter-spacing: 0.2em;
+    color: var(--selected-font-color);
+    margin-bottom: 0.2rem;
 }
 .project-footer {
     margin-top: 4rem;
