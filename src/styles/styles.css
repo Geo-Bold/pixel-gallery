@@ -1470,8 +1470,11 @@ footer {
    carries its own aspect-ratio so the box is reserved before load and
    never distorts. The phone crops are ~354px wide, so their columns are
    capped near that to avoid upscaling. Everything stacks to a single
-   centred column under 768px. */
-.project-procecs-previews {
+   centred column under 768px.
+   The `.toc-section > .project-procecs-previews` selector is needed to
+   opt out of the generic `.toc-section > div { display: grid }` rule. */
+.toc-section > .project-procecs-previews {
+    display: block;
     margin-top: 1.75rem;
 }
 .project-body-background .project-procecs-previews img {
