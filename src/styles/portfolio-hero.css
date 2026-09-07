@@ -1,0 +1,332 @@
+.portfolio-hero {
+  --ph-ink: var(--bulma-body-color);
+  --ph-ink-soft: rgba(51, 50, 61, 0.62);
+  --ph-ink-faint: rgba(51, 50, 61, 0.36);
+  --ph-line: rgba(51, 50, 61, 0.14);
+  --ph-accent: var(--selected-font-color);
+  --ph-surface: #eef2f0;
+  --ph-surface-line: #dfe6e2;
+  --ph-shadow: 0 20px 40px -28px rgba(51, 50, 61, 0.35);
+
+  display: flex;
+  gap: min(3.5rem, 1dvh);
+  align-items: center;
+  flex-wrap: wrap;
+  padding-block: 1.5rem 4.5rem;
+}
+
+.hero-copy {
+  flex: 1 1 26rem;
+  display: flex;
+  flex-direction: column;
+  max-width: 30rem;
+}
+.hero-date {
+  display: flex;
+  align-items: baseline;
+  gap: 0.45em;
+  font-family: var(--secondary-font);
+  font-variant-numeric: tabular-nums;
+  font-size: 0.85rem;
+  letter-spacing: 0.04em;
+}
+/* Fixed width so SUMMER/FALL/SPRING never nudge the year or label
+   that follow it — the season word's own length must not move
+   anything else on this line. Sized for the longest season used. */
+.hero-date .mon {
+  display: inline-block;
+  min-width: 4.8em;
+  color: var(--ph-ink-faint);
+  font-weight: 400;
+}
+/* The date is the one thing on this line meant to stand out —
+   a heavy weight plus a touch of extra tracking to read as "wide." */
+.hero-date .yr {
+  color: var(--ph-ink);
+  font-weight: 800;
+  letter-spacing: 0.03em;
+}
+.hero-date .sep {
+  color: var(--ph-ink-faint);
+}
+.hero-date .eyebrow {
+  color: var(--ph-ink-faint);
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.hero-copy h1 {
+  font-size: clamp(2.4rem, 4vw, 3.4rem);
+  line-height: 1.04;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+  /* Reserve two lines so a longer title (e.g. "ProcECS Engine")
+     doesn't wrap taller than a short one and shift the CTA below. */
+  display: flex;
+  align-items: flex-end;
+  margin-bottom: 1.6rem;
+}
+.hero-blurb {
+  font-family: var(--secondary-font);
+  font-size: 1.02rem;
+  line-height: 1.6;
+  color: var(--ph-ink-soft);
+  max-width: 35ch;
+  min-height: 7em;
+  margin-bottom: 1.6rem;
+}
+.hero-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  text-decoration: none;
+  font-family: var(--secondary-font);
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  padding: 0.85rem 1.4rem;
+  border: 1px solid var(--ph-ink);
+  color: var(--ph-ink);
+  /* "View Case Study" vs "View Project" — fix the width to the
+     longer label so the button doesn't change size per project. */
+  min-width: 12rem;
+  width: fit-content;
+  transition: background-color 300ms, color 300ms;
+}
+.hero-cta:hover {
+  background-color: var(--ph-ink);
+  color: #fff;
+}
+.hero-cta svg {
+  transition: transform 300ms;
+}
+.hero-cta:hover svg {
+  transform: translateX(3px);
+}
+
+.hero-stage {
+  flex: 1 1 30rem;
+  min-width: 0;
+  display: flex;
+  gap: 1.35rem;
+  align-items: stretch;
+}
+
+/*
+  #container-1110 caps at 73.375rem site-wide, and on any viewport
+  past ~1200px that cap is what's actually limiting the artwork —
+  .hero-copy is already at its own 30rem max-width, so every extra
+  pixel above 1200px currently goes nowhere. Widening the container
+  by 4.375rem here (scoped to this page only) hands that space
+  straight to the artwork panel: copy and the rail are unaffected,
+  so the whole gain becomes a 15% larger image (466px -> 536px at
+  the 73.375rem reference width, aspect ratio unchanged).
+*/
+@media (min-width: 951px) {
+  #container-1110 {
+    max-width: 77.75rem;
+  }
+}
+
+/* dimension-line rail */
+.hero-rail {
+  position: relative;
+  width: 5.4rem;
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-block: 0.35rem;
+}
+.hero-rail::before {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--ph-line);
+}
+.hero-rail button {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.6rem;
+  padding-block: 0.35rem;
+  cursor: pointer;
+  background: none;
+  border: none;
+  font: inherit;
+  color: inherit;
+}
+.hero-rail button:focus-visible {
+  outline: 2px solid var(--ph-accent);
+  outline-offset: 4px;
+}
+/* Every tick is an outlined box — a plain ghost button — so the
+   rail reads as a row of controls before anyone touches it. */
+.hero-rail .date {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  line-height: 1.1;
+  text-align: center;
+  padding: 0.4rem 0.65rem;
+  border: 1px solid var(--ph-ink-faint);
+  transition: background-color 300ms, border-color 300ms;
+}
+.hero-rail .mon {
+  font-family: var(--secondary-font);
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ph-ink-faint);
+  transition: color 300ms;
+}
+.hero-rail .yr {
+  font-family: var(--secondary-font);
+  font-size: 0.92rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--ph-ink-faint);
+  transition: color 300ms, font-weight 300ms;
+}
+.hero-rail .tick {
+  width: 0.7rem;
+  height: 1px;
+  background: var(--ph-ink-faint);
+  transition: width 300ms, height 300ms, background-color 300ms;
+}
+/* Active tick reads as a pressed button: the box fills solid with
+   the accent and its text flips to white, same 300ms as the rest of
+   the site's buttons — one unambiguous "you are here," instead of
+   asking someone to notice a thin line changing length. */
+.hero-rail button[aria-selected="true"] .date {
+  background: var(--ph-accent);
+  border-color: var(--ph-accent);
+}
+.hero-rail button[aria-selected="true"] .mon {
+  color: #fff;
+}
+.hero-rail button[aria-selected="true"] .yr {
+  color: #fff;
+  font-weight: 700;
+}
+.hero-rail button[aria-selected="true"] .tick {
+  width: 1.4rem;
+  height: 2px;
+  background: var(--ph-ink);
+}
+
+.hero-art-wrap {
+  flex: 1;
+  min-width: 0;
+}
+/*
+  One fixed 4:3 ratio, the same at every breakpoint and for every
+  project — see the file header. Source art around 1200×900 (or any
+  multiple) crops cleanly; keep the subject centered enough that
+  object-fit: cover has room to work with on narrower panels.
+*/
+.hero-art {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  background: var(--ph-surface);
+  border: 1px solid var(--ph-surface-line);
+  overflow: hidden;
+  box-shadow: var(--ph-shadow);
+}
+.hero-art img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  /* These are screenshots — the top (nav, hero) reads better cropped
+     than a center-crop would on a tall source image. */
+  object-position: top;
+}
+
+/*
+  Tablet and mobile share one restructure: the carousel (artwork +
+  rail) moves above the text instead of below it, so the toggles are
+  reachable without scrolling past a paragraph first. DOM order stays
+  copy-then-stage (screen readers hit the description before the
+  tabs, which still makes sense); `order` handles the visual swap.
+*/
+@media (max-width: 950px) {
+  .portfolio-hero {
+    padding-block: 0 3rem;
+    gap: 2rem;
+  }
+  .hero-copy {
+    order: 2;
+    max-width: none;
+  }
+  .hero-stage {
+    order: 1;
+    flex: 1 1 100%;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .hero-rail {
+    order: 1;
+    width: 100%;
+    flex-direction: row;
+    gap: 0.5rem;
+  }
+  .hero-rail button {
+    flex: 1 1 0;
+    min-width: 0;
+    flex-direction: column-reverse;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+  }
+  .hero-rail .date {
+    align-items: center;
+    text-align: center;
+  }
+  .hero-rail .mon,
+  .hero-rail .yr {
+    white-space: nowrap;
+  }
+  .hero-rail::before {
+    right: auto;
+    left: 0;
+    top: auto;
+    bottom: 0;
+    width: auto;
+    height: 1px;
+  }
+}
+
+/*
+  Fallback for when JS doesn't run (portfolio-hero.js builds
+  #portfolioHero from PROJECTS; without it there's nothing to see).
+  Plain links, real hrefs — also what a non-JS crawler will index.
+*/
+.noscript-project-list {
+  list-style: none;
+  margin: 0 0 4.5rem;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.noscript-project-list a {
+  font-family: var(--secondary-font);
+  font-size: 1rem;
+  color: var(--bulma-body-color);
+  text-decoration: underline;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .portfolio-hero *,
+  .portfolio-hero *::before,
+  .portfolio-hero *::after {
+    transition: none !important;
+  }
+}

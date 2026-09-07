@@ -114,17 +114,21 @@ a {
 /* These values are id's to override bulma's library container. */
 #container-1440 {
     max-width: 90rem;
+    min-height: 100vh;
+    min-height: 100dvh;
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
 }
 #container-1110 {
     max-width: 73.375rem;
+    width: 100%;
     padding-inline: 2rem;
+    flex: 1 0 auto;
 }
 .navbar {
     background-color: var(--bulma-body-background-color);
-    margin-block: 4rem 5.875rem;
+    margin-block: 4rem 2rem;
     min-height: 0rem;
 }
 .navbar-menu {
@@ -473,222 +477,10 @@ a {
     }
 }
 /* Portfolio page styling */
-.portfolio-section {
-    display: flex;
-    justify-content: space-between;
-    min-height: 26.125rem;
-    max-height: 31.25rem;
-    max-width: 63.437rem;
-    margin-bottom: 5rem;
-}
-.portfolio-section figure {
-    display: flex;
-    align-items: center;
-}
-.margin-left-auto {
-    margin-left: auto;
-}
-.portfolio-section h1 {
-    margin-bottom: 1.75rem;
-}
-.portfolio-section container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    min-width: 17.56rem;
-    max-width: 23rem;
-    width: 100%;
-    border-top: 1px solid rgba(0, 0, 0, 0.1);
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-}
-.container-left-margin {
-    margin-left: 4.3125rem;
-}
-.container-right-margin {
-    margin-right: 4.3125rem;
-}
-.container-left-margin .custom-button,
-.container-right-margin .custom-button {
-    margin: 1.5rem 0rem 0rem 0rem;
-}
-/* Project showcase — shared base */
-.portfolio-section:has(.showcase) {
-    max-height: none;
-    align-items: center;
-}
-.showcase {
-    position: relative;
-    overflow: hidden;
-    border-radius: 0.5rem;
-    width: 100%;
-    max-width: 36rem;
-    min-height: 28rem;
-}
-.showcase-bg {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-}
-.showcase-shape {
-    position: absolute;
-}
-.showcase-dots {
-    opacity: 0.3;
-}
-.showcase-img {
-    position: absolute;
-    border-radius: 0.375rem;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-    z-index: 1;
-}
-.showcase-img--center {
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 88%;
-}
-.showcase-img--back {
-    top: -1rem;
-    right: 1.5rem;
-    width: 76%;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-    z-index: 0;
-}
-.showcase-img--front {
-    top: 10rem;
-    left: 1.5rem;
-    width: 66%;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
-}
-@media (max-width: 768px) {
-    .showcase {
-        max-width: none;
-        min-height: 18rem;
-    }
-}
-/* Qrum showcase — theme & shapes */
-.showcase--qrum {
-    background: linear-gradient(135deg, #1e3a5f 0%, #2a4d6e 50%, #1b3352 100%);
-}
-.showcase--qrum .circle-lg {
-    top: -2rem;
-    left: -3rem;
-    width: 14rem;
-    height: 14rem;
-    background: rgba(95, 180, 162, 0.15);
-    border-radius: 50%;
-    filter: blur(1px);
-}
-.showcase--qrum .square-rotated {
-    bottom: 1rem;
-    right: 0.5rem;
-    width: 10rem;
-    height: 10rem;
-    background: rgba(59, 130, 246, 0.12);
-    border-radius: 1.5rem;
-    transform: rotate(12deg);
-    filter: blur(1px);
-}
-.showcase--qrum .circle-sm {
-    top: 1.5rem;
-    right: 2rem;
-    width: 3.5rem;
-    height: 3.5rem;
-    background: rgba(250, 204, 21, 0.18);
-    border-radius: 50%;
-}
-.showcase--qrum .circle-outline {
-    bottom: 2rem;
-    left: 1.5rem;
-    width: 5rem;
-    height: 5rem;
-    border-radius: 50%;
-    border: 3px solid rgba(95, 180, 162, 0.25);
-}
-.showcase--qrum .showcase-dots {
-    bottom: 1rem;
-    right: 1rem;
-    opacity: 0.35;
-}
-/* ProcECS showcase — theme & shapes */
-.showcase--procecs {
-    background: linear-gradient(135deg, #d6e6f2 0%, #c4daf0 50%, #b0cde8 100%);
-}
-.showcase--procecs .triangle {
-    top: -1rem;
-    right: -2rem;
-    width: 0;
-    height: 0;
-    border-left: 7rem solid transparent;
-    border-right: 7rem solid transparent;
-    border-bottom: 12rem solid rgba(95, 180, 162, 0.1);
-    transform: rotate(-15deg);
-}
-.showcase--procecs .rect-lg {
-    bottom: -1rem;
-    left: -2rem;
-    width: 12rem;
-    height: 8rem;
-    background: rgba(59, 130, 246, 0.1);
-    border-radius: 1rem;
-    transform: rotate(-8deg);
-    filter: blur(1px);
-}
-.showcase--procecs .circle-sm {
-    bottom: 3rem;
-    right: 2.5rem;
-    width: 4rem;
-    height: 4rem;
-    border-radius: 50%;
-    border: 3px solid rgba(250, 204, 21, 0.2);
-}
-.showcase--procecs .diamond {
-    top: 2rem;
-    left: 1.5rem;
-    width: 3.5rem;
-    height: 3.5rem;
-    background: rgba(95, 180, 162, 0.12);
-    border-radius: 0.5rem;
-    transform: rotate(45deg);
-}
-.showcase--procecs .showcase-dots {
-    top: 1rem;
-    right: 1rem;
-}
-
 .project-qrum-hero img,
 .project-procecs-hero img {
     width: 100%;
     border-radius: 0.375rem;
-}
-.container-left-margin .custom-button + .custom-button {
-    margin-top: 0.75rem;
-}
-
-@media (min-width: 768px) and (max-width: 950px) {
-    .portfolio-section p {
-        font-size: 0.9375rem;
-    }
-}
-@media (max-width: 768px) {
-    .portfolio-section {
-        flex-wrap: wrap;
-        max-height: none;
-        max-width: none;
-        margin-bottom: 4.5rem;
-    }
-    .portfolio-section .container-right-margin {
-        order: 1;
-    }
-    .container-left-margin,
-    .container-right-margin {
-        margin-inline: 0px 0px;
-        margin-top: 2rem;
-        padding-block: 1.5rem;
-    }
-    .portfolio-section container {
-        min-width: 0rem;
-    }
 }
 /* Individual portfolio page styling */
 .project-hero {
