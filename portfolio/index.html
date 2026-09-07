@@ -4,8 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../src/styles/styles.css">
+    <link rel="stylesheet" href="../src/styles/portfolio-hero.css">
     <link rel="icon" type="image/png" sizes="32x32" href="../src/assets/brand/geo-webpage-logo.png">
-    <title>Portfolio</title>
+    <title>Portfolio | Geo Archbold | SWE</title>
+    <meta name="description" content="Case studies and projects by Geo Archbold, full-stack engineer.">
+    <meta property="og:title" content="Portfolio | Geo Archbold | SWE">
+    <meta property="og:description" content="Case studies and projects by Geo Archbold, full-stack engineer.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://geobold.dev/portfolio/">
+    <meta property="og:image" content="https://geobold.dev/src/assets/images/qrum-events.png">
   </head>
   <body>
     <div class="container" id="container-1440">
@@ -39,160 +46,15 @@
             </div>
           </div>
         </nav>
-        <section class="portfolio-section">
-          <figure class="showcase showcase--qrum">
-            <div class="showcase-bg" aria-hidden="true">
-              <div class="showcase-shape circle-lg"></div>
-              <div class="showcase-shape square-rotated"></div>
-              <div class="showcase-shape circle-sm"></div>
-              <div class="showcase-shape circle-outline"></div>
-              <div class="showcase-shape showcase-dots">
-                <svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                  <defs>
-                    <pattern id="qrum-dots-pattern" width="20" height="20" patternUnits="userSpaceOnUse">
-                      <circle cx="2" cy="2" r="2" fill="#94a3b8" />
-                    </pattern>
-                  </defs>
-                  <rect width="100" height="100" fill="url(#qrum-dots-pattern)" />
-                </svg>
-              </div>
-            </div>
-            <img class="showcase-img showcase-img--front" src="../src/assets/images/qrum-events.png" alt="Qrum events grid">
-            <img class="showcase-img showcase-img--back" src="../src/assets/images/qrum-profile-close-up.png" alt="Qrum event detail">
-          </figure>
-          <container class="container-left-margin">
-            <h1>
-              Qrum
-            </h1>
-            <p>
-              A volunteer management platform where staff create and manage events while volunteers browse, sign up and check in. Built with Next.js, Supabase and a glassmorphism UI, the system features role-based access control, real-time event tracking, geospatial search powered by PostGIS, full-text search via Elasticsearch synced through Kafka, and a custom Redis rate limiter.
-            </p>
-            <a href="./qrum.html" class="custom-button">
-              <span>VIEW PROJECT</span>
-            </a>
-          </container>
-        </section>
-        <section class="portfolio-section margin-left-auto">
-          <container class="container-right-margin">
-            <h1>
-              ProcECS Engine
-            </h1>
-            <p>
-              The project that defined my professional start, this B2B platform began as an intern's pitch at Effective Computer Solutions and grew into the company's flagship product over the 1.5 years I spent building it. A unified portal consolidating a dozen internal tools, warehouse management, quoting, technician scheduling, reporting and more, behind one consistent interface. Now deployed across 10+ organizations, each shaped to how they actually operate.
-            </p>
-            <a href="./procecs.html" class="custom-button">
-              <span>VIEW PROJECT</span>
-            </a>
-          </container>
-          <figure class="showcase showcase--procecs">
-            <div class="showcase-bg" aria-hidden="true">
-              <div class="showcase-shape triangle"></div>
-              <div class="showcase-shape rect-lg"></div>
-              <div class="showcase-shape circle-sm"></div>
-              <div class="showcase-shape diamond"></div>
-              <div class="showcase-shape showcase-dots">
-                <svg width="120" height="80" viewBox="0 0 120 80" xmlns="http://www.w3.org/2000/svg">
-                  <defs>
-                    <pattern id="procecs-dots-pattern" width="16" height="16" patternUnits="userSpaceOnUse">
-                      <circle cx="2" cy="2" r="1.5" fill="#94a3b8" />
-                    </pattern>
-                  </defs>
-                  <rect width="120" height="80" fill="url(#procecs-dots-pattern)" />
-                </svg>
-              </div>
-            </div>
-            <img class="showcase-img showcase-img--center" src="../src/assets/images/procecs-engine-dashboard.png" alt="ProcECS Engine dashboard">
-          </figure>
-        </section>
-        <section class="portfolio-section">
-          <figure>
-            <img src="../src/assets/images/image-portfolio-link-share.png" alt="">
-          </figure>
-          <container class="container-left-margin">
-            <h1>
-              Link-Share
-            </h1> 
-            <p>
-              My most complex work to-date, this project is a multi-page application that lets users gather and share all of their social links under a single profile. Supabase is used to implement the database and authentication, while all interactions and routing are handled client-side. The app provides the user with options such as adding a profile picture, drag-and-drop to reorder links and is fully reponsive.
-            </p>
-            <a href="../projects/link-share/" class="custom-button" target="_blank">
-              <span>VIEW PROJECT</span>
-            </a>
-          </container>
-        </section>
-        <section class="portfolio-section margin-left-auto">
-          <container class="container-right-margin">
-            <h1>
-              Arch Studio
-            </h1>
-            <p>
-              Whether an elegant architect's portfolio or the peak of my creative fantasies, this project sought to emphasize simplicity while taking the viewer through a world of abstract architecture. Well over 1200 lines of painstakingly-crafted CSS manifest themselves in this visual homage to daring minimalism while showcasing a company's most impactful projects. 
-            </p>
-            <a href="../projects/arch-studio/" class="custom-button" target="_blank">
-              <span>VIEW PROJECT</span>
-            </a>
-          </container>
-          <figure>
-            <img class="tablet-minmax" src="../src/assets/images/image-portfolio-arch-studio.jpg" alt="">
-          </figure>
-        </section>
-        <section class="portfolio-section">
-          <figure>
-            <img class="tablet-minmax" src="../src/assets/images/image-portfolio-portfolio.jpg" alt="">
-          </figure>
-          <container class="container-left-margin">
-            <h1>
-              Portfolio
-            </h1>
-            <p>
-              The inspiration for my own personal website, this was my first medium-scale project consisting mostly of HTML and CSS. The only JavaScript this project required was to enable the toggling of the mobile navigation. Many lessons were learned during the planning and implementation of this fully-responsive landing page. The care and pride bestowed on this project is reflected by its use as the template for my own personal website. 
-            </p>
-            <a href="../projects/minimalist-portfolio/" class="custom-button" target="_blank">
-              <span>VIEW PROJECT</span>
-            </a>
-          </container>
-        </section>
-        <section class="portfolio-section margin-left-auto">
-          <container class="container-right-margin">
-            <h1>
-              Newsletter
-            </h1>
-            <p>
-              The second web development project I ever created, this newsletter is the culmination of hours of preparation, iterative design and an inkling of the passion that would be bestowed on future projects. The form has custom email validation and is completely responsive. The success screen was created from a modal designed for another project.  
-            </p>
-            <a href="../projects/newsletter/" class="custom-button" target="_blank">
-              <span>VIEW PROJECT</span>
-            </a>
-          </container>
-          <figure>
-            <img class="tablet-minmax" src="../src/assets/images/image-portfolio-newsletter.jpg" alt="">
-          </figure>
-        </section>
-        <section class="portfolio-section">
-          <figure>
-            <img class="tablet-minmax" src="../src/assets/images/image-portfolio-recipe.jpg" alt="">
-          </figure>
-          <container class="container-left-margin">
-            <h1>
-              Recipe
-            </h1>
-            <p>
-              All things have a beginning and, for my journey into web development, this project marks mine. A simple yet responsive web page showcasing a recipe that, not unlike my project, is both elegant and tasteful.
-            </p>
-            <a href="../projects/recipe/" class="custom-button" target="_blank">
-              <span>VIEW PROJECT</span>
-            </a>
-          </container>
-        </section>
-        <footer class="footer-top">
-          <h1>
-            Interested in doing a project together?
-          </h1>
-          <span class="line-segment"></span>
-          <a href="../contact" class="custom-button">
-            <span>CONTACT ME</span>
-          </a>
-        </footer>
+        <div class="portfolio-hero" id="portfolioHero"></div>
+        <noscript>
+          <ul class="noscript-project-list">
+            <li><a href="./qrum.html">Qrum — View Case Study</a></li>
+            <li><a href="./procecs.html">ProcECS Engine — View Case Study</a></li>
+            <li><a href="../projects/link-share/">Link-Share — View Project</a></li>
+            <li><a href="../projects/arch-studio/">Arch Studio — View Project</a></li>
+          </ul>
+        </noscript>
       </div>
       <div class="footer-bottom-container">
         <div class="footer-bottom">
@@ -203,13 +65,10 @@
           <a href="../portfolio" class="navbar-item">PORTFOLIO</a>
           <a href="../contact" class="navbar-item">CONTACT ME</a>
           <div class="svg-container">
-            <a href="https://github.com/Geo-Bold" target="_blank" class="github-icon">
+            <a href="https://github.com/Geo-Bold" target="_blank" rel="noopener noreferrer" class="github-icon">
               <svg xmlns="http://www.w3.org/2000/svg" width="25" height="24"><path fill="#FFFFFF" d="M12.5 0C5.594 0 0 5.51 0 12.305c0 5.437 3.581 10.048 8.547 11.674.625.116.854-.265.854-.592 0-.292-.01-1.066-.016-2.092-3.477.742-4.21-1.65-4.21-1.65-.569-1.42-1.39-1.8-1.39-1.8-1.133-.764.087-.748.087-.748 1.255.086 1.914 1.268 1.914 1.268 1.115 1.881 2.927 1.338 3.641 1.024.113-.797.434-1.338.792-1.646-2.776-.308-5.694-1.366-5.694-6.08 0-1.343.484-2.44 1.286-3.302-.14-.31-.562-1.562.11-3.256 0 0 1.047-.33 3.437 1.261 1-.273 2.063-.409 3.125-.415 1.063.006 2.125.142 3.125.415 2.375-1.591 3.422-1.261 3.422-1.261.672 1.694.25 2.945.125 3.256.797.861 1.281 1.959 1.281 3.302 0 4.727-2.921 5.767-5.703 6.07.438.369.844 1.123.844 2.276 0 1.647-.016 2.97-.016 3.37 0 .322.22.707.86.584 5-1.615 8.579-6.23 8.579-11.658C25 5.509 19.403 0 12.5 0z"/></svg>
             </a>
-            <a href="https://x.com/a_edgeorge" target="_blank" class="twitter-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="20"><path fill="#FFFFFF" d="M24 2.557a9.83 9.83 0 01-2.828.775A4.932 4.932 0 0023.337.608a9.864 9.864 0 01-3.127 1.195A4.916 4.916 0 0016.616.248c-3.179 0-5.515 2.966-4.797 6.045A13.978 13.978 0 011.671 1.149a4.93 4.93 0 001.523 6.574 4.903 4.903 0 01-2.229-.616c-.054 2.281 1.581 4.415 3.949 4.89a4.935 4.935 0 01-2.224.084 4.928 4.928 0 004.6 3.419A9.9 9.9 0 010 17.54a13.94 13.94 0 007.548 2.212c9.142 0 14.307-7.721 13.995-14.646A10.025 10.025 0 0024 2.557z"/></svg>
-            </a>
-            <a href="https://www.linkedin.com/in/edgeorge-archbold-a1027b2ab/" target="_blank" class="linkedin-icon">
+            <a href="https://www.linkedin.com/in/edgeorge-archbold-a1027b2ab/" target="_blank" rel="noopener noreferrer" class="linkedin-icon">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"><path fill="#FFFFFF" d="M21.6 0H2.4C1.08 0 0 1.08 0 2.4v19.2C0 22.92 1.08 24 2.4 24h19.2c1.32 0 2.4-1.08 2.4-2.4V2.4C24 1.08 22.92 0 21.6 0zM7.2 20.4H3.6V9.6h3.6v10.8zM5.4 7.56c-1.2 0-2.16-.96-2.16-2.16 0-1.2.96-2.16 2.16-2.16 1.2 0 2.16.96 2.16 2.16 0 1.2-.96 2.16-2.16 2.16zm15 12.84h-3.6v-6.36c0-.96-.84-1.8-1.8-1.8-.96 0-1.8.84-1.8 1.8v6.36H9.6V9.6h3.6v1.44c.6-.96 1.92-1.68 3-1.68 2.28 0 4.2 1.92 4.2 4.2v6.84z"/></svg>
             </a>
           </div>
@@ -217,5 +76,6 @@
       </div>
     </div>
     <script src="../src/logic/script.js"></script>
+    <script src="../src/logic/portfolio-hero.js" type="module"></script>
   </body>
 </html>
