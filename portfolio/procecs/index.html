@@ -3,19 +3,19 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="../src/styles/styles.css" />
+    <link rel="stylesheet" href="../../src/styles/styles.css" />
     <link
       rel="icon"
       type="image/png"
       sizes="32x32"
-      href="../src/assets/brand/geo-webpage-logo.png"
+      href="../../src/assets/brand/geo-webpage-logo.png"
     />
     <title>ProcECS Engine | Geo Archbold | SWE</title>
     <meta name="description" content="Case study: ProcECS Engine, a multi-tenant B2B platform for warehouse management, quoting, and technician scheduling." />
     <meta property="og:title" content="ProcECS Engine | Geo Archbold | SWE" />
     <meta property="og:description" content="Case study: ProcECS Engine, a multi-tenant B2B platform for warehouse management, quoting, and technician scheduling." />
     <meta property="og:type" content="article" />
-    <meta property="og:url" content="https://geobold.dev/portfolio/procecs.html" />
+    <meta property="og:url" content="https://geobold.dev/portfolio/procecs/" />
     <meta property="og:image" content="https://geobold.dev/src/assets/images/procecs-engine-dashboard.png" />
   </head>
 
@@ -29,9 +29,9 @@
           aria-label="main navigation"
         >
           <div class="navbar-brand">
-            <a href="../" class="navbar-item" id="brand-logo">
+            <a href="../../" class="navbar-item" id="brand-logo">
               <object
-                data="../src/assets/brand/brand-logo.svg"
+                data="../../src/assets/brand/brand-logo.svg"
                 type="image/svg+xml"
                 width="75"
               ></object>
@@ -65,11 +65,11 @@
           </div>
           <div class="navbar-menu">
             <div class="navbar-end">
-              <a href="../" class="navbar-item normal-color">HOME</a>
-              <a href="../portfolio" class="navbar-item selected-color"
+              <a href="../../" class="navbar-item normal-color">HOME</a>
+              <a href="../../portfolio" class="navbar-item selected-color"
                 >PORTFOLIO</a
               >
-              <a href="../contact" class="navbar-item normal-color"
+              <a href="../../contact" class="navbar-item normal-color"
                 >CONTACT ME</a
               >
             </div>
@@ -77,7 +77,7 @@
         </nav>
         <section class="hero project-hero project-procecs-hero">
           <img
-            src="../src/assets/images/procecs-engine-dashboard.png"
+            src="../../src/assets/images/procecs-engine-dashboard.png"
             alt="ProcECS Engine dashboard"
             width="100%"
           />
@@ -266,11 +266,11 @@
               </p>
               <figure class="figure-center">
                 <source
-                  srcset="./public/proecs/pe02-dark.svg"
+                  srcset="../public/proecs/pe02-dark.svg"
                   media="(prefers-color-scheme: dark)"
                 />
                 <img
-                  src="./public/proecs/pe02.svg"
+                  src="../public/proecs/pe02.svg"
                   alt="A hub-and-spoke diagram with the ProcECS Engine portal at the center connected to eight feature modules arranged around it. They are Dashboard, WMS Lite, Tables, Price Quotes, Quick Reports, OneClicks, Technician, and AI Services. Each module is tagged with its primary audience, such as Managers, Warehouse pickers, Administrators, Sales, All staff, Operations, and Field technicians. A ring around the hub is labeled one authenticated, permission-gated interface."
                 />
                 <figcaption>
@@ -343,11 +343,11 @@
               </p>
               <figure class="figure-center">
                 <source
-                  srcset="./public/proecs/pe01-dark.svg"
+                  srcset="../public/proecs/pe01-dark.svg"
                   media="(prefers-color-scheme: dark)"
                 />
                 <img
-                  src="./public/proecs/pe01.svg"
+                  src="../public/proecs/pe01.svg"
                   alt="A grid of roughly a dozen near-identical application cards, each labeled as a different client's app and each drawn with its own separate technology stack. A small identical bug marker sits on every card. An arrow leads from the grid to a single label reading one fix multiplied by N clients, showing that a shared defect had to be repaired separately in every copy. One card is highlighted to mark the technician service that became the starting point for the platform."
                 />
                 <figcaption>
@@ -465,11 +465,11 @@
               </p>
               <figure class="figure-center">
                 <source
-                  srcset="./public/proecs/pe06-dark.svg"
+                  srcset="../public/proecs/pe06-dark.svg"
                   media="(prefers-color-scheme: dark)"
                 />
                 <img
-                  src="./public/proecs/pe06.svg"
+                  src="../public/proecs/pe06.svg"
                   alt="A sequence diagram with lifelines for User, Supabase Auth, the login step, the role and permission store, and a generic server action. The user signs in and Supabase Auth verifies identity and issues a session. The login step resolves the user's roles and permissions, issues a second signed token called the p-token, and returns it as an httpOnly cookie. Afterward every server action verifies the p-token in memory and checks the required permission, returning allow or deny with no database round-trip. One callout on the deny path reads clear 403, no database call. A second callout near the token step reads permission changes apply on next login."
                 />
                 <figcaption>
@@ -581,11 +581,11 @@
               </p>
               <figure class="figure-center">
                 <source
-                  srcset="./public/proecs/pe08-dark.svg"
+                  srcset="../public/proecs/pe08-dark.svg"
                   media="(prefers-color-scheme: dark)"
                 />
                 <img
-                  src="./public/proecs/pe08.svg"
+                  src="../public/proecs/pe08.svg"
                   alt="A single request labeled open the West region report set passes left to right through three gates in series. Gate one checks whether the user's role holds the reports permission. Gate two checks the per-employee grant table for a row giving this employee access to the West region report set within the reports service. Gate three checks that the tenant's reports subscription is active and unexpired. Passing all three yields access. Failing any one yields a specific rejection labeled with which gate failed."
                 />
                 <figcaption>
@@ -606,11 +606,11 @@
               </p>
               <figure class="figure-center">
                 <source
-                  srcset="./public/proecs/pe09-dark.svg"
+                  srcset="../public/proecs/pe09-dark.svg"
                   media="(prefers-color-scheme: dark)"
                 />
                 <img
-                  src="./public/proecs/pe09.svg"
+                  src="../public/proecs/pe09.svg"
                   alt="A mock administration screen. A service selector sits at the top. Employee names run down the left side and resource names run across the top, among them several named report sets and dashboard groups. Checkboxes at each intersection are ticked or empty. A note beneath reads a ticked box is a stored grant; an empty box is the absence of one."
                 />
                 <figcaption>
@@ -681,11 +681,11 @@
               </p>
               <figure class="figure-center">
                 <source
-                  srcset="./public/proecs/pe04-dark.svg"
+                  srcset="../public/proecs/pe04-dark.svg"
                   media="(prefers-color-scheme: dark)"
                 />
                 <img
-                  src="./public/proecs/pe04.svg"
+                  src="../public/proecs/pe04.svg"
                   alt="A layered deployment diagram. Across the top, a band labeled central control plane contains four tiles. Supabase holds identity, roles, permissions, and subscriptions; AWS Parameter Store holds per-client secrets; Seq holds structured logs from every instance; and a container registry with TeamCity handles build and rollout. Below the band are three dashed boxes, each a separate client's server, and each containing a Next.js frontend container and an Express backend container on a private network. Each client box connects outward to its own SAP HANA, SAP Service Layer, and MSSQL, and connects upward to every tile in the control plane."
                 />
                 <figcaption>
@@ -735,11 +735,11 @@
               </blockquote>
               <figure class="figure-center">
                 <source
-                  srcset="./public/proecs/pe05-dark.svg"
+                  srcset="../public/proecs/pe05-dark.svg"
                   media="(prefers-color-scheme: dark)"
                 />
                 <img
-                  src="./public/proecs/pe05.svg"
+                  src="../public/proecs/pe05.svg"
                   alt="A pipeline flowing left to right. A commit triggers a TeamCity build, which runs the Jest and Playwright suites, then pushes a container image to the registry. From the image, a staged rollout fans out first to a single canary client, then to a cohort of clients, then to all clients. Three side notes read as follows. Manual Supabase schema changes are coordinated separately and applied first, per-client SAP quirks are verified before each rollout, and rollback is performed per instance."
                 />
                 <figcaption>
@@ -821,11 +821,11 @@
               </p>
               <figure class="figure-center">
                 <source
-                  srcset="./public/proecs/pe17-dark.svg"
+                  srcset="../public/proecs/pe17-dark.svg"
                   media="(prefers-color-scheme: dark)"
                 />
                 <img
-                  src="./public/proecs/pe17.svg"
+                  src="../public/proecs/pe17.svg"
                   alt="A diagram with three sources feeding one destination. A browser error is sent into the same pipeline. A Next.js server action builds an AppError carrying origin, service, tenant, and user fields. The Express backend builds an AppError of the same shape. All three flow into Winston, then a chunking transport that splits payloads into 200-kilobyte segments, then into Seq, where a panel offers filtering by service, tenant, and user."
                 />
                 <figcaption>
@@ -1017,11 +1017,11 @@
               </p>
               <figure class="figure-center">
                 <source
-                  srcset="./public/proecs/pe11-dark.svg"
+                  srcset="../public/proecs/pe11-dark.svg"
                   media="(prefers-color-scheme: dark)"
                 />
                 <img
-                  src="./public/proecs/pe11.svg"
+                  src="../public/proecs/pe11.svg"
                   alt="A decision tree. The root branches on three SAP item-master fields, whether batch numbers are managed, whether serial numbers are managed, and an issue-priority field named IssuePriBy that, for a batch or serial item in a bin-enabled warehouse, decides whether stock is issued primarily by bin location or by the batch or serial number. The branches lead to five leaves. The Regular leaf uses table OIBQ, with on hand as bin quantity and a payload of item plus quantity plus bin. The Batch leaf uses tables OBBQ and OBTN, with on hand as batch quantity and a payload of batch number plus quantity plus bin. The Serial leaf uses tables OSRN and OSRQ, with on hand as one per unit and a payload of serial numbers plus bin. The Batch-Bin leaf uses tables OBBQ and OBTN, with on hand as bin total minus allocations. The Serial-Bin leaf uses tables OSBQ and OSRN, with on hand as bin total minus allocations. Each leaf notes a different quantity calculation and a different submission payload."
                 />
                 <figcaption>
@@ -1060,11 +1060,11 @@
               </p>
               <figure class="figure-center">
                 <source
-                  srcset="./public/proecs/pe12-dark.svg"
+                  srcset="../public/proecs/pe12-dark.svg"
                   media="(prefers-color-scheme: dark)"
                 />
                 <img
-                  src="./public/proecs/pe12.svg"
+                  src="../public/proecs/pe12.svg"
                   alt="A vertical diagram breaking one large SQL query into stacked labeled sections from top to bottom. An ItemTypes common table expression that classifies each item into one of five classes. A PickAllocations expression. Header and source-document joins across the pick list, sales order, production order, and transfer tables. A group of per-class bin-quantity subqueries against OIBQ, OBBQ, OSBQ, and derived serial and batch bin totals. A BinAllocated subquery that subtracts reserved quantity per bin. A UsedSNs subquery that removes already-consumed serial numbers. A window function assigning a line iterator. A WHERE clause listing three guards, the in-progress flag, partially picked unreleased lines, and duplicate bin-managed rows. A margin note reads one query, five code paths."
                 />
                 <figcaption>
@@ -1110,11 +1110,11 @@
               </p>
               <figure class="figure-center">
                 <source
-                  srcset="./public/proecs/pe13-dark.svg"
+                  srcset="../public/proecs/pe13-dark.svg"
                   media="(prefers-color-scheme: dark)"
                 />
                 <img
-                  src="./public/proecs/pe13.svg"
+                  src="../public/proecs/pe13.svg"
                   alt="A sequence diagram. The load pick list action makes two calls in parallel, one to SAP HANA that returns raw pick-list rows from the large query, and one to the SAP Service Layer that returns a map of pre-allocations. Both results pass into a processing function that walks the rows by line iterator, builds an item store map keyed by item, bin, and serial or batch, and a pick list of items carrying preallocated keys, unallocated keys, and picked keys. It tries to match each pre-allocation to a store entry by item code, bin absolute entry, and serial or batch number. Matched allocations are attached as preallocated keys. An allocation that references a bin missing from the HANA result is written to the log with full context while the interface continues rendering. The function returns a combined pick store."
                 />
                 <figcaption>
@@ -1177,11 +1177,11 @@
               </p>
               <figure class="figure-center">
                 <source
-                  srcset="./public/proecs/pe14-dark.svg"
+                  srcset="../public/proecs/pe14-dark.svg"
                   media="(prefers-color-scheme: dark)"
                 />
                 <img
-                  src="./public/proecs/pe14.svg"
+                  src="../public/proecs/pe14.svg"
                   alt="A two-lane sequence diagram. In the strict lane, the picker selects quantities from pre-allocated bins, confirms, a per-class payload builder constructs the request, and the client sends a single PATCH to the pick list's released-allocation endpoint. In the override lane, entered automatically when an item has no pre-allocations or deliberately by a user with the override permission, the client first fetches the sales order, sends a deallocate PATCH, sends a reallocate PATCH, and only then sends the pick-list PATCH. A callout on the override lane reads two extra calls, each must return 204 or the whole submission fails."
                 />
                 <figcaption>
@@ -1235,11 +1235,11 @@
               </p>
               <figure class="figure-center">
                 <source
-                  srcset="./public/proecs/pe15-dark.svg"
+                  srcset="../public/proecs/pe15-dark.svg"
                   media="(prefers-color-scheme: dark)"
                 />
                 <img
-                  src="./public/proecs/pe15.svg"
+                  src="../public/proecs/pe15.svg"
                   alt="A diagram of the client-side pick state. A pick store holds a pick list and an item store map keyed by item code, bin, and serial or batch number. One pick list item is expanded to show three arrays, preallocated keys, unallocated keys, and picked keys. A status value moves from none to partial to full as quantity is added. An inset shows the inventory unit and the base unit side by side, converted through a field named Factor and both updating live as a quantity is entered, with a note that serial items are always quantity one. A second inset shows three per-class payload builders, one for batch, one for serial, and one for normal items, feeding the Service Layer submission."
                 />
                 <figcaption>
@@ -1396,7 +1396,7 @@
               </p>
               <p>
                 Most of that went straight into the next project.
-                <a href="./qrum.html" class="section-link">Qrum</a> has a
+                <a href="../qrum/" class="section-link">Qrum</a> has a
                 two-layer authorization model like this one, except designed
                 against a written threat model rather than assembled as I went.
                 Its error contract is the typed idea from here carried further.
@@ -1420,7 +1420,7 @@
                 decided things, written so it can be argued with rather than
                 admired. I am confident in the reasoning. If something here
                 needs amending, reach out to me
-                <a href="../contact/" class="section-link">here</a>, and in
+                <a href="../../contact/" class="section-link">here</a>, and in
                 whatever I build next I hope to bring the same care to setting
                 it down.
               </p>
@@ -1434,12 +1434,12 @@
                 >
                   <img
                     class="project-procecs-img2"
-                    src="./public/proecs/picking.jpg"
+                    src="../public/proecs/picking.jpg"
                     alt="WMS Lite picking screen"
                   />
                   <img
                     class="project-procecs-img4"
-                    src="./public/proecs/picklist-picked.jpg"
+                    src="../public/proecs/picklist-picked.jpg"
                     alt="A completed pick list in WMS Lite"
                   />
                 </div>
@@ -1448,12 +1448,12 @@
                 >
                   <img
                     class="project-procecs-img3"
-                    src="./public/proecs/picking-mobile.jpg"
+                    src="../public/proecs/picking-mobile.jpg"
                     alt="WMS Lite picking on a phone"
                   />
                   <img
                     class="project-procecs-img5"
-                    src="./public/proecs/picklist-mobile.jpg"
+                    src="../public/proecs/picklist-mobile.jpg"
                     alt="A pick list on a phone"
                   />
                 </div>
@@ -1463,7 +1463,7 @@
         </section>
         <section class="project-footer">
           <container class="footer-container-left">
-            <a href="./qrum.html">
+            <a href="../qrum/">
               <svg xmlns="http://www.w3.org/2000/svg" width="10" height="16">
                 <path fill="none" stroke="#33323D" d="M9 0L1 8l8 8" />
               </svg>
@@ -1474,7 +1474,7 @@
             </a>
           </container>
           <container class="footer-container-right">
-            <a href="../portfolio/">
+            <a href="../../portfolio/">
               <div>
                 <h2>Portfolio</h2>
                 <p>Back to All Projects</p>
@@ -1488,23 +1488,23 @@
         <footer class="footer-top footer-project-block-margin">
           <h1>Interested in doing a project together?</h1>
           <span class="line-segment"></span>
-          <a href="../contact" class="custom-button">
+          <a href="../../contact" class="custom-button">
             <span>CONTACT ME</span>
           </a>
         </footer>
       </div>
       <div class="footer-bottom-container">
         <div class="footer-bottom">
-          <a href="../" class="footer-logo">
+          <a href="../../" class="footer-logo">
             <object
-              data="../src/assets/brand/brand-logo.svg"
+              data="../../src/assets/brand/brand-logo.svg"
               type="image/svg+xml"
               width="75"
             ></object>
           </a>
-          <a href="../" class="navbar-item">HOME</a>
-          <a href="../portfolio" class="navbar-item">PORTFOLIO</a>
-          <a href="../contact" class="navbar-item">CONTACT ME</a>
+          <a href="../../" class="navbar-item">HOME</a>
+          <a href="../../portfolio" class="navbar-item">PORTFOLIO</a>
+          <a href="../../contact" class="navbar-item">CONTACT ME</a>
           <div class="svg-container">
             <a
               href="https://github.com/Geo-Bold"
@@ -1536,6 +1536,6 @@
         </div>
       </div>
     </div>
-    <script src="../src/logic/script.js"></script>
+    <script src="../../src/logic/script.js"></script>
   </body>
 </html>

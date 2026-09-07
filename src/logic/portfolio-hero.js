@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
       year: "2026",
       blurb:
         "A volunteer and event manager with robust search built on Elasticsearch. This allows ranking a million events by distance, time, and typos in less than 20ms",
-      href: "./qrum.html",
+      href: "./qrum/",
       ctaLabel: "View Case Study",
       external: false,
       artImage: "../src/assets/images/qrum-showcase.png",
@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
       year: "2025",
       blurb:
         "A product integrated with SAP to help businesses with warehouse management, quoting, technician scheduling and more. Currently deployed across 10+ organizations.",
-      href: "./procecs.html",
+      href: "./procecs/",
       ctaLabel: "View Case Study",
       external: false,
       artImage: "../src/assets/images/procecs-engine-showcase.png",
