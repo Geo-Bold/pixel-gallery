@@ -3,19 +3,19 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="../src/styles/styles.css" />
+    <link rel="stylesheet" href="../../src/styles/styles.css" />
     <link
       rel="icon"
       type="image/png"
       sizes="32x32"
-      href="../src/assets/brand/geo-webpage-logo.png"
+      href="../../src/assets/brand/geo-webpage-logo.png"
     />
     <title>Qrum | Geo Archbold | SWE</title>
     <meta name="description" content="Case study: Qrum, a volunteer management platform with RBAC, PostGIS search, Elasticsearch, and a Redis rate limiter." />
     <meta property="og:title" content="Qrum | Geo Archbold | SWE" />
     <meta property="og:description" content="Case study: Qrum, a volunteer management platform with RBAC, PostGIS search, Elasticsearch, and a Redis rate limiter." />
     <meta property="og:type" content="article" />
-    <meta property="og:url" content="https://geobold.dev/portfolio/qrum.html" />
+    <meta property="og:url" content="https://geobold.dev/portfolio/qrum/" />
     <meta property="og:image" content="https://geobold.dev/src/assets/images/qrum-events.png" />
   </head>
 
@@ -29,9 +29,9 @@
           aria-label="main navigation"
         >
           <div class="navbar-brand">
-            <a href="../" class="navbar-item" id="brand-logo">
+            <a href="../../" class="navbar-item" id="brand-logo">
               <object
-                data="../src/assets/brand/brand-logo.svg"
+                data="../../src/assets/brand/brand-logo.svg"
                 type="image/svg+xml"
                 width="75"
               ></object>
@@ -65,11 +65,11 @@
           </div>
           <div class="navbar-menu">
             <div class="navbar-end">
-              <a href="../" class="navbar-item normal-color">HOME</a>
-              <a href="../portfolio" class="navbar-item selected-color"
+              <a href="../../" class="navbar-item normal-color">HOME</a>
+              <a href="../../portfolio" class="navbar-item selected-color"
                 >PORTFOLIO</a
               >
-              <a href="../contact" class="navbar-item normal-color"
+              <a href="../../contact" class="navbar-item normal-color"
                 >CONTACT ME</a
               >
             </div>
@@ -77,7 +77,7 @@
         </nav>
         <section class="hero project-hero project-qrum-hero">
           <img
-            src="../src/assets/images/qrum.home-page.png"
+            src="../../src/assets/images/qrum.home-page.png"
             alt="Qrum home page"
             width="100%"
           />
@@ -189,11 +189,11 @@
               </p>
               <figure class="figure-center">
                 <source
-                  srcset="./public/d0-dark.svg"
+                  srcset="../public/d0-dark.svg"
                   media="(prefers-color-scheme: dark)"
                 />
                 <img
-                  src="./public/d0.svg"
+                  src="../public/d0.svg"
                   alt="Diagram with three boxes. Volunteers on the left and Nonprofit on the right both point inward with arrows to Events in the center, which is highlighted. Pain points are noted beneath each box. Under Volunteers: discovery gap and no geo-aware search. Under Events: capacity untracked. Under Nonprofit: spreadsheets and forms."
                 />
                 <figcaption>
@@ -325,11 +325,11 @@
               </ul>
               <figure class="figure-center">
                 <source
-                  srcset="./public/d1.svg"
+                  srcset="../public/d1.svg"
                   media="(prefers-color-scheme: dark)"
                 />
                 <img
-                  src="./public/d1-light.svg"
+                  src="../public/d1-light.svg"
                   alt="System context diagram with three columns. On the left are the actors. Volunteers browse events, search nearby, sign up, and check in and out. Staff and admins create events, publish or cancel them, manage rosters, and review history. In the center is the system, containing Event discovery, Event operations, and Identity and access. On the right are the domain entities: Events, Addresses, Roster and attendance, Availability, Change log, and Users and roles. Volunteers reach Event discovery by browsing, searching, and enrolling, and reach Event operations by checking in and out. Staff and admins reach Event operations by creating, publishing, and managing events, and reach Identity and access through privileged operations. Event discovery connects to Events and Addresses. Event operations connects to Events, Roster and attendance, Availability, and Change log. Identity and access connects to Users and roles."
                 />
                 <figcaption>
@@ -387,11 +387,11 @@
               </p>
               <figure class="figure-center">
                 <source
-                  srcset="./public/d1_v1-dark.svg"
+                  srcset="../public/d1_v1-dark.svg"
                   media="(prefers-color-scheme: dark)"
                 />
                 <img
-                  src="./public/d1_v1.svg"
+                  src="../public/d1_v1.svg"
                   alt="Architecture diagram in four columns, with arrows flowing left to right. The first column is the browser, holding public event pages, a volunteer dashboard, and a staff dashboard. An arrow leads from the browser to the second column, the Next.js app, which holds server actions and route handlers, feature modules, and the React UI. From server actions and route handlers, two arrows branch out to the third column. A red arrow goes up to the auth data layer, which is drawn in red, and a black arrow goes down to the open data layer. Both layers then point into the fourth column, a dashed green boundary labeled Supabase. The red arrow from the auth data layer and the black arrow from the open data layer both land on a database cylinder containing events, addresses, user_event, event_change_log, and roles. Also inside the Supabase boundary are Supabase auth, PostgreSQL, and BLOB storage."
                 />
                 <figcaption>
@@ -479,11 +479,11 @@
               </p>
               <figure class="figure-center">
                 <source
-                  srcset="./public/d4-dark.svg"
+                  srcset="../public/d4-dark.svg"
                   media="(prefers-color-scheme: dark)"
                 />
                 <img
-                  src="./public/d4.svg"
+                  src="../public/d4.svg"
                   alt="Sequence diagram set inside a dashed box labeled Trusted server and db boundary, with lifelines for User, Supabase Auth, NextJS Server Action, App RBAC, PostgreSQL RLS, and Database. The User signs in to Supabase Auth, which runs a Custom Access Token Hook to mint an access token and add user roles, then returns a JWT to the User. The User sends a privileged action carrying that JWT to the NextJS Server Action, which calls App RBAC to verify the role. Two labeled outcomes branch from that check: a green role-allowed path continues into the boundary, and a red else path returns a clear application error straight back to the user, marked by a callout reading Better errors and early rejection. On the allowed path, the Server Action sends a policy evaluation with the JWT claims to PostgreSQL RLS, which asks whether the policy permits the row. A green outcome proceeds to the Database and commits; a red else outcome has the database reject the operation instead, marked by a second callout reading Actual enforcement boundary."
                 />
                 <figcaption>
@@ -725,11 +725,11 @@
               </p>
               <figure class="figure-center">
                 <source
-                  srcset="./public/d4-concurrency-dark.svg"
+                  srcset="../public/d4-concurrency-dark.svg"
                   media="(prefers-color-scheme: dark)"
                 />
                 <img
-                  src="./public/d4-concurrency.svg"
+                  src="../public/d4-concurrency.svg"
                   alt="Sequence diagram titled Concurrent Enrollment Sequence, with five lifelines across the top: Volunteer A, Volunteer B, NextJS, DB, and Capacity trigger. Volunteer A is drawn in blue and Volunteer B in orange, and their messages follow those colors. Volunteer A signs up, then Volunteer B signs up. NextJS reads capacity for A, then reads capacity for B. A note reads that both requests may observe a single vacant position. NextJS then inserts a user_event row for A, followed by a user_event row for B. The capacity trigger fires before insert. It allows the first insert, so A receives enrolled. It raises a capacity exception on the second, so B receives event full."
                 />
                 <figcaption>
@@ -817,11 +817,11 @@
               </p>
               <figure class="figure-center">
                 <source
-                  srcset="./public/s5-dark.svg"
+                  srcset="../public/s5-dark.svg"
                   media="(prefers-color-scheme: dark)"
                 />
                 <img
-                  src="./public/s5.svg"
+                  src="../public/s5.svg"
                   alt="Sequence diagram titled Storing Location, with five lifelines across the top: staff event form, NextJS server action, PostgreSQL, Geoapify, and PostGIS. The staff event form sends a street address to the NextJS server action. The server action saves the canonical address to PostgreSQL. It then makes an async geocode call to Geoapify, drawn as a dashed arrow. Geoapify returns a latitude and longitude to the server action. The server action then sends an update address location message across to PostGIS."
                 />
                 <figcaption>
@@ -894,7 +894,7 @@
               <figure class="figure-center">
                 <source />
                 <img
-                  src="./public/d5v2.svg"
+                  src="../public/d5v2.svg"
                   alt="Sequence diagram titled Finding Nearby Events, with five lifelines across the top: Volunteer Location, Nearby Events RPC, GIST Spatial Index, Events and Addresses, and Distance-sorted Results. Volunteer Location sends latitude, longitude, and radius to the Nearby Events RPC. The RPC calls ST_DWithin against the GIST Spatial Index. The index returns matching rows to Events and Addresses. Those rows are ordered nearest first into Distance-sorted Results, which are sent back to the browser."
                 />
                 <figcaption>
@@ -1203,11 +1203,11 @@
               </p>
               <figure class="figure-center">
                 <source
-                  srcset="./public/d6-dark.svg"
+                  srcset="../public/d6-dark.svg"
                   media="(prefers-color-scheme: dark)"
                 />
                 <img
-                  src="./public/d6.svg"
+                  src="../public/d6.svg"
                   alt="Two-part figure comparing four search approaches. The top row holds four cards. ILIKE is simple, has no ranking, no typo tolerance, and expensive scans. pg_trgm supports partial matching, has large indexes, and the planner often avoids it. Postgres FTS offers tokenized search and a strong Postgres baseline, but limited fuzzy behavior and ranking that becomes complex. Elasticsearch offers fuzzy multi-match, geo and recency scoring, and a dedicated search index, at the cost of added operational complexity. Below is a horizontal bar chart of query latency for three of them. ILIKE is the longest bar at about 1950 milliseconds, Postgres FTS is about 400 milliseconds, and Elasticsearch is the shortest at about 20 milliseconds. A note beneath reads that the performance harness used 1 million events and 100 thousand addresses."
                 />
                 <figcaption>
@@ -1295,11 +1295,11 @@
               </blockquote>
               <figure class="figure-center">
                 <source
-                  srcset="./public/s7-dark.svg"
+                  srcset="../public/s7-dark.svg"
                   media="(prefers-color-scheme: dark)"
                 />
                 <img
-                  src="./public/s7.svg"
+                  src="../public/s7.svg"
                   alt="Change data capture pipeline diagram. The NextJS app sends inserts, updates, and deletes to PostgreSQL, which sits inside a green dotted boundary labeled canonical transaction layer. A red dashed arrow from the app directly to Elasticsearch is struck through with a large red cross and labeled no synchronous dual writes. Postgres commits to the write-ahead log, which reaches Debezium by logical replication. Debezium emits a CDC event to a Redpanda topic. An indexer consumes from that topic ordered by event_id and upserts or deletes documents in the Elasticsearch index named events_v1, which sits inside a purple dotted boundary labeled disposable derived search index. The indexer also performs an address lookup back against PostgreSQL. A note beside the indexer lists its work: join geo data by address_id, convert Debezium date integers, extract latitude and longitude, and handle deleted records."
                 />
                 <figcaption>
@@ -1391,11 +1391,11 @@
               </p>
               <figure class="figure-center">
                 <source
-                  srcset="./public/d8-dark.svg"
+                  srcset="../public/d8-dark.svg"
                   media="(prefers-color-scheme: dark)"
                 />
                 <img
-                  src="./public/d8.svg"
+                  src="../public/d8.svg"
                   alt="Diagram of two read paths. Along the top is the search path. Browser search sends a query with latitude and longitude to slash api slash search, which issues a function_score request to ES. A side note lists what that scoring covers: text relevance, geographic decay, and recency decay. ES returns ranked event ids as UUIDs and scores. Those ids go to PostgreSQL as a where id in query, which returns canonical event data back to slash api slash search, labeled preserve Elasticsearch order, and the response returns to the browser. A side note reads that this path allows discovery and ranking events. Along the bottom is a dashed boundary labeled direct canonical read, containing event detail and edit connected by a two-way arrow to the NextJS data layer, which reads and writes PostgreSQL directly. Side notes read: read or mutate exact records, and browse with no search query. PostgreSQL is annotated as the source of truth for status, capacity, deletion state, and relations."
                 />
                 <figcaption>
@@ -1567,11 +1567,11 @@
               </p>
               <figure class="figure-center">
                 <source
-                  srcset="./public/d9-dark.svg"
+                  srcset="../public/d9-dark.svg"
                   media="(prefers-color-scheme: dark)"
                 />
                 <img
-                  src="./public/d9.svg"
+                  src="../public/d9.svg"
                   alt="Failure mode diagram for the change data capture pipeline. Across the top, a green box states that canonical data remains recoverable, connected down to a row of five pipeline components: PostgreSQL, Debezium, Redpanda, Indexer, and ES. Four brown boxes below describe failure scenarios, each connected to the component it concerns. Indexer unavailable: consumer offset retained, restart resumes processing, search becomes stale. Elasticsearch unavailable: postgres writes continue, indexer retries, search is unavailable or stale. Redpanda unavailable: debezium cannot publish, replication-slot lag increases, pipeline catches up after recovery. Bad indexer deployment: fix transformer, drop and recreate indexes, reindex from pg. At the bottom, a red box warns about replication slot lag, noting that unconsumed WAL accumulates until the Postgres disk is exhausted."
                 />
                 <figcaption>
@@ -1684,11 +1684,11 @@
               </p>
               <figure class="figure-center">
                 <source
-                  srcset="./public/d10-dark.svg"
+                  srcset="../public/d10-dark.svg"
                   media="(prefers-color-scheme: dark)"
                 />
                 <img
-                  src="./public/d10.svg"
+                  src="../public/d10.svg"
                   alt="Sequence diagram titled Rate Limiter Decision, with lifelines for Client, Named rate limiter, Redis Lua script, and Protected operation. The client sends a request to the named rate limiter, which resolves its key, limit, and window configuration and calls the Redis Lua script. The script reads the previous and current window counts, computes a weighted total, and increments the count atomically, all in one round trip. Two outcomes branch from the script's result: an allowed outcome returns to the rate limiter, which lets the request continue to the protected operation, and a limited outcome returns a rejection to the client instead. A third path shows Redis itself unavailable, where the rate limiter fails open and forwards the request to the protected operation anyway, marked by a callout reading Fails open, not closed."
                 />
                 <figcaption>
@@ -1812,10 +1812,10 @@ return err("app.event.not_found", { message: "This event could not be found." },
               </p>
               <figure class="figure-center">
                 <source
-                  srcset="./public/d12-1-dark.svg"
+                  srcset="../public/d12-1-dark.svg"
                   media="(prefers-color-scheme: dark)"
                 />
-                <img src="./public/d12-1.svg" alt="Diagram of the Result&lt;Data, Error&gt; return flow" />
+                <img src="../public/d12-1.svg" alt="Diagram of the Result&lt;Data, Error&gt; return flow" />
                 <figcaption>
                   The return of any function that can fail returns
                   <code>Result&lt;Data, Error&gt;</code>.
@@ -1858,11 +1858,11 @@ return err("app.event.not_found", { message: "This event could not be found." },
               </p>
               <figure class="figure-center">
                 <source
-                  srcset="./public/d12-3-dark.svg"
+                  srcset="../public/d12-3-dark.svg"
                   media="(prefers-color-scheme: dark)"
                 />
                 <img
-                  src="./public/d12-3.svg"
+                  src="../public/d12-3.svg"
                   alt="Call stack diagram with five layers connected top to bottom by gray arrows: Browser, Server Action checkIntoEvent, Domain Func updateRoster, Repository updateRosterRecord, and Supabase. Red arrows labeled err rise up the left side, returning errors from the repository to the domain function, from the domain function to the server action, and from the server action to the browser. Green arrows labeled ok rise up the right side along the same hops, carrying success results."
                 />
                 <figcaption>
@@ -1967,11 +1967,11 @@ if (error) handleStreamError(error);
               </table>
               <figure class="figure-center">
                 <source
-                  srcset="./public/d12-2-dark.svg"
+                  srcset="../public/d12-2-dark.svg"
                   media="(prefers-color-scheme: dark)"
                 />
                 <img
-                  src="./public/d12-2.svg"
+                  src="../public/d12-2.svg"
                   alt="Flow diagram inside a boundary labeled Client. A const err comma data destructuring feeds into a blue diamond that asks whether there is no error. The yes branch goes right in green to render data. The no branch goes down in red into a red box labeled handle errors, which contains two circles: handle streaming error and handle client error."
                 />
                 <figcaption>
@@ -2029,11 +2029,11 @@ if (error) handleStreamError(error);
               </p>
               <figure class="figure-center">
                 <source
-                  srcset="./public/d12-4-dark.svg"
+                  srcset="../public/d12-4-dark.svg"
                   media="(prefers-color-scheme: dark)"
                 />
                 <img
-                  src="./public/d12-4.svg"
+                  src="../public/d12-4.svg"
                   alt="Diagram of two Result paths and the logging pipeline that branches off one of them. The top row, in green, shows ok of data leading to return null and data. The bottom row, in red, shows err leading to a structured object with type, message, and more fields, then to logger.error, then to return error and null. From logger.error a gray arrow labeled json drops down into a pipeline that runs left to right: log.txt, then Alloy highlighted in purple, then Loki, then Grafana."
                 />
                 <figcaption>
@@ -2076,11 +2076,11 @@ if (error) handleStreamError(error);
               </p>
               <figure>
                 <source
-                  srcset="./public/d11-dark.svg"
+                  srcset="../public/d11-dark.svg"
                   media="(prefers-color-scheme: dark)"
                 />
                 <img
-                  src="./public/d11.svg"
+                  src="../public/d11.svg"
                   alt="Deployment diagram. The internet reaches a router configured to port forward 80 and 443 to a Raspberry Pi running Ubuntu. Inside the Pi, an nginx reverse proxy handles SSL and TLS termination, Let's Encrypt certificates, domain routing, and auth and middleware. Nginx routes to two groups of services: a Docker Compose stack containing the Qrum Next.js application, Redis, and Supabase, and a set of host services running outside Docker containing Loki for log storage, Grafana for visualization, and Alloy as the log collector."
                 />
                 <figcaption>
@@ -2174,7 +2174,7 @@ if (error) handleStreamError(error);
                 While I am confident in the thought process that led to these
                 decisions, I cannot be completely sure that I got everything
                 right here. If anything needs amending, please reach out to me
-                <a href="../contact/" class="section-link">here</a>. At every
+                <a href="../../contact/" class="section-link">here</a>. At every
                 step throughout this project, to the best of my ability, I tried
                 to record every thought and decision of import. In whatever I
                 build next, I hope I bring that same care and consideration
@@ -2185,13 +2185,13 @@ if (error) handleStreamError(error);
               <h2>Static Previews</h2>
               <img
                 class="project-qrum-img1"
-                src="../src/assets/images/qrum.profile.png"
+                src="../../src/assets/images/qrum.profile.png"
                 alt="Qrum volunteer profile dashboard"
                 width="100%"
               />
               <img
                 class="project-qrum-img2"
-                src="../src/assets/images/qrum-profile-close-up.png"
+                src="../../src/assets/images/qrum-profile-close-up.png"
                 alt="Qrum event detail view"
                 width="100%"
               />
@@ -2200,7 +2200,7 @@ if (error) handleStreamError(error);
         </section>
         <section class="project-footer">
           <container class="footer-container-left">
-            <a href="../portfolio/">
+            <a href="../../portfolio/">
               <svg xmlns="http://www.w3.org/2000/svg" width="10" height="16">
                 <path fill="none" stroke="#33323D" d="M9 0L1 8l8 8" />
               </svg>
@@ -2211,7 +2211,7 @@ if (error) handleStreamError(error);
             </a>
           </container>
           <container class="footer-container-right">
-            <a href="./procecs.html">
+            <a href="../procecs/">
               <div>
                 <h2>ProcECS Engine</h2>
                 <p>Next Project</p>
@@ -2225,23 +2225,23 @@ if (error) handleStreamError(error);
         <footer class="footer-top footer-project-block-margin">
           <h1>Interested in doing a project together?</h1>
           <span class="line-segment"></span>
-          <a href="../contact" class="custom-button">
+          <a href="../../contact" class="custom-button">
             <span>CONTACT ME</span>
           </a>
         </footer>
       </div>
       <div class="footer-bottom-container">
         <div class="footer-bottom">
-          <a href="../" class="footer-logo">
+          <a href="../../" class="footer-logo">
             <object
-              data="../src/assets/brand/brand-logo.svg"
+              data="../../src/assets/brand/brand-logo.svg"
               type="image/svg+xml"
               width="75"
             ></object>
           </a>
-          <a href="../" class="navbar-item">HOME</a>
-          <a href="../portfolio" class="navbar-item">PORTFOLIO</a>
-          <a href="../contact" class="navbar-item">CONTACT ME</a>
+          <a href="../../" class="navbar-item">HOME</a>
+          <a href="../../portfolio" class="navbar-item">PORTFOLIO</a>
+          <a href="../../contact" class="navbar-item">CONTACT ME</a>
           <div class="svg-container">
             <a
               href="https://github.com/Geo-Bold"
@@ -2273,6 +2273,6 @@ if (error) handleStreamError(error);
         </div>
       </div>
     </div>
-    <script src="../src/logic/script.js"></script>
+    <script src="../../src/logic/script.js"></script>
   </body>
 </html>

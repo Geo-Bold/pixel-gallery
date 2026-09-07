@@ -896,7 +896,7 @@ ol li::before {
     .project-body-intro .green-text {
         max-width: 270px;
     }
-    /* The TOC sidebar variant (qrum.html) has none of the stat-block
+    /* The TOC sidebar variant (portfolio/qrum/) has none of the stat-block
        children above, so it drops the grid entirely rather than inherit
        row heights sized for a different page's layout. */
     .project-body-intro:has(.table-of-context) {
