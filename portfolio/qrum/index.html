@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -11,12 +11,21 @@
       href="../../src/assets/brand/geo-webpage-logo.png"
     />
     <title>Qrum | Geo Archbold | SWE</title>
-    <meta name="description" content="Case study: Qrum, a volunteer management platform with RBAC, PostGIS search, Elasticsearch, and a Redis rate limiter." />
+    <meta
+      name="description"
+      content="Case study: Qrum, a volunteer management platform with RBAC, PostGIS search, Elasticsearch, and a Redis rate limiter."
+    />
     <meta property="og:title" content="Qrum | Geo Archbold | SWE" />
-    <meta property="og:description" content="Case study: Qrum, a volunteer management platform with RBAC, PostGIS search, Elasticsearch, and a Redis rate limiter." />
+    <meta
+      property="og:description"
+      content="Case study: Qrum, a volunteer management platform with RBAC, PostGIS search, Elasticsearch, and a Redis rate limiter."
+    />
     <meta property="og:type" content="article" />
     <meta property="og:url" content="https://geobold.dev/portfolio/qrum/" />
-    <meta property="og:image" content="https://geobold.dev/src/assets/images/qrum-events.png" />
+    <meta
+      property="og:image"
+      content="https://geobold.dev/src/assets/images/qrum-events.png"
+    />
   </head>
 
   <body>
@@ -177,15 +186,149 @@
             <div class="toc-section">
               <h2>Overview</h2>
               <p>
-                Qrum is a volunteer management and event-discovery platform. It
-                was built directly with a nonprofit running volunteer programs.
-                During conversations with staff and coordinators, we realized
-                that events were being managed and tracked by hand; whether a
-                sign-up spreadsheet, a separate form for new event or mass
-                emails for changes and alerts, each method provided concrete
-                limitations and no reliable way to answer basic questions about
-                who was confirmed, whether an event was actually full, or what
-                had changed since last week.
+                Qrum is a volunteer management and event-discovery platform,
+                built as a university capstone for a nonprofit whose volunteer
+                program ran on spreadsheets, sign-up forms, and mass emails.
+                Volunteers used it to find and enroll in events near them, staff
+                coordinators created events and managed rosters, and
+                administrators oversaw user accounts and change history. I
+                designed its architecture, a Next.js and TypeScript application
+                on self-hosted Supabase, with PostgreSQL and PostGIS at the core
+                and Elasticsearch, Redis, and a Grafana observability stack
+                around it.
+              </p>
+              <p>
+                Breathe. With the word-salad tech-vomit out of the way, we can
+                start delving in problem solving approach which basically
+                consisted of treating the organization's rules as guarantees the
+                system ought to keep on its own. One database held the truth,
+                and everything else in the diagram below was built around it.
+                This was imperative since I wanted to ensure any complexity
+                added would not result in subtle concurrency or correctness bugs
+                down the road.
+              </p>
+              <figure class="figure-center">
+                <source
+                  srcset="../public/architecture-dark.svg"
+                  media="(prefers-color-scheme: dark)"
+                />
+                <img
+                  src="../public/architecture.svg"
+                  alt="System architecture diagram titled Qrum System Architecture. A browser in the top right corner sends requests to a Cloudflare edge bar, which forwards them into a dashed box labeled Server and onto a cloudflared bar. From cloudflared, an arrow labeled req enters the App tier, a blue group containing Next.js, Redis, and app.log. Next.js sends rate limit checks down to Redis and writes to app.log, which feeds a pink Observability group where Grafana Alloy flows into Loki and then into Grafana. Next.js also sends queries to a green Supabase group, where Kong routes to PostgREST, GoTrue, Storage, and Realtime, which in turn reach Postgres 17 with PostGIS. An arrow labeled WAL leaves Postgres and drops into a purple Search group. Inside it, Debezium publishes topics to Redpanda, an Indexer consumes from Redpanda and upserts into Elasticsearch, and an arrow labeled enrichment reads runs from the Indexer back up to Kong. A second arrow labeled queries runs from Next.js directly to Elasticsearch."
+                />
+                <figcaption>The complete Qrum architecture.</figcaption>
+              </figure>
+              <p>
+                My two years building the
+                <a href="../procecs/" class="section-link">ProcECS Engine</a>
+                taught me that permission checks that can be forgotten, will.
+                Under deadline pressure, checks that require engineers to
+                remember are the ones that will inevitably fail. There, I had
+                assembled protection against it haphazardly. In Qrum I wrote the
+                threat vectors down first and built against them, so the
+                question of who could see a volunteer's phone number was
+                <a
+                  href="#authorization-at-the-application-and-database-layers"
+                  class="section-link"
+                  >answered twice</a
+                >, once by the application so people got a clear explanation,
+                and once by the database, which refused no matter what the code
+                above it forgot to ask. A new teammate could ship a careless
+                feature on their first day and still not be able to spill the
+                roster.
+              </p>
+              <p>
+                Perhaps this might be ironic after seeing the search
+                infrastructure in <em>Figure 1</em>, but I insist that search is
+                where the project shows the most restraint. Volunteers wanted
+                something nearby, soon, and worth giving up a Saturday for, and
+                they typed it with typos and wanted results ordered by distance,
+                relevance, and speed. The nearby part came cheaply, since
+                <a
+                  href="#move-geographic-computation-into-postgis"
+                  class="section-link"
+                  >the database I already had</a
+                >
+                could find every event within a few miles of a volunteer in less
+                time than it takes to blink. The rest eventually meant bringing
+                in Elasticsearch, a dedicated search engine, but I refused to
+                add the equivalent of a nuclear reactor to a small sedan on a
+                hunch. First I
+                <a
+                  href="#from-string-matching-to-search-engineering"
+                  class="section-link"
+                  >built a test with a million fake events</a
+                >
+                and made the database prove it couldn't keep up. It mostly
+                could. But it couldn't forgive a misspelling while weighing
+                distance, date, and relevance together. That is what earned
+                Elasticsearch its place as a new tool. I had experienced the
+                limitations of a design's cost in production, and I swore to try
+                my best to never repeat it.
+              </p>
+              <p>
+                What I'm proudest of is how Qrum behaved on its worst day. The
+                search engine, change-data-capture pipeline, and the third-party
+                API could each fail on their own, and every one of those
+                failures had a name and a ceiling. Search might fall a little
+                behind or go dark for a while. Nobody lost a sign-up, no event
+                vanished, and because
+                <a href="#a-derived-search-system" class="section-link"
+                  >search only ever decided the order of results</a
+                >, it could never tell a volunteer that a full event had room. I
+                can point at every piece I added around the database and tell
+                you
+                <a
+                  href="#failure-modes-are-part-of-the-architecture"
+                  class="section-link"
+                  >what breaks when I pull its plug</a
+                >, and in the whole design there was exactly one warning sign
+                worth waking up for at three in the morning. At ProcECS I
+                learned to build as though the network will fail, mostly by
+                watching it fail. Qrum was the first time I planned for it
+                before it happened.
+              </p>
+              <p>
+                The last thing I'd point out is that Qrum was built to be lived
+                with, which matters more than it sounds once software outlives
+                the person who wrote it. Every failure
+                <a href="#a-typed-contract-for-failure" class="section-link"
+                  >was recorded exactly once</a
+                >, in one consistent shape, at the moment it happened, and
+                landed
+                <a
+                  href="#from-working-code-to-an-operable-system"
+                  class="section-link"
+                  >somewhere searchable</a
+                >
+                instead of scrolling off a screen. A volunteer who hit a problem
+                saw a message written for them, and one broken panel on a page
+                didn't drag the rest of the page down with it. At ProcECS I was
+                once handed a service that had run quietly for three years,
+                whose author had left and which nobody remaining could explain
+                or wanted to touch. I never want to build one of those. Qrum's
+                code is organized so the next engineer can see how it works from
+                its shape alone, and this write-up exists so they can see why.
+              </p>
+              <p>
+                While on their own, none of those pieces is exotic, each one
+                exists because something simple stopped being enough. The rest
+                of this case study is the story of each limitation, told in the
+                order they appeared. It starts from a plain data model that
+                worked, walks through each limitation, and finally closes with
+                the decision that solved it.
+              </p>
+            </div>
+            <div class="toc-section">
+              <h2>The Problem</h2>
+              <p>
+                During conversations with the nonprofit's staff and
+                coordinators, we realized that events were being managed and
+                tracked by hand; whether a sign-up spreadsheet, a separate form
+                for new event or mass emails for changes and alerts, each method
+                provided concrete limitations and no reliable way to answer
+                basic questions about who was confirmed, whether an event was
+                actually full, or what had changed since last week.
               </p>
               <figure class="figure-center">
                 <source
@@ -198,48 +341,21 @@
                 />
                 <figcaption>
                   Events sat at the center of both sides of the problem.
-                  Volunteers struggled to find opportunities without
-                  multi-signal search, the nonprofit ran intake on spreadsheets
-                  and forms, and neither side had immediate visibility into
-                  event capacity.
                 </figcaption>
               </figure>
               <p>
-                After several conversations with the client, we determined that
-                this was less of a limitation of technology than a
-                domain-modeling one. General purpose tools were being asked to
-                represent things they were never built to hold: event
-                lifecycles, capacity limits, roster changes that should show
-                history, and information that was public for some people and
-                sensitive for others. Volunteers, who needed to find something
-                worth showing up for nearby and soon, and staff, who needed to
-                trust that what the system told them was actually true, were
-                both being underserved.
-              </p>
-              <p>
-                Three groups used the resulting system day to day: volunteers
-                browsing and enrolling, staff coordinators creating and managing
-                events and rosters, and administrators with oversight into log
-                history and user accounts that the other two didn't need.
-              </p>
-              <p>
-                The approach throughout was to treat these as system invariants,
-                not screens the interface had to display correctly. This case
-                study follows the project in the order its limitations actually
-                appeared, starting from a plain data model that worked at first,
-                through each specific limitation that made it insufficient and
-                finally to the decision that closed it.
-              </p>
-            </div>
-            <div class="toc-section">
-              <h2>The Problem</h2>
-              <p>
+                Over several more conversations, we determined that this was
+                less of a limitation of technology than a domain-modeling one.
                 Every shortcoming traced back to the fact that the tools in use
                 had no concept of the domain they were being asked to manage. A
                 spreadsheet didn't know what an event actually represented, it
                 just held rows; it didn't know an event had a capacity, a state
-                it moved through, or a history worth keeping. What followed was
-                the cost of this absence to the two groups using it daily.
+                it moved through, a history worth keeping, or which of its
+                details were public and which were sensitive. Volunteers, who
+                needed to find something worth showing up for nearby and soon,
+                and staff, who needed to trust that what the system told them
+                was actually true, were both being underserved. What followed
+                was the cost of this absence to the two groups using it daily.
               </p>
               <h3>Volunteers</h3>
               <p>
@@ -280,6 +396,19 @@
                 shared, whether or not everyone with access to it should have
                 had it. Let's not even begin to mention the potential liability.
               </p>
+              <figure class="figure-center">
+                <source
+                  srcset="../public/d1.svg"
+                  media="(prefers-color-scheme: dark)"
+                />
+                <img
+                  src="../public/d1-light.svg"
+                  alt="System context diagram with three columns. On the left are the actors. Volunteers browse events, search nearby, sign up, and check in and out. Staff and admins create events, publish or cancel them, manage rosters, and review history. In the center is the system, containing Event discovery, Event operations, and Identity and access. On the right are the domain entities: Events, Addresses, Roster and attendance, Availability, Change log, and Users and roles. Volunteers reach Event discovery by browsing, searching, and enrolling, and reach Event operations by checking in and out. Staff and admins reach Event operations by creating, publishing, and managing events, and reach Identity and access through privileged operations. Event discovery connects to Events and Addresses. Event operations connects to Events, Roster and attendance, Availability, and Change log. Identity and access connects to Users and roles."
+                />
+                <figcaption>
+                  System context for the volunteer event platform.
+                </figcaption>
+              </figure>
               <p>
                 While individually, these may look like small operational
                 nuisances, across a volunteer program running many events with
@@ -323,22 +452,7 @@
                   to find it.
                 </li>
               </ul>
-              <figure class="figure-center">
-                <source
-                  srcset="../public/d1.svg"
-                  media="(prefers-color-scheme: dark)"
-                />
-                <img
-                  src="../public/d1-light.svg"
-                  alt="System context diagram with three columns. On the left are the actors. Volunteers browse events, search nearby, sign up, and check in and out. Staff and admins create events, publish or cancel them, manage rosters, and review history. In the center is the system, containing Event discovery, Event operations, and Identity and access. On the right are the domain entities: Events, Addresses, Roster and attendance, Availability, Change log, and Users and roles. Volunteers reach Event discovery by browsing, searching, and enrolling, and reach Event operations by checking in and out. Staff and admins reach Event operations by creating, publishing, and managing events, and reach Identity and access through privileged operations. Event discovery connects to Events and Addresses. Event operations connects to Events, Roster and attendance, Availability, and Change log. Identity and access connects to Users and roles."
-                />
-                <figcaption>
-                  System context for the volunteer event platform. Volunteers
-                  interacted with event discovery and check-in flows, while
-                  staff and administrators handled event creation, publication,
-                  and roster management through privileged operations.
-                </figcaption>
-              </figure>
+
               <p>
                 The crux of the matter was that volunteers and staff were asking
                 for a system that understood what an event actually was and who
@@ -383,7 +497,8 @@
                 in the code's shape, not just in my ability to remember to check
                 a role. Despite the benefits, that boundary only lived in
                 application code, which was exactly the layer that gets
-                forgotten under time pressure and change.
+                forgotten under time pressure and change, and you are encouraged
+                to take that from experience.
               </p>
               <figure class="figure-center">
                 <source
@@ -394,16 +509,14 @@
                   src="../public/d1_v1.svg"
                   alt="Architecture diagram in four columns, with arrows flowing left to right. The first column is the browser, holding public event pages, a volunteer dashboard, and a staff dashboard. An arrow leads from the browser to the second column, the Next.js app, which holds server actions and route handlers, feature modules, and the React UI. From server actions and route handlers, two arrows branch out to the third column. A red arrow goes up to the auth data layer, which is drawn in red, and a black arrow goes down to the open data layer. Both layers then point into the fourth column, a dashed green boundary labeled Supabase. The red arrow from the auth data layer and the black arrow from the open data layer both land on a database cylinder containing events, addresses, user_event, event_change_log, and roles. Also inside the Supabase boundary are Supabase auth, PostgreSQL, and BLOB storage."
                 />
-                <figcaption>
-                  Runtime architecture. The browser talked only to the Next.js
-                  app, where server actions and route handlers split every
-                  database call down one of two paths. The open data layer
-                  served public reads, while the auth data layer carried
-                  anything that required an authenticated user.
-                </figcaption>
+                <figcaption>Runtime architecture.</figcaption>
               </figure>
               <p>
-                For this iteration, topology was never going to be the
+                The browser was to talk only to the Next.js app, where server
+                actions and route handlers split every database call down one of
+                two paths. The open data layer served public reads, while the
+                auth data layer carried anything that required an authenticated
+                user. For this iteration, topology was never going to be the
                 interesting part. The more interesting portion was what this
                 topology could and couldn't guarantee on its own.
               </p>
@@ -487,16 +600,7 @@
                   alt="Sequence diagram set inside a dashed box labeled Trusted server and db boundary, with lifelines for User, Supabase Auth, NextJS Server Action, App RBAC, PostgreSQL RLS, and Database. The User signs in to Supabase Auth, which runs a Custom Access Token Hook to mint an access token and add user roles, then returns a JWT to the User. The User sends a privileged action carrying that JWT to the NextJS Server Action, which calls App RBAC to verify the role. Two labeled outcomes branch from that check: a green role-allowed path continues into the boundary, and a red else path returns a clear application error straight back to the user, marked by a callout reading Better errors and early rejection. On the allowed path, the Server Action sends a policy evaluation with the JWT claims to PostgreSQL RLS, which asks whether the policy permits the row. A green outcome proceeds to the Database and commits; a red else outcome has the database reject the operation instead, marked by a second callout reading Actual enforcement boundary."
                 />
                 <figcaption>
-                  The full path from sign-in to a committed write. Supabase Auth
-                  mints an access token and a custom hook adds user roles before
-                  the JWT reaches the browser. A privileged action carries that
-                  JWT into the trusted server and database boundary, where App
-                  RBAC verifies the role first. A failed check returns a clear
-                  application error immediately. A passing check still has to
-                  clear PostgreSQL RLS, which evaluates the same claims against
-                  policy and the specific row being written. Only then does the
-                  operation commit. If the policy doesn't permit it, the
-                  database itself rejects the operation.
+                  The full path from sign-in to a committed write.
                 </figcaption>
               </figure>
               <p>
@@ -713,16 +817,6 @@
                 our client, it was worth the mental exercise, especially when
                 the solution was simple.
               </p>
-              <p>
-                The application-level check simply couldn't see the other
-                request while it was making its decision. The only place that
-                was actually true was inside the database, at the moment of the
-                write itself, so that was where the check had to live. So I made
-                the server execute an atomic transaction for the update. The
-                first request through succeeds and the second one gets rejected
-                with a clear capacity error instead of quietly overbooking the
-                event.
-              </p>
               <figure class="figure-center">
                 <source
                   srcset="../public/d4-concurrency-dark.svg"
@@ -733,28 +827,29 @@
                   alt="Sequence diagram titled Concurrent Enrollment Sequence, with five lifelines across the top: Volunteer A, Volunteer B, NextJS, DB, and Capacity trigger. Volunteer A is drawn in blue and Volunteer B in orange, and their messages follow those colors. Volunteer A signs up, then Volunteer B signs up. NextJS reads capacity for A, then reads capacity for B. A note reads that both requests may observe a single vacant position. NextJS then inserts a user_event row for A, followed by a user_event row for B. The capacity trigger fires before insert. It allows the first insert, so A receives enrolled. It raises a capacity exception on the second, so B receives event full."
                 />
                 <figcaption>
-                  Concurrent enrollment on the final open slot. Because both
-                  requests can read capacity before either writes, the
-                  application layer alone could not prevent an overbooking. A
-                  before-insert trigger on the database enforced the limit, so
-                  the first insert succeeds and the second raises a capacity
-                  exception that surfaces to the volunteer as an event full
-                  warning.
+                  Two volunteers racing for the last open slot.
                 </figcaption>
               </figure>
               <p>
-                The application check gives a volunteer a friendly "this event
-                is full" instead of a raw database error. It just wasn't the
-                thing actually holding the limit. That distinction, a check for
-                user-experience sitting on top of a check for correctness, was
-                the same one that showed up with authorization, and it showed up
-                again here for the same underlying reason: anything that only
-                runs in application memory can be raced, and anything that runs
-                inside the write itself cannot.
+                The application-level check isn't privy to the other request
+                while it was making its decision. The only place that was
+                actually true was inside the database, at the moment of the
+                write itself, so that was where the check had to live. So I made
+                the server execute an atomic transaction for the update. The
+                first request through succeeds and the second one patiently
+                waits its turn to check in for the last seat. Once released, the
+                application check returns a friendly "this event is full"
+                instead of a raw database error and doesn't overbook the event.
               </p>
+
               <p>
-                Correct event operations solved the coordinator's side of
-                things, but discovery hadn't been addressed. Volunteers could
+                That distinction, a check for user-experience sitting on top of
+                a check for correctness, was the same one that showed up with
+                authorization, and it showed up again here for the same
+                underlying reason: anything that only runs in application memory
+                can be raced, and anything that runs inside the write itself
+                cannot. Correct event operations solved the coordinator's side
+                of things, but discovery hadn't been addressed. Volunteers could
                 still only browse a flat list, with no sense of what was
                 actually near them.
               </p>
@@ -824,23 +919,16 @@
                   src="../public/s5.svg"
                   alt="Sequence diagram titled Storing Location, with five lifelines across the top: staff event form, NextJS server action, PostgreSQL, Geoapify, and PostGIS. The staff event form sends a street address to the NextJS server action. The server action saves the canonical address to PostgreSQL. It then makes an async geocode call to Geoapify, drawn as a dashed arrow. Geoapify returns a latitude and longitude to the server action. The server action then sends an update address location message across to PostGIS."
                 />
-                <figcaption>
-                  Address storage and geocoding. The canonical street address
-                  persists before any external call, so a slow or failing
-                  geocoder never blocks event creation. Geocoding runs
-                  asynchronously against Geoapify, and the return coordinates
-                  are written back as a PostGIS location that powers proximity
-                  search.
-                </figcaption>
+                <figcaption>Address storage and geocoding.</figcaption>
               </figure>
               <p>
                 Although the time between saving the address and resolving its
                 coordinates may only have been a few seconds, it had to be
-                accounted for. Even an event created just before the geocoder
-                went down still got created and showed up in every list that
-                didn't depend on location, while it patiently waited its turn to
-                become searchable by distance. Nothing about event creation
-                itself ever noticed the difference.
+                accounted for. As a result, an event created just before the
+                geocoder went down still got created and showed up in every list
+                that didn't depend on location, while it patiently waited its
+                turn to become searchable by distance. Nothing about event
+                creation itself ever noticed the difference.
               </p>
               <h3>Geography points and spatial indexing</h3>
               <p>
@@ -897,13 +985,7 @@
                   src="../public/d5v2.svg"
                   alt="Sequence diagram titled Finding Nearby Events, with five lifelines across the top: Volunteer Location, Nearby Events RPC, GIST Spatial Index, Events and Addresses, and Distance-sorted Results. Volunteer Location sends latitude, longitude, and radius to the Nearby Events RPC. The RPC calls ST_DWithin against the GIST Spatial Index. The index returns matching rows to Events and Addresses. Those rows are ordered nearest first into Distance-sorted Results, which are sent back to the browser."
                 />
-                <figcaption>
-                  Finding nearby events. A volunteer's coordinates and radius
-                  reach the RPC, which calls ST_DWithin against the GIST index
-                  rather than scanning every row. Matching rows are pulled from
-                  Events and Addresses, ordered nearest first, and returned to
-                  the browser already sorted.
-                </figcaption>
+                <figcaption>Finding nearby events.</figcaption>
               </figure>
               <p>
                 A volunteer's location and radius go in, the GIST index narrows
@@ -1253,6 +1335,19 @@
                 retry after a partial failure could just as easily create the
                 opposite kind of mismatch.
               </p>
+              <figure class="figure-center">
+                <source
+                  srcset="../public/s7-dark.svg"
+                  media="(prefers-color-scheme: dark)"
+                />
+                <img
+                  src="../public/s7.svg"
+                  alt="Change data capture pipeline diagram. The NextJS app sends inserts, updates, and deletes to PostgreSQL, which sits inside a green dotted boundary labeled canonical transaction layer. A red dashed arrow from the app directly to Elasticsearch is struck through with a large red cross and labeled no synchronous dual writes. Postgres commits to the write-ahead log, which reaches Debezium by logical replication. Debezium emits a CDC event to a Redpanda topic. An indexer consumes from that topic ordered by event_id and upserts or deletes documents in the Elasticsearch index named events_v1, which sits inside a purple dotted boundary labeled disposable derived search index. The indexer also performs an address lookup back against PostgreSQL. A note beside the indexer lists its work: join geo data by address_id, convert Debezium date integers, extract latitude and longitude, and handle deleted records."
+                />
+                <figcaption>
+                  Search index synchronization by change data capture.
+                </figcaption>
+              </figure>
               <p>
                 So I decided that the application would never write to
                 Elasticsearch directly, instead, it wrote to Postgres exactly as
@@ -1279,7 +1374,10 @@
                 crash, and event creation could still be relied upon to stay
                 online. The only casualty was how fresh search results were.
                 This tradeoff in correctness was one that we agreed that we
-                could accept.
+                could accept. While this represented the entire mechanism for
+                getting a change from Postgres into the index, it did not answer
+                what Elasticsearch would actually do with that data once it
+                arrived nor how it would decide which result to show first.
               </p>
               <blockquote class="info-quote">
                 <span class="info-quote-icon" aria-hidden="true">i</span>
@@ -1293,30 +1391,6 @@
                 tradeoff worth revisiting, and I come back to it later when
                 talking about what I'd change if I did this again.
               </blockquote>
-              <figure class="figure-center">
-                <source
-                  srcset="../public/s7-dark.svg"
-                  media="(prefers-color-scheme: dark)"
-                />
-                <img
-                  src="../public/s7.svg"
-                  alt="Change data capture pipeline diagram. The NextJS app sends inserts, updates, and deletes to PostgreSQL, which sits inside a green dotted boundary labeled canonical transaction layer. A red dashed arrow from the app directly to Elasticsearch is struck through with a large red cross and labeled no synchronous dual writes. Postgres commits to the write-ahead log, which reaches Debezium by logical replication. Debezium emits a CDC event to a Redpanda topic. An indexer consumes from that topic ordered by event_id and upserts or deletes documents in the Elasticsearch index named events_v1, which sits inside a purple dotted boundary labeled disposable derived search index. The indexer also performs an address lookup back against PostgreSQL. A note beside the indexer lists its work: join geo data by address_id, convert Debezium date integers, extract latitude and longitude, and handle deleted records."
-                />
-                <figcaption>
-                  Search index synchronization by change data capture. The
-                  application writes only to Postgres, which remains the sole
-                  canonical transaction layer. Changes propagate through the WAL
-                  log to Debezium and a Redpanda topic, where an indexer
-                  consumes them in event order, enriches each record with geo
-                  data looked up by address_id, and upserts into events_v1.
-                </figcaption>
-              </figure>
-              <p>
-                That's the whole mechanism for getting a change from Postgres
-                into the index. What Elasticsearch actually did with that data
-                once it arrived, deciding which result to show first, was a
-                separate problem entirely.
-              </p>
               <h3>Elasticsearch ranked, Postgres hydrated</h3>
               <p>
                 Getting text into an index solved matching. It didn't solve
@@ -1815,7 +1889,10 @@ return err("app.event.not_found", { message: "This event could not be found." },
                   srcset="../public/d12-1-dark.svg"
                   media="(prefers-color-scheme: dark)"
                 />
-                <img src="../public/d12-1.svg" alt="Diagram of the Result&lt;Data, Error&gt; return flow" />
+                <img
+                  src="../public/d12-1.svg"
+                  alt="Diagram of the Result&lt;Data, Error&gt; return flow"
+                />
                 <figcaption>
                   The return of any function that can fail returns
                   <code>Result&lt;Data, Error&gt;</code>.
