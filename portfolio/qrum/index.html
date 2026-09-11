@@ -3,13 +3,20 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="../../src/styles/styles.css" />
     <link
-      rel="icon"
-      type="image/png"
-      sizes="32x32"
-      href="../../src/assets/brand/geo-webpage-logo.png"
+    rel="icon"
+    type="image/png"
+    sizes="32x32"
+    href="../../src/assets/brand/geo-webpage-logo.png"
     />
+    <link
+    href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-coy.min.css"
+    rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../../src/styles/styles.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-typescript.min.js"></script>
     <title>Qrum | Geo Archbold | SWE</title>
     <meta
       name="description"
@@ -1871,12 +1878,20 @@
                 different values the compiler can tell apart, not two generic
                 exceptions that happen to carry different text.
               </p>
-              <pre class="code-block"><code>type EventNotFound = {
+              <pre class="">
+                <code class="language-typescript">
+type EventNotFound = {
   type: "app.event.not_found";
   message: string;
 };
 
-return err("app.event.not_found", { message: "This event could not be found." }, qrumLogger);</code></pre>
+return err(
+  "app.event.not_found", 
+  { message: "This event could not be found." }, 
+  logger
+);
+                </code>
+              </pre>
               <p>
                 The rule that makes this actually hold together is simple,
                 <code>err()</code> logs automatically, so nothing downstream is
@@ -2070,13 +2085,17 @@ if (error) handleStreamError(error);
                 sections on the same page represent three independent chances to
                 fail without one dragging the other two along.
               </p>
-              <pre
-                class="code-block"
-              ><code>&lt;ErrorBoundary testId="error-roster" fallback={&lt;Text c="red.4"&gt;Failed to load roster.&lt;/Text&gt;}&gt;
+              <pre class="code-block">
+                <code class="language-typescript">
+&lt;ErrorBoundary 
+  testId="error-roster" 
+  fallback={&lt;Text c="red.4"&gt;Failed to load roster.&lt;/Text&gt;}&gt;
   &lt;Suspense fallback={&lt;RosterLoading /&gt;}&gt;
     &lt;Roster rosterPromise={getRosterData(id, event)} /&gt;
   &lt;/Suspense&gt;
-&lt;/ErrorBoundary&gt;</code></pre>
+&lt;/ErrorBoundary&gt;
+                </code>
+              </pre>
               <p>
                 Boundaries only ever catch what gets thrown during rendering,
                 component bodies, <code>use()</code>, lifecycle methods. Nothing
