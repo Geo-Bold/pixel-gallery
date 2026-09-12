@@ -1,22 +1,41 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="../../src/styles/styles.css" />
     <link
       rel="icon"
       type="image/png"
       sizes="32x32"
       href="../../src/assets/brand/geo-webpage-logo.png"
     />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-coy.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../../src/styles/styles.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-typescript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markup.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-jsx.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-rust.min.js"></script>
     <title>Qrum | Geo Archbold | SWE</title>
-    <meta name="description" content="Case study: Qrum, a volunteer management platform with RBAC, PostGIS search, Elasticsearch, and a Redis rate limiter." />
+    <meta
+      name="description"
+      content="Case study: Qrum, a volunteer management platform with RBAC, PostGIS search, Elasticsearch, and a Redis rate limiter."
+    />
     <meta property="og:title" content="Qrum | Geo Archbold | SWE" />
-    <meta property="og:description" content="Case study: Qrum, a volunteer management platform with RBAC, PostGIS search, Elasticsearch, and a Redis rate limiter." />
+    <meta
+      property="og:description"
+      content="Case study: Qrum, a volunteer management platform with RBAC, PostGIS search, Elasticsearch, and a Redis rate limiter."
+    />
     <meta property="og:type" content="article" />
     <meta property="og:url" content="https://geobold.dev/portfolio/qrum/" />
-    <meta property="og:image" content="https://geobold.dev/src/assets/images/qrum-events.png" />
+    <meta
+      property="og:image"
+      content="https://geobold.dev/src/assets/images/qrum-events.png"
+    />
   </head>
 
   <body>
@@ -109,23 +128,25 @@
               </div>
               <h2>Preface</h2>
               <p class="normal-text">
-                Early in my education, while I was still making buttons change
-                colors and learning about time complexities, I desired to obtain
-                a consistent system for measuring my own progress. Initially, I
-                determined that the more I could implement from memory, the more
-                developed I was becoming. With the advent of AI, I began to
-                measure my progress by the number of technologies I could learn
-                or features I could build. If an application functioned and the
-                interface looked polished, I considered it complete. This all
-                changed over the last two years of my professional experience
-                building the ProcECS Engine. It was here that I began to
-                appreciate the sheer scale of building production software,
-                maintaining existing systems, and studying how large-scale
-                applications are designed; I realized that writing code is only
-                a small part of engineering. The more difficult questions
-                revolve around preserving data integrity, designing clear system
-                boundaries, understanding tradeoffs, and building software that
-                remains correct as requirements evolve.
+                Early in my education, while I was making buttons change colors
+                and just learning about time complexities, I desired to obtain a
+                consistent system for measuring my own progress. Initially, I
+                determined that implementation from memory would be the metric
+                upon which my progress was measured. That measure did not live
+                long. As AI tooling improved, implementation was no longer
+                limited by recall. While this saddened me, it was during work on
+                the ProcECS Engine that it dawned on me: implementation does not
+                equate to comprehension. During a meeting to introduce a newly
+                implemented feature, a bug was discovered and I realized to my
+                horror that although I had "owned" the feature, its ownership
+                escaped me. That moment was pivotal to my appreciation for the
+                sheer scale of building production software, maintaining
+                existing systems, and my hunger for studying how large-scale
+                applications are designed. I now know that writing code has
+                always been a minute fraction of engineering. The more difficult
+                questions revolve around preserving data integrity, designing
+                clear system boundaries, understanding tradeoffs, and building
+                software that remains correct as requirements evolve.
               </p>
               <p>
                 That shift in perspective was what led to Qrum. The project
@@ -144,48 +165,168 @@
                 projects.
               </p>
               <p>
-                Each new feature was introduced to solve a specific problem
-                encountered during development. Authorization evolved beyond UI
-                checks into a layered security model backed by PostgreSQL
-                Row-Level Security. Event management became a system of explicit
-                lifecycle transitions protected by database invariants instead
-                of simple CRUD operations. Search progressed from
-                straightforward SQL queries to measured comparisons between
-                PostgreSQL Full-Text Search and Elasticsearch before introducing
-                a change-data-capture pipeline to keep search infrastructure
-                separate from transactional writes. Along the way I added
-                structured logging, observability, deployment automation, and
-                operational tooling, not because the technologies themselves
-                were the goal, but because each addressed a concrete limitation
-                uncovered in discussions with the client and limitations in
-                previous iterations.
-              </p>
-              <p>
-                This document follows that progression. Rather than presenting
-                the final architecture in isolation, I seek to elaborate on how
-                the system evolved, why each decision was made, the alternatives
-                that were considered, and the tradeoffs that shaped its current
-                design. My goal is two-fold: primarily, I wish to show the
-                reasoning process behind the architecture of a system that I
-                designed and secondarily, but of no less importance, I wish to
-                create a permanent record, for myself and others, to appreciate
-                the hundreds of hours committed to solving these problems;
-                decisions and designs that I can hopefully someday look back
-                upon fondly.
+                Rather than presenting the final architecture in isolation, I
+                seek to elaborate on how the system evolved, why each decision
+                was made, the alternatives that were considered, and the
+                tradeoffs that shaped its current design. My goal is two-fold.
+                Primarily, I wish to show the reasoning behind the architecture
+                of a system I designed. Secondarily, and of no less importance,
+                I want a permanent record of the part of this work that could
+                not be produced on my behalf. Today, with AI, any fool can claim
+                a project. I say this having been that fool. Wrong decisions,
+                discarded alternatives, and hundreds of hours spent laboring
+                toward each answer cannot be claimed so easily, belonging
+                instead to those determined enough to do the work. They also
+                fade with time. And so I sit and write, before these fragments
+                in my mind flee at last.
               </p>
             </div>
             <div class="toc-section">
               <h2>Overview</h2>
               <p>
-                Qrum is a volunteer management and event-discovery platform. It
-                was built directly with a nonprofit running volunteer programs.
-                During conversations with staff and coordinators, we realized
-                that events were being managed and tracked by hand; whether a
-                sign-up spreadsheet, a separate form for new event or mass
-                emails for changes and alerts, each method provided concrete
-                limitations and no reliable way to answer basic questions about
-                who was confirmed, whether an event was actually full, or what
-                had changed since last week.
+                Qrum is a volunteer management and event-discovery platform,
+                built as a university capstone for a nonprofit whose volunteer
+                program ran on spreadsheets, sign-up forms, and mass emails.
+                Volunteers used it to find and enroll in events near them, staff
+                coordinators created events and managed rosters, and
+                administrators oversaw user accounts and change history. I
+                designed its architecture, a Next.js and TypeScript application
+                on self-hosted Supabase, with PostgreSQL and PostGIS at the core
+                and Elasticsearch, Redis, and a Grafana observability stack
+                around it.
+              </p>
+              <p>
+                Breathe. With the word-salad tech-vomit out of the way, we can
+                start delving in problem solving approach which basically
+                consisted of treating the organization's rules as guarantees the
+                system ought to keep on its own. One database held the truth,
+                and everything else in the diagram below was built around it.
+                This was imperative since I wanted to ensure any complexity
+                added would not result in subtle concurrency or correctness bugs
+                down the road.
+              </p>
+              <figure class="figure-center">
+                <source
+                  srcset="../public/architecture-dark.svg"
+                  media="(prefers-color-scheme: dark)"
+                />
+                <img
+                  src="../public/architecture.svg"
+                  alt="System architecture diagram titled Qrum System Architecture. A browser in the top right corner sends requests to a Cloudflare edge bar, which forwards them into a dashed box labeled Server and onto a cloudflared bar. From cloudflared, an arrow labeled req enters the App tier, a blue group containing Next.js, Redis, and app.log. Next.js sends rate limit checks down to Redis and writes to app.log, which feeds a pink Observability group where Grafana Alloy flows into Loki and then into Grafana. Next.js also sends queries to a green Supabase group, where Kong routes to PostgREST, GoTrue, Storage, and Realtime, which in turn reach Postgres 17 with PostGIS. An arrow labeled WAL leaves Postgres and drops into a purple Search group. Inside it, Debezium publishes topics to Redpanda, an Indexer consumes from Redpanda and upserts into Elasticsearch, and an arrow labeled enrichment reads runs from the Indexer back up to Kong. A second arrow labeled queries runs from Next.js directly to Elasticsearch."
+                />
+                <figcaption>The complete Qrum architecture.</figcaption>
+              </figure>
+              <p>
+                My two years building the
+                <a href="../procecs/" class="section-link">ProcECS Engine</a>
+                taught me that permission checks that can be forgotten, will.
+                Under deadline pressure, checks that require engineers to
+                remember are the ones that will inevitably fail. There, I had
+                assembled protection against it haphazardly. In Qrum I wrote the
+                threat vectors down first and built against them, so the
+                question of who could see a volunteer's phone number was
+                <a
+                  href="#authorization-at-the-application-and-database-layers"
+                  class="section-link"
+                  >answered twice</a
+                >, once by the application so people got a clear explanation,
+                and once by the database, which refused no matter what the code
+                above it forgot to ask. A new teammate could ship a careless
+                feature on their first day and still not be able to spill the
+                roster.
+              </p>
+              <p>
+                Perhaps this might be ironic after seeing the search
+                infrastructure in <em>Figure 1</em>, but I insist that search is
+                where the project shows the most restraint. Volunteers wanted
+                something nearby, soon, and worth giving up a Saturday for, and
+                they typed it with typos and wanted results ordered by distance,
+                relevance, and speed. The nearby part came cheaply, since
+                <a
+                  href="#move-geographic-computation-into-postgis"
+                  class="section-link"
+                  >the database I already had</a
+                >
+                could find every event within a few miles of a volunteer in less
+                time than it takes to blink. The rest eventually meant bringing
+                in Elasticsearch, a dedicated search engine, but I refused to
+                add the equivalent of a nuclear reactor to a small sedan on a
+                hunch. First I
+                <a
+                  href="#from-string-matching-to-search-engineering"
+                  class="section-link"
+                  >built a test with a million fake events</a
+                >
+                and made the database prove it couldn't keep up. It mostly
+                could. But it couldn't forgive a misspelling while weighing
+                distance, date, and relevance together. That is what earned
+                Elasticsearch its place as a new tool. I had experienced the
+                limitations of a design's cost in production, and I swore to try
+                my best to never repeat it.
+              </p>
+              <p>
+                What I'm proudest of is how Qrum behaved on its worst day. The
+                search engine, change-data-capture pipeline, and the third-party
+                API could each fail on their own, and every one of those
+                failures had a name and a ceiling. Search might fall a little
+                behind or go dark for a while. Nobody lost a sign-up, no event
+                vanished, and because
+                <a href="#a-derived-search-system" class="section-link"
+                  >search only ever decided the order of results</a
+                >, it could never tell a volunteer that a full event had room. I
+                can point at every piece I added around the database and tell
+                you
+                <a
+                  href="#failure-modes-are-part-of-the-architecture"
+                  class="section-link"
+                  >what breaks when I pull its plug</a
+                >, and in the whole design there was exactly one warning sign
+                worth waking up for at three in the morning. At ProcECS I
+                learned to build as though the network will fail, mostly by
+                watching it fail. Qrum was the first time I planned for it
+                before it happened.
+              </p>
+              <p>
+                The last thing I'd point out is that Qrum was built to be lived
+                with, which matters more than it sounds once software outlives
+                the person who wrote it. Every failure
+                <a href="#a-typed-contract-for-failure" class="section-link"
+                  >was recorded exactly once</a
+                >, in one consistent shape, at the moment it happened, and
+                landed
+                <a
+                  href="#from-working-code-to-an-operable-system"
+                  class="section-link"
+                  >somewhere searchable</a
+                >
+                instead of scrolling off a screen. A volunteer who hit a problem
+                saw a message written for them, and one broken panel on a page
+                didn't drag the rest of the page down with it. At ProcECS I was
+                once handed a service that had run quietly for three years,
+                whose author had left and which nobody remaining could explain
+                or wanted to touch. I never want to build one of those. Qrum's
+                code is organized so the next engineer can see how it works from
+                its shape alone, and this write-up exists so they can see why.
+              </p>
+              <p>
+                While on their own, none of those pieces is exotic, each one
+                exists because something simple stopped being enough. The rest
+                of this case study is the story of each limitation, told in the
+                order they appeared. It starts from a plain data model that
+                worked, walks through each limitation, and finally closes with
+                the decision that solved it.
+              </p>
+            </div>
+            <div class="toc-section">
+              <h2>The Problem</h2>
+              <p>
+                During conversations with the nonprofit's staff and
+                coordinators, we realized that events were being managed and
+                tracked by hand; whether a sign-up spreadsheet, a separate form
+                for new event or mass emails for changes and alerts, each method
+                provided concrete limitations and no reliable way to answer
+                basic questions about who was confirmed, whether an event was
+                actually full, or what had changed since last week.
               </p>
               <figure class="figure-center">
                 <source
@@ -198,48 +339,21 @@
                 />
                 <figcaption>
                   Events sat at the center of both sides of the problem.
-                  Volunteers struggled to find opportunities without
-                  multi-signal search, the nonprofit ran intake on spreadsheets
-                  and forms, and neither side had immediate visibility into
-                  event capacity.
                 </figcaption>
               </figure>
               <p>
-                After several conversations with the client, we determined that
-                this was less of a limitation of technology than a
-                domain-modeling one. General purpose tools were being asked to
-                represent things they were never built to hold: event
-                lifecycles, capacity limits, roster changes that should show
-                history, and information that was public for some people and
-                sensitive for others. Volunteers, who needed to find something
-                worth showing up for nearby and soon, and staff, who needed to
-                trust that what the system told them was actually true, were
-                both being underserved.
-              </p>
-              <p>
-                Three groups used the resulting system day to day: volunteers
-                browsing and enrolling, staff coordinators creating and managing
-                events and rosters, and administrators with oversight into log
-                history and user accounts that the other two didn't need.
-              </p>
-              <p>
-                The approach throughout was to treat these as system invariants,
-                not screens the interface had to display correctly. This case
-                study follows the project in the order its limitations actually
-                appeared, starting from a plain data model that worked at first,
-                through each specific limitation that made it insufficient and
-                finally to the decision that closed it.
-              </p>
-            </div>
-            <div class="toc-section">
-              <h2>The Problem</h2>
-              <p>
+                Over several more conversations, we determined that this was
+                less of a limitation of technology than a domain-modeling one.
                 Every shortcoming traced back to the fact that the tools in use
                 had no concept of the domain they were being asked to manage. A
                 spreadsheet didn't know what an event actually represented, it
                 just held rows; it didn't know an event had a capacity, a state
-                it moved through, or a history worth keeping. What followed was
-                the cost of this absence to the two groups using it daily.
+                it moved through, a history worth keeping, or which of its
+                details were public and which were sensitive. Volunteers, who
+                needed to find something worth showing up for nearby and soon,
+                and staff, who needed to trust that what the system told them
+                was actually true, were both being underserved. What followed
+                was the cost of this absence to the two groups using it daily.
               </p>
               <h3>Volunteers</h3>
               <p>
@@ -280,6 +394,19 @@
                 shared, whether or not everyone with access to it should have
                 had it. Let's not even begin to mention the potential liability.
               </p>
+              <figure class="figure-center">
+                <source
+                  srcset="../public/d1.svg"
+                  media="(prefers-color-scheme: dark)"
+                />
+                <img
+                  src="../public/d1-light.svg"
+                  alt="System context diagram with three columns. On the left are the actors. Volunteers browse events, search nearby, sign up, and check in and out. Staff and admins create events, publish or cancel them, manage rosters, and review history. In the center is the system, containing Event discovery, Event operations, and Identity and access. On the right are the domain entities: Events, Addresses, Roster and attendance, Availability, Change log, and Users and roles. Volunteers reach Event discovery by browsing, searching, and enrolling, and reach Event operations by checking in and out. Staff and admins reach Event operations by creating, publishing, and managing events, and reach Identity and access through privileged operations. Event discovery connects to Events and Addresses. Event operations connects to Events, Roster and attendance, Availability, and Change log. Identity and access connects to Users and roles."
+                />
+                <figcaption>
+                  System context for the volunteer event platform.
+                </figcaption>
+              </figure>
               <p>
                 While individually, these may look like small operational
                 nuisances, across a volunteer program running many events with
@@ -323,22 +450,7 @@
                   to find it.
                 </li>
               </ul>
-              <figure class="figure-center">
-                <source
-                  srcset="../public/d1.svg"
-                  media="(prefers-color-scheme: dark)"
-                />
-                <img
-                  src="../public/d1-light.svg"
-                  alt="System context diagram with three columns. On the left are the actors. Volunteers browse events, search nearby, sign up, and check in and out. Staff and admins create events, publish or cancel them, manage rosters, and review history. In the center is the system, containing Event discovery, Event operations, and Identity and access. On the right are the domain entities: Events, Addresses, Roster and attendance, Availability, Change log, and Users and roles. Volunteers reach Event discovery by browsing, searching, and enrolling, and reach Event operations by checking in and out. Staff and admins reach Event operations by creating, publishing, and managing events, and reach Identity and access through privileged operations. Event discovery connects to Events and Addresses. Event operations connects to Events, Roster and attendance, Availability, and Change log. Identity and access connects to Users and roles."
-                />
-                <figcaption>
-                  System context for the volunteer event platform. Volunteers
-                  interacted with event discovery and check-in flows, while
-                  staff and administrators handled event creation, publication,
-                  and roster management through privileged operations.
-                </figcaption>
-              </figure>
+
               <p>
                 The crux of the matter was that volunteers and staff were asking
                 for a system that understood what an event actually was and who
@@ -383,7 +495,8 @@
                 in the code's shape, not just in my ability to remember to check
                 a role. Despite the benefits, that boundary only lived in
                 application code, which was exactly the layer that gets
-                forgotten under time pressure and change.
+                forgotten under time pressure and change, and you are encouraged
+                to take that from experience.
               </p>
               <figure class="figure-center">
                 <source
@@ -394,16 +507,14 @@
                   src="../public/d1_v1.svg"
                   alt="Architecture diagram in four columns, with arrows flowing left to right. The first column is the browser, holding public event pages, a volunteer dashboard, and a staff dashboard. An arrow leads from the browser to the second column, the Next.js app, which holds server actions and route handlers, feature modules, and the React UI. From server actions and route handlers, two arrows branch out to the third column. A red arrow goes up to the auth data layer, which is drawn in red, and a black arrow goes down to the open data layer. Both layers then point into the fourth column, a dashed green boundary labeled Supabase. The red arrow from the auth data layer and the black arrow from the open data layer both land on a database cylinder containing events, addresses, user_event, event_change_log, and roles. Also inside the Supabase boundary are Supabase auth, PostgreSQL, and BLOB storage."
                 />
-                <figcaption>
-                  Runtime architecture. The browser talked only to the Next.js
-                  app, where server actions and route handlers split every
-                  database call down one of two paths. The open data layer
-                  served public reads, while the auth data layer carried
-                  anything that required an authenticated user.
-                </figcaption>
+                <figcaption>Runtime architecture.</figcaption>
               </figure>
               <p>
-                For this iteration, topology was never going to be the
+                The browser was to talk only to the Next.js app, where server
+                actions and route handlers split every database call down one of
+                two paths. The open data layer served public reads, while the
+                auth data layer carried anything that required an authenticated
+                user. For this iteration, topology was never going to be the
                 interesting part. The more interesting portion was what this
                 topology could and couldn't guarantee on its own.
               </p>
@@ -487,16 +598,7 @@
                   alt="Sequence diagram set inside a dashed box labeled Trusted server and db boundary, with lifelines for User, Supabase Auth, NextJS Server Action, App RBAC, PostgreSQL RLS, and Database. The User signs in to Supabase Auth, which runs a Custom Access Token Hook to mint an access token and add user roles, then returns a JWT to the User. The User sends a privileged action carrying that JWT to the NextJS Server Action, which calls App RBAC to verify the role. Two labeled outcomes branch from that check: a green role-allowed path continues into the boundary, and a red else path returns a clear application error straight back to the user, marked by a callout reading Better errors and early rejection. On the allowed path, the Server Action sends a policy evaluation with the JWT claims to PostgreSQL RLS, which asks whether the policy permits the row. A green outcome proceeds to the Database and commits; a red else outcome has the database reject the operation instead, marked by a second callout reading Actual enforcement boundary."
                 />
                 <figcaption>
-                  The full path from sign-in to a committed write. Supabase Auth
-                  mints an access token and a custom hook adds user roles before
-                  the JWT reaches the browser. A privileged action carries that
-                  JWT into the trusted server and database boundary, where App
-                  RBAC verifies the role first. A failed check returns a clear
-                  application error immediately. A passing check still has to
-                  clear PostgreSQL RLS, which evaluates the same claims against
-                  policy and the specific row being written. Only then does the
-                  operation commit. If the policy doesn't permit it, the
-                  database itself rejects the operation.
+                  The full path from sign-in to a committed write.
                 </figcaption>
               </figure>
               <p>
@@ -713,16 +815,6 @@
                 our client, it was worth the mental exercise, especially when
                 the solution was simple.
               </p>
-              <p>
-                The application-level check simply couldn't see the other
-                request while it was making its decision. The only place that
-                was actually true was inside the database, at the moment of the
-                write itself, so that was where the check had to live. So I made
-                the server execute an atomic transaction for the update. The
-                first request through succeeds and the second one gets rejected
-                with a clear capacity error instead of quietly overbooking the
-                event.
-              </p>
               <figure class="figure-center">
                 <source
                   srcset="../public/d4-concurrency-dark.svg"
@@ -733,28 +825,29 @@
                   alt="Sequence diagram titled Concurrent Enrollment Sequence, with five lifelines across the top: Volunteer A, Volunteer B, NextJS, DB, and Capacity trigger. Volunteer A is drawn in blue and Volunteer B in orange, and their messages follow those colors. Volunteer A signs up, then Volunteer B signs up. NextJS reads capacity for A, then reads capacity for B. A note reads that both requests may observe a single vacant position. NextJS then inserts a user_event row for A, followed by a user_event row for B. The capacity trigger fires before insert. It allows the first insert, so A receives enrolled. It raises a capacity exception on the second, so B receives event full."
                 />
                 <figcaption>
-                  Concurrent enrollment on the final open slot. Because both
-                  requests can read capacity before either writes, the
-                  application layer alone could not prevent an overbooking. A
-                  before-insert trigger on the database enforced the limit, so
-                  the first insert succeeds and the second raises a capacity
-                  exception that surfaces to the volunteer as an event full
-                  warning.
+                  Two volunteers racing for the last open slot.
                 </figcaption>
               </figure>
               <p>
-                The application check gives a volunteer a friendly "this event
-                is full" instead of a raw database error. It just wasn't the
-                thing actually holding the limit. That distinction, a check for
-                user-experience sitting on top of a check for correctness, was
-                the same one that showed up with authorization, and it showed up
-                again here for the same underlying reason: anything that only
-                runs in application memory can be raced, and anything that runs
-                inside the write itself cannot.
+                The application-level check isn't privy to the other request
+                while it was making its decision. The only place that was
+                actually true was inside the database, at the moment of the
+                write itself, so that was where the check had to live. So I made
+                the server execute an atomic transaction for the update. The
+                first request through succeeds and the second one patiently
+                waits its turn to check in for the last seat. Once released, the
+                application check returns a friendly "this event is full"
+                instead of a raw database error and doesn't overbook the event.
               </p>
+
               <p>
-                Correct event operations solved the coordinator's side of
-                things, but discovery hadn't been addressed. Volunteers could
+                That distinction, a check for user-experience sitting on top of
+                a check for correctness, was the same one that showed up with
+                authorization, and it showed up again here for the same
+                underlying reason: anything that only runs in application memory
+                can be raced, and anything that runs inside the write itself
+                cannot. Correct event operations solved the coordinator's side
+                of things, but discovery hadn't been addressed. Volunteers could
                 still only browse a flat list, with no sense of what was
                 actually near them.
               </p>
@@ -824,23 +917,16 @@
                   src="../public/s5.svg"
                   alt="Sequence diagram titled Storing Location, with five lifelines across the top: staff event form, NextJS server action, PostgreSQL, Geoapify, and PostGIS. The staff event form sends a street address to the NextJS server action. The server action saves the canonical address to PostgreSQL. It then makes an async geocode call to Geoapify, drawn as a dashed arrow. Geoapify returns a latitude and longitude to the server action. The server action then sends an update address location message across to PostGIS."
                 />
-                <figcaption>
-                  Address storage and geocoding. The canonical street address
-                  persists before any external call, so a slow or failing
-                  geocoder never blocks event creation. Geocoding runs
-                  asynchronously against Geoapify, and the return coordinates
-                  are written back as a PostGIS location that powers proximity
-                  search.
-                </figcaption>
+                <figcaption>Address storage and geocoding.</figcaption>
               </figure>
               <p>
                 Although the time between saving the address and resolving its
                 coordinates may only have been a few seconds, it had to be
-                accounted for. Even an event created just before the geocoder
-                went down still got created and showed up in every list that
-                didn't depend on location, while it patiently waited its turn to
-                become searchable by distance. Nothing about event creation
-                itself ever noticed the difference.
+                accounted for. As a result, an event created just before the
+                geocoder went down still got created and showed up in every list
+                that didn't depend on location, while it patiently waited its
+                turn to become searchable by distance. Nothing about event
+                creation itself ever noticed the difference.
               </p>
               <h3>Geography points and spatial indexing</h3>
               <p>
@@ -897,13 +983,7 @@
                   src="../public/d5v2.svg"
                   alt="Sequence diagram titled Finding Nearby Events, with five lifelines across the top: Volunteer Location, Nearby Events RPC, GIST Spatial Index, Events and Addresses, and Distance-sorted Results. Volunteer Location sends latitude, longitude, and radius to the Nearby Events RPC. The RPC calls ST_DWithin against the GIST Spatial Index. The index returns matching rows to Events and Addresses. Those rows are ordered nearest first into Distance-sorted Results, which are sent back to the browser."
                 />
-                <figcaption>
-                  Finding nearby events. A volunteer's coordinates and radius
-                  reach the RPC, which calls ST_DWithin against the GIST index
-                  rather than scanning every row. Matching rows are pulled from
-                  Events and Addresses, ordered nearest first, and returned to
-                  the browser already sorted.
-                </figcaption>
+                <figcaption>Finding nearby events.</figcaption>
               </figure>
               <p>
                 A volunteer's location and radius go in, the GIST index narrows
@@ -1253,6 +1333,19 @@
                 retry after a partial failure could just as easily create the
                 opposite kind of mismatch.
               </p>
+              <figure class="figure-center">
+                <source
+                  srcset="../public/s7-dark.svg"
+                  media="(prefers-color-scheme: dark)"
+                />
+                <img
+                  src="../public/s7.svg"
+                  alt="Change data capture pipeline diagram. The NextJS app sends inserts, updates, and deletes to PostgreSQL, which sits inside a green dotted boundary labeled canonical transaction layer. A red dashed arrow from the app directly to Elasticsearch is struck through with a large red cross and labeled no synchronous dual writes. Postgres commits to the write-ahead log, which reaches Debezium by logical replication. Debezium emits a CDC event to a Redpanda topic. An indexer consumes from that topic ordered by event_id and upserts or deletes documents through the events_read alias into Elasticsearch, backed by the events_v2 index, which sits inside a purple dotted boundary labeled disposable derived search index. The indexer also performs an address lookup back against PostgreSQL. A note beside the indexer lists its work: join geo data by address_id, convert Debezium date integers, extract latitude and longitude, and handle deleted records."
+                />
+                <figcaption>
+                  Search index synchronization by change data capture.
+                </figcaption>
+              </figure>
               <p>
                 So I decided that the application would never write to
                 Elasticsearch directly, instead, it wrote to Postgres exactly as
@@ -1274,12 +1367,30 @@
                 search in under a second.
               </p>
               <p>
-                That was the whole point of building it this way. Redpanda could
-                go down, Elasticsearch could catch fire, the indexer could
-                crash, and event creation could still be relied upon to stay
-                online. The only casualty was how fresh search results were.
-                This tradeoff in correctness was one that we agreed that we
-                could accept.
+                The indexer started as a simple consumer watching the events
+                table, and joining in the address row to pull geo coordinates
+                before upserting the result into Elasticsearch. This wasn't
+                complete. An event's search document is really composed from
+                four different tables: its own row, address, tags, and roster.
+                Only watching the event table itself meant that changes were
+                only ever recorded when the event row itself changed. An address
+                correction or a re-geocode could sail past it entirely, leaving
+                a stale location sitting in the index with nothing to invalidate
+                it. The production indexer watches all four tables directly, and
+                a change to any one of them re-derives just the piece of the
+                document it owns, keeping searches fresh and ensuring changes
+                propogate correctly.
+              </p>
+              <p>
+                This was built to ensure robustness. Redpanda could go down,
+                Elasticsearch could catch fire, the indexer could crash, and
+                event creation could still be relied upon to stay online. The
+                only casualty was how fresh search results were. This tradeoff
+                in correctness was one that we agreed that we could accept.
+                While this represented the entire mechanism for getting a change
+                from Postgres into the index, it did not answer what
+                Elasticsearch would actually do with that data once it arrived
+                nor how it would decide which result to show first.
               </p>
               <blockquote class="info-quote">
                 <span class="info-quote-icon" aria-hidden="true">i</span>
@@ -1288,35 +1399,8 @@
                 an explicit change record as part of its own transaction. Outbox
                 was the more production-correct answer at scale, since it
                 decoupled whatever was consuming those changes from the table's
-                actual schema. With exactly one consumer that I also owned, raw
-                CDC stayed simpler and that coupling cost nothing yet. It was a
-                tradeoff worth revisiting, and I come back to it later when
-                talking about what I'd change if I did this again.
+                actual schema.
               </blockquote>
-              <figure class="figure-center">
-                <source
-                  srcset="../public/s7-dark.svg"
-                  media="(prefers-color-scheme: dark)"
-                />
-                <img
-                  src="../public/s7.svg"
-                  alt="Change data capture pipeline diagram. The NextJS app sends inserts, updates, and deletes to PostgreSQL, which sits inside a green dotted boundary labeled canonical transaction layer. A red dashed arrow from the app directly to Elasticsearch is struck through with a large red cross and labeled no synchronous dual writes. Postgres commits to the write-ahead log, which reaches Debezium by logical replication. Debezium emits a CDC event to a Redpanda topic. An indexer consumes from that topic ordered by event_id and upserts or deletes documents in the Elasticsearch index named events_v1, which sits inside a purple dotted boundary labeled disposable derived search index. The indexer also performs an address lookup back against PostgreSQL. A note beside the indexer lists its work: join geo data by address_id, convert Debezium date integers, extract latitude and longitude, and handle deleted records."
-                />
-                <figcaption>
-                  Search index synchronization by change data capture. The
-                  application writes only to Postgres, which remains the sole
-                  canonical transaction layer. Changes propagate through the WAL
-                  log to Debezium and a Redpanda topic, where an indexer
-                  consumes them in event order, enriches each record with geo
-                  data looked up by address_id, and upserts into events_v1.
-                </figcaption>
-              </figure>
-              <p>
-                That's the whole mechanism for getting a change from Postgres
-                into the index. What Elasticsearch actually did with that data
-                once it arrived, deciding which result to show first, was a
-                separate problem entirely.
-              </p>
               <h3>Elasticsearch ranked, Postgres hydrated</h3>
               <p>
                 Getting text into an index solved matching. It didn't solve
@@ -1377,17 +1461,16 @@
                 where both distance and time were working against it at once.
               </p>
               <p>
-                Ranking only ever went one direction after that. Elasticsearch
-                handed back an ordered list of ids and scores while Postgres
-                supplied the actual rows for those ids, rendered back out in
-                whatever order Elasticsearch had decided on. An id that no
-                longer existed just got dropped from the results, and any
-                mismatch between the two counts surfaced as a warning instead of
-                failing silently. Detail pages and edit forms skipped
-                Elasticsearch entirely and went straight to Postgres, since
-                Elasticsearch's job started and ended at deciding order. Nothing
-                about what a volunteer actually saw on the page was allowed to
-                live in the index alone.
+                Every field a result card needs, title, dates, image, location,
+                tag list, open-spot count, resides directly in each
+                Elasticsearch document, kept current by the same indexer
+                described above, so a search request never needs a second round
+                trip to Postgres just to render what it already ranked. Detail
+                pages and edit forms still skip Elasticsearch entirely and go
+                straight to Postgres, since a single canonical record is a
+                different problem than ranking many of them, and status,
+                capacity, and deletion state stay correct at the source instead
+                of in a copy.
               </p>
               <figure class="figure-center">
                 <source
@@ -1396,15 +1479,10 @@
                 />
                 <img
                   src="../public/d8.svg"
-                  alt="Diagram of two read paths. Along the top is the search path. Browser search sends a query with latitude and longitude to slash api slash search, which issues a function_score request to ES. A side note lists what that scoring covers: text relevance, geographic decay, and recency decay. ES returns ranked event ids as UUIDs and scores. Those ids go to PostgreSQL as a where id in query, which returns canonical event data back to slash api slash search, labeled preserve Elasticsearch order, and the response returns to the browser. A side note reads that this path allows discovery and ranking events. Along the bottom is a dashed boundary labeled direct canonical read, containing event detail and edit connected by a two-way arrow to the NextJS data layer, which reads and writes PostgreSQL directly. Side notes read: read or mutate exact records, and browse with no search query. PostgreSQL is annotated as the source of truth for status, capacity, deletion state, and relations."
+                  alt="Diagram of two read paths. Along the top is the search path. Browser search sends a query with latitude and longitude to slash api slash search, which issues a function_score request to ES. ES returns documents that hydrate the event cards in the front end. Along the bottom is a dashed boundary labeled direct canonical read, containing event detail and edit connected by a two-way arrow to the NextJS data layer, which reads and writes PostgreSQL directly. PostgreSQL is annotated as the source of truth for status, capacity, deletion state, and relations."
                 />
                 <figcaption>
-                  Search queries go to Elasticsearch for scoring only, and it
-                  returns nothing but UUIDs and scores; the rows themselves are
-                  fetched from Postgres and reordered to match the Elasticsearch
-                  ranking, so status, capacity, and deletion state are never
-                  served from a stale index. Detail views and mutations skip
-                  search entirely and read Postgres directly.
+                  Two read paths. One for discovery, the other for truth.
                 </figcaption>
               </figure>
               <p>
@@ -1549,46 +1627,83 @@
                 problem.
               </p>
               <p>
-                One failure mode on this list wasn't like the others, and it was
-                the one that actually worried me. Postgres wouldn't
-                garbage-collect its write-ahead log past the point a replication
-                slot had confirmed it was read. That was normally invisible,
-                since Debezium was usually keeping pace and confirming as it
-                went. But if the indexer went down for a week, Postgres would
-                just keep holding onto a week's worth of WAL, waiting for a
-                consumer that wasn't coming back anytime soon. Disk could fill
-                causing the database to stop dead. And there would be no smoke
-                in the path of this fire; search going stale would read as a
-                minor, cosmetic problem right up until Postgres ran out of
-                space. Replication slot lag was the one metric I actually wanted
-                an alert on, and the only thing in this system that deserved to
-                page me at 3AM. Why? Because healthy looked like an active slot
-                with lag measured in kilobytes.
+                There was one failure that kept me up at night, a boogeyman if
+                you will. Postgres won't garbage-collect its write-ahead log
+                past the point a replication slot has confirmed it was read.
+                That was normally invisible, since Debezium was usually keeping
+                pace and confirming as it went. But if the indexer went down for
+                a week, Postgres would just keep holding onto a week's worth of
+                WAL, waiting for a consumer that wasn't coming back anytime
+                soon. Disk could fill causing the database to stop dead. And
+                there would be no smoke in the path of this fire; search going
+                stale would read as a minor, cosmetic problem right up until
+                Postgres ran out of space. Replication slot lag was the one
+                metric I actually wanted an alert on, and the only thing in this
+                system that I setup alerting to page me at 3AM.
               </p>
-              <figure class="figure-center">
-                <source
-                  srcset="../public/d9-dark.svg"
-                  media="(prefers-color-scheme: dark)"
-                />
-                <img
-                  src="../public/d9.svg"
-                  alt="Failure mode diagram for the change data capture pipeline. Across the top, a green box states that canonical data remains recoverable, connected down to a row of five pipeline components: PostgreSQL, Debezium, Redpanda, Indexer, and ES. Four brown boxes below describe failure scenarios, each connected to the component it concerns. Indexer unavailable: consumer offset retained, restart resumes processing, search becomes stale. Elasticsearch unavailable: postgres writes continue, indexer retries, search is unavailable or stale. Redpanda unavailable: debezium cannot publish, replication-slot lag increases, pipeline catches up after recovery. Bad indexer deployment: fix transformer, drop and recreate indexes, reindex from pg. At the bottom, a red box warns about replication slot lag, noting that unconsumed WAL accumulates until the Postgres disk is exhausted."
-                />
-                <figcaption>
-                  Because Postgres stays canonical and the search index is
-                  derived, every scenario degrades search rather than being
-                  data-lossy. The indexer resumes from its retained offset,
-                  Elasticsearch outages leave writes unaffected, and a bad
-                  deployment is corrected by dropping the index and reindexing.
-                  The only condition requiring an operational alarm is
-                  replication slot lag, where unconsumed WAL accumulates until
-                  it exhausts the Postgres disk.
-                </figcaption>
-              </figure>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Service</th>
+                    <th>Failure Mode</th>
+                    <th>Solution</th>
+                    <th>Impact</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Indexer</td>
+                    <td>Unavailable</td>
+                    <td>Resumes from retained consumer offset on restart</td>
+                    <td>Search goes stale until restart</td>
+                  </tr>
+                  <tr>
+                    <td>Elasticsearch</td>
+                    <td>Unavailable</td>
+                    <td>
+                      Postgres writes continue unaffected; indexer retries
+                    </td>
+                    <td>Search unavailable or stale</td>
+                  </tr>
+                  <tr>
+                    <td>Redpanda</td>
+                    <td>Unavailable</td>
+                    <td>Pipeline catches up once the broker recovers</td>
+                    <td>
+                      Debezium can't publish; replication-slot lag increases
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Indexer</td>
+                    <td>Bad deployment</td>
+                    <td>
+                      Fix the transformer, drop and recreate the index, reindex
+                      from Postgres
+                    </td>
+                    <td>Wrong documents served until reindexed</td>
+                  </tr>
+                  <tr>
+                    <td>Postgres</td>
+                    <td>Replication slot lag</td>
+                    <td>Dedicated alert paged on replication-slot lag</td>
+                    <td>
+                      Unconsumed WAL accumulates until disk is exhausted,
+                      database halts
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
               <p>
-                Four rules came out of this architecture with each one existing
-                because I could point to how ignoring it could turn into an
-                incident.
+                Postgres was designed to stay canonical with the search index
+                being derived. What this meant is that every possible failure
+                scenario would degrade search rather than being data-lossy. The
+                indexer could resume from its retained offset, Elasticsearch
+                outages would leave writes unaffected, and a bad deployment
+                could easily be corrected by dropping the index and reindexing.
+                The only condition that required an operational alarm was the
+                aforementioned replication slot lag. As a result, four rules
+                came out of this architecture, designed expressly to prevent a
+                new incident:
               </p>
               <ol>
                 <li>
@@ -1691,13 +1806,7 @@
                   src="../public/d10.svg"
                   alt="Sequence diagram titled Rate Limiter Decision, with lifelines for Client, Named rate limiter, Redis Lua script, and Protected operation. The client sends a request to the named rate limiter, which resolves its key, limit, and window configuration and calls the Redis Lua script. The script reads the previous and current window counts, computes a weighted total, and increments the count atomically, all in one round trip. Two outcomes branch from the script's result: an allowed outcome returns to the rate limiter, which lets the request continue to the protected operation, and a limited outcome returns a rejection to the client instead. A third path shows Redis itself unavailable, where the rate limiter fails open and forwards the request to the protected operation anyway, marked by a callout reading Fails open, not closed."
                 />
-                <figcaption>
-                  A protected request reaches a named rate limiter, which pulls
-                  its key, limit, and window configuration and hands off to a
-                  Redis Lua script that reads the previous and current window
-                  counts, computes a weighted total, and increments atomically,
-                  all in one round trip.
-                </figcaption>
+                <figcaption>Rate limiting.</figcaption>
               </figure>
               <p>
                 That atomic script is also what made the rest of this
@@ -1773,36 +1882,83 @@
                 handling of every error. A function that can fail returns
                 <code>Result&lt;T, E&gt;</code>, an enum with exactly two
                 variants, <code>Ok</code> holding the success value or
-                <code>Err</code> holding the error. This allows the compiler to
-                force the caller to actually deal with both before it can touch
-                the value inside. Now we don't rely on thrown exceptions. The
-                failure is part of the function's actual return type, not a side
-                channel that can be forgotten.
+                <code>Err</code> holding the error.
+              </p>
+              <pre class="">
+                <code class="language-rust">
+enum Result&lt;T, E&gt; {
+    Ok(T),
+    Err(E),
+}
+                </code>
+              </pre>
+              <p>
+                This allows the compiler to force the caller to actually deal
+                with both before it can touch the value inside. Now we don't
+                rely on thrown exceptions. The failure is part of the function's
+                actual return type, not a side channel that can be forgotten.
               </p>
               <p>
                 While TypeScript doesn't have a genuine algebraic type like that
                 built in, a tuple enables the desired behavior. Every server
                 action in the codebase now returns a
-                <code>Result&lt;TData, TError&gt;</code>, defined as
-                <code>[error: TError, null] | [null, data: TData]</code>.
-                Success looks like <code>ok(data)</code>, which returns
-                <code>[null, data]</code>. Failure looks like
-                <code>err(type, fields, logger)</code>, which returns
-                <code>[error, null]</code>, and logs the error as a side effect
-                of being called, immediately, at the exact point the failure
-                occurs. Every error is a member of a discriminated union called
-                <code>AppError</code>, each variant carrying a
-                <code>type</code> string and a <code>message</code>, so a
-                not-found error and a validation error are structurally
-                different values the compiler can tell apart, not two generic
-                exceptions that happen to carry different text.
+                <code>Result&lt;TData, TError&gt;</code>, defined as:
               </p>
-              <pre class="code-block"><code>type EventNotFound = {
+              <pre class="">
+                <code class="language-typescript">
+type Result&lt;TData, TError&gt; =
+  | [error: TError, null]
+  | [null, data: TData];
+                </code>
+              </pre>
+              <p>
+                Success looks like <code>ok(data)</code>, which returns
+                <code>[null, data]</code>.
+              </p>
+              <pre class="">
+                <code class="language-typescript">
+return ok(event); // -&gt; [null, event]
+                </code>
+              </pre>
+              <p>
+                Failure looks like <code>err(type, fields, logger)</code>, which
+                returns <code>[error, null]</code>, and logs the error as a side
+                effect of being called, immediately, at the exact point the
+                failure occurs.
+              </p>
+              <pre class="">
+                <code class="language-typescript">
+type EventNotFound = {
   type: "app.event.not_found";
   message: string;
 };
 
-return err("app.event.not_found", { message: "This event could not be found." }, qrumLogger);</code></pre>
+return err(
+  "app.event.not_found",
+  { message: "This event could not be found." },
+  logger
+);
+                </code>
+              </pre>
+              <p>
+                Every error returned this way, including
+                <code>EventNotFound</code> above, is a member of a discriminated
+                union called <code>AppError</code>, each variant carrying a
+                <code>type</code> string and a <code>message</code>:
+              </p>
+              <pre class="">
+                <code class="language-typescript">
+type AppError =
+  | EventNotFound
+  | { type: "app.validation.failed"; message: string }
+  | { type: "app.db.timeout"; message: string };
+                </code>
+              </pre>
+              <p>
+                A not-found error and a validation error are structurally
+                different values the compiler can tell apart this way, not two
+                generic exceptions that happen to carry different text.
+              </p>
               <p>
                 The rule that makes this actually hold together is simple,
                 <code>err()</code> logs automatically, so nothing downstream is
@@ -1810,21 +1966,30 @@ return err("app.event.not_found", { message: "This event could not be found." },
                 database timeout from turning into four duplicate log lines by
                 the time it finally reaches the client.
               </p>
-              <figure class="figure-center">
-                <source
-                  srcset="../public/d12-1-dark.svg"
-                  media="(prefers-color-scheme: dark)"
-                />
-                <img src="../public/d12-1.svg" alt="Diagram of the Result&lt;Data, Error&gt; return flow" />
-                <figcaption>
-                  The return of any function that can fail returns
-                  <code>Result&lt;Data, Error&gt;</code>.
-                  <code>ok(event)</code> produces <code>[null, event]</code>.
-                  <code>err(error, {...})</code> produces
-                  <code>[error, null]</code> and logs as a side effect of being
-                  called.
-                </figcaption>
-              </figure>
+              <p>
+                Every function that can fail returns
+                <code>Result&lt;Data, Error&gt;</code>.
+                <code>ok(event)</code> produces <code>[null, event]</code>.
+                <code>err(error, {...})</code> produces
+                <code>[error, null]</code> and logs as a side effect of being
+                called.
+              </p>
+              <pre class="">
+                <code class="language-typescript">
+function checkInEvent(id: string): Result&lt;Event, AppError&gt; {
+  const event = findEvent(id);
+  if (!event) {
+    return err(
+      "app.event.not_found",
+      { message: "This event could not be found." },
+      logger
+    );
+  }
+
+  return ok(event);
+}
+                </code>
+              </pre>
 
               <p>
                 A type on its own doesn't do anything, though. What actually
@@ -1866,11 +2031,7 @@ return err("app.event.not_found", { message: "This event could not be found." },
                   alt="Call stack diagram with five layers connected top to bottom by gray arrows: Browser, Server Action checkIntoEvent, Domain Func updateRoster, Repository updateRosterRecord, and Supabase. Red arrows labeled err rise up the left side, returning errors from the repository to the domain function, from the domain function to the server action, and from the server action to the browser. Green arrows labeled ok rise up the right side along the same hops, carrying success results."
                 />
                 <figcaption>
-                  checkIntoEvent() calls updateRoster(), which calls
-                  updateRosterRecord(), which reaches Supabase. A failure at any
-                  layer returns as err, passed back up through the layers above
-                  it unchanged, until it reaches the browser as the same Result
-                  it starts as.
+                  Returning errors back up the call chain.
                 </figcaption>
               </figure>
               <p>
@@ -1894,6 +2055,10 @@ return err("app.event.not_found", { message: "This event could not be found." },
                 during render. Ergo, a toast can only ever be shown from an
                 event handler.
               </p>
+              <pre
+                class="code-block"
+              ><code class="language-typescript">const [error, data] = await someAction();
+if (error) return handleClientError(error);</code></pre>
               <p>
                 That constraint alone is enough to justify two separate
                 functions to handle errors. I created
@@ -1911,8 +2076,9 @@ return err("app.event.not_found", { message: "This event could not be found." },
               </p>
               <pre
                 class="code-block"
-              ><code>const [error, data] = await someAction();
-if (error) return handleClientError(error);</code></pre>
+              ><code class="language-typescript">const [error, data] = use(dataPromise);
+if (error) handleStreamError(error);
+// data is narrowed to non-null past this point</code></pre>
               <p>
                 I created <code>handleStreamError</code> for errors that result
                 from streaming components that unwrap a
@@ -1924,47 +2090,6 @@ if (error) return handleClientError(error);</code></pre>
                 page is simply loading, and it either finishes loading or falls
                 back to whatever that boundary's fallback shows.
               </p>
-              <pre
-                class="code-block"
-              ><code>const [error, data] = use(dataPromise);
-if (error) handleStreamError(error);
-// data is narrowed to non-null past this point</code></pre>
-              <table>
-                <thead>
-                  <tr>
-                    <th></th>
-                    <th><code>handleClientError</code></th>
-                    <th><code>handleStreamError</code></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>Context</td>
-                    <td>Event handlers</td>
-                    <td>Render phase, <code>use()</code></td>
-                  </tr>
-                  <tr>
-                    <td>Side effects</td>
-                    <td>Toast</td>
-                    <td>None</td>
-                  </tr>
-                  <tr>
-                    <td>Returns</td>
-                    <td><code>void</code></td>
-                    <td><code>never</code></td>
-                  </tr>
-                  <tr>
-                    <td>Error goes to</td>
-                    <td>A toast on screen</td>
-                    <td>The nearest error boundary</td>
-                  </tr>
-                  <tr>
-                    <td>Why not throw</td>
-                    <td>Boundaries don't catch event handler errors</td>
-                    <td>Boundaries only catch render errors</td>
-                  </tr>
-                </tbody>
-              </table>
               <figure class="figure-center">
                 <source
                   srcset="../public/d12-2-dark.svg"
@@ -1974,14 +2099,22 @@ if (error) handleStreamError(error);
                   src="../public/d12-2.svg"
                   alt="Flow diagram inside a boundary labeled Client. A const err comma data destructuring feeds into a blue diamond that asks whether there is no error. The yes branch goes right in green to render data. The no branch goes down in red into a red box labeled handle errors, which contains two circles: handle streaming error and handle client error."
                 />
-                <figcaption>
-                  An error result reaching the client branches on where it is
-                  received. Render phase errors, unwrapped with use(), throw to
-                  the nearest error boundary. Event handler errors call
-                  <code>handleClientError</code> and surface as a toast instead,
-                  since a boundary can't catch them either way.
-                </figcaption>
+                <figcaption>Error handling in the browser.</figcaption>
               </figure>
+              <p>
+                Lined up next to each other, the two functions are mirror images
+                of one context driving every other difference between them.
+                <code>handleClientError</code> lives in event handlers, doesn't
+                return anything and toasts as a side effect.
+                <code>handleStreamError</code> lives in the render phase behind
+                <code>use()</code>. It doesn't have side effects of its own,
+                instead throwing to the nearest error boundary. An event-handler
+                error surfaces as a toast on screen, while a render-phase error
+                propagates straight to the nearest boundary instead. They cannot
+                be interchanged because a boundary doesn't catch anything thrown
+                from an event handler, and there's no toast to show for a
+                section of the page that's simply still loading.
+              </p>
 
               <h3>Boundaries that fail independently</h3>
               <p>
@@ -1993,13 +2126,17 @@ if (error) handleStreamError(error);
                 sections on the same page represent three independent chances to
                 fail without one dragging the other two along.
               </p>
-              <pre
-                class="code-block"
-              ><code>&lt;ErrorBoundary testId="error-roster" fallback={&lt;Text c="red.4"&gt;Failed to load roster.&lt;/Text&gt;}&gt;
+              <pre>
+                <code class="language-jsx">
+&lt;ErrorBoundary 
+  testId="error-roster" 
+  fallback={&lt;Text c="red.4"&gt;Failed to load roster.&lt;/Text&gt;}&gt;
   &lt;Suspense fallback={&lt;RosterLoading /&gt;}&gt;
     &lt;Roster rosterPromise={getRosterData(id, event)} /&gt;
   &lt;/Suspense&gt;
-&lt;/ErrorBoundary&gt;</code></pre>
+&lt;/ErrorBoundary&gt;
+                </code>
+              </pre>
               <p>
                 Boundaries only ever catch what gets thrown during rendering,
                 component bodies, <code>use()</code>, lifecycle methods. Nothing
@@ -2037,10 +2174,7 @@ if (error) handleStreamError(error);
                   alt="Diagram of two Result paths and the logging pipeline that branches off one of them. The top row, in green, shows ok of data leading to return null and data. The bottom row, in red, shows err leading to a structured object with type, message, and more fields, then to logger.error, then to return error and null. From logger.error a gray arrow labeled json drops down into a pipeline that runs left to right: log.txt, then Alloy highlighted in purple, then Loki, then Grafana."
                 />
                 <figcaption>
-                  err() builds the structured error, calls logger.error(), and
-                  returns [error, null] to the caller. The logger writes a JSON
-                  line to log.txt, which Alloy tails and ships to Loki,
-                  queryable through Grafana.
+                  Diagram of two result paths: success and failure.
                 </figcaption>
               </figure>
 
@@ -2065,14 +2199,20 @@ if (error) handleStreamError(error);
               </p>
               <h3>Build and runtime</h3>
               <p>
-                A multi-stage Docker build produced a standalone Next.js output:
+                A multi-stage Docker build produced a standalone Next.js output,
                 dependencies and build tooling stayed in the builder stage, so
-                the runtime image shipped the compiled application and nothing
-                else. It ran as a non-root user with a health check, built for
-                ARM64 via buildx and pushed to a private registry, with a guard
-                so production images only came from the production branch.
-                Elasticsearch was reachable only on the internal Docker network;
-                nothing routed to port 9200 from outside.
+                the runtime image shipped only the compiled application. It ran
+                as a non-root user with a health check, built for ARM64 via
+                buildx and pushed to a private registry, with a guard so
+                production images only came from the production branch.
+                Elasticsearch stayed reachable only on the internal Docker
+                network, nothing routed to port 9200 from outside.
+                <code>cloudflared</code> runs on the Pi and dials outward to
+                Cloudflare, holding that connection open, so a request actually
+                arrives back down the same outbound pipe rather than through
+                anything listening on the router. Cloudflare terminates TLS at
+                its edge and the tunnel reaches each service's port on localhost
+                directly. The router has nothing forwarded and nothing to scan.
               </p>
               <figure>
                 <source
@@ -2081,15 +2221,9 @@ if (error) handleStreamError(error);
                 />
                 <img
                   src="../public/d11.svg"
-                  alt="Deployment diagram. The internet reaches a router configured to port forward 80 and 443 to a Raspberry Pi running Ubuntu. Inside the Pi, an nginx reverse proxy handles SSL and TLS termination, Let's Encrypt certificates, domain routing, and auth and middleware. Nginx routes to two groups of services: a Docker Compose stack containing the Qrum Next.js application, Redis, and Supabase, and a set of host services running outside Docker containing Loki for log storage, Grafana for visualization, and Alloy as the log collector."
+                  alt="Diagram showing a browser connecting through the Cloudflare edge and an outbound tunnel to cloudflared on a Raspberry Pi named whiteflame. cloudflared routed requests by hostname to four services."
                 />
-                <figcaption>
-                  Everything ran on a single Raspberry Pi. A router forwarded
-                  ports 80 and 443 to nginx, which terminated TLS and routed by
-                  domain into two groups of services, the application stack
-                  running in Docker Compose and the observability stack running
-                  directly on the host.
-                </figcaption>
+                <figcaption>Traffic pattern for reaching Qrum.</figcaption>
               </figure>
               <p>
                 That diagram shows where everything ran, but I now wanted to

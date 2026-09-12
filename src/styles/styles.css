@@ -586,24 +586,22 @@ code.tech-keyword {
     line-height: 1.5;
     vertical-align: middle;
 }
-pre.code-block {
-    display: block;
-    max-width: 100%;
-    box-sizing: border-box;
-    overflow-x: auto;
-    white-space: pre;
-    padding: 0.85em 1em;
-    margin: 0.75em 0;
-    line-height: 1.6;
-    background-color: rgba(95, 180, 162, 0.1);
-    color: var(--selected-font-color);
+pre {
+  width: 100%;
 }
-pre.code-block code {
-    background: none;
-    padding: 0;
-    border-radius: 0;
-    font-size: 1em;
-    color: inherit;
+pre code {
+  width: 100%;
+}
+pre code span {
+  background-color: transparent !important;
+}
+pre[class*="language-"]::before,
+pre[class*="language-"]::after {
+  display: none !important;
+}
+pre[class*="language-"] > code {
+  border-left-color: var(--selected-font-color);
+  box-shadow: -1px 0 0 0 var(--selected-font-color), 0 0 0 1px #dfdfdf;
 }
 .info-quote {
     position: relative;
